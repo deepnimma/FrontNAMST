@@ -1,14 +1,19 @@
 .app-wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-start; /* Default to top alignment */
     min-height: 100vh;
     margin: 0;
     background-color: #1e1e1e;
     color: white;
-    padding-top: 50px;
     width: 100%;
     font-family: 'Poppins', sans-serif;
+    padding-top: 0; /* Remove initial padding */
+    transition: padding-top 0.5s ease-in-out; /* Animate padding */
+}
+
+.app-wrapper.initial-state {
+    padding-top: 30vh; /* Push content down in initial state */
 }
 
 .main-container {
@@ -18,7 +23,9 @@
     width: 100%;
     max-width: 1200px;
     padding: 0 20px;
+    /* The container itself doesn't need to transform */
 }
+
 
 /* --- GitHub Links --- */
 .github-links {
@@ -50,11 +57,24 @@
     text-align: center;
 }
 
+.title-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
 .title {
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0;
     line-height: 1.1;
+    color: white;
+    transition: color 0.2s;
+}
+
+.title-button:hover .title {
+    color: #a3a8ff;
 }
 
 .titleSubtext {

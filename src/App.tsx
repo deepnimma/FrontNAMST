@@ -70,6 +70,14 @@ function App() {
         }
     };
 
+    const handleReset = () => {
+        setQuery('');
+        setImages([]);
+        setIsCameo(false);
+        setIsTrainer(false);
+        setIsIllustrator(false);
+    };
+
     const toggleSortOrder = () => {
         setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
     };
@@ -120,11 +128,13 @@ function App() {
                 </a>
             </div>
 
-            <div className="app-wrapper">
+            <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
 
                     <div className="header-container">
-                        <div className="title">NottAnotherMasterSetTracker</div>
+                        <button className="title-button" onClick={handleReset}>
+                            <h1 className="title">NottAnotherMasterSetTracker</h1>
+                        </button>
                         <div className="titleSubtext">Find all the cards you need!</div>
                     </div>
 
