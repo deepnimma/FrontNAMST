@@ -1,15 +1,26 @@
 import './App.css'
 import React, { useState } from 'react';
-import { Search, Settings, ArrowDownUp } from 'lucide-react';
+import { Search, Settings, ArrowDownUp, X, Github } from 'lucide-react';
+
+// --- Interfaces ---
+interface CardImage {
+    key: string;
+    setName: string;
+    cardNumber: string;
+    illustrator: string;
+    releaseDate: string;
+    description: string;
+}
 
 const R2_BUCKET_URL = "https://r2bucketgoeshere.com"
 const API_ENDPOINT = "https://downloader.something.something.dev/"
 
 function App() {
     const [query, setQuery] = useState('');
-    const [images, setImages] = useState<string[]>([]);
+    const [images, setImages] = useState<CardImage[]>([]);
     const [loading, setLoading] = useState(false);
     const [gridCols, setGridCols] = useState(5);
+    const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -35,8 +46,15 @@ function App() {
             // MOCK LOGIC
             console.log("Searching with params:", params.toString());
             await new Promise(resolve => setTimeout(resolve, 1000));
-            const mockKeys = Array.from({ length: 15 }).map((_, i) => `mock-image-${i}`);
-            setImages(mockKeys);
+            const mockImages: CardImage[] = Array.from({ length: 15 }).map((_, i) => ({
+                key: `mock-image-${i}`,
+                setName: `Awesome Set ${i % 3 + 1}`,
+                cardNumber: `${i + 1}/100`,
+                illustrator: `Artist #${i % 5 + 1}`,
+                releaseDate: `2023-10-2${i}`,
+                description: i % 4 === 0 ? `This is a special card with a very long description to see how the text wraps and fits into the container.` : '',
+            }));
+            setImages(mockImages);
 
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -60,12 +78,48 @@ function App() {
         setGridCols(prev => {
             if (prev === 3) return 5;
             if (prev === 5) return 7;
-            return 3; // Cycle from 7 back to 3
+            return 3;
         });
+    };
+
+    const openModal = (image: CardImage) => {
+        setSelectedImage(image);
+    };
+
+    const closeModal = () => {
+        setSelectedImage(null);
+    };
+
+    // --- Checkbox Logic ---
+    const handleCameoChange = (checked: boolean) => {
+        setIsCameo(checked);
+        if (checked) setIsIllustrator(false);
+    };
+
+    const handleTrainerChange = (checked: boolean) => {
+        setIsTrainer(checked);
+        if (checked) setIsIllustrator(false);
+    };
+
+    const handleIllustratorChange = (checked: boolean) => {
+        setIsIllustrator(checked);
+        if (checked) {
+            setIsCameo(false);
+            setIsTrainer(false);
+        }
     };
 
     return (
         <>
+            <div className="github-links">
+                <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" title="Frontend Repo">
+                    <Github size={24} />
+                </a>
+                <a href="https://github.com/deepnimma/NottAnotherMasterSetTrackerBackend" target="_blank" rel="noopener noreferrer" title="Backend Repo">
+                    <Github size={24} />
+                </a>
+            </div>
+
             <div className="app-wrapper">
                 <div className="main-container">
 
@@ -92,20 +146,28 @@ function App() {
                         </button>
                     </div>
 
-                    {/* Filters appear only after a search has returned results */}
-                    {images.length > 0 && (
+                    {query.length > 0 && (
                         <div className="filters-container">
                             <div className="checkbox-group">
-                                <label className="checkbox-label">
-                                    <input type="checkbox" checked={isCameo} onChange={(e) => setIsCameo(e.target.checked)} />
+                                <label
+                                    className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`}
+                                    title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed."
+                                >
+                                    <input type="checkbox" checked={isCameo} onChange={(e) => handleCameoChange(e.target.checked)} disabled={isIllustrator} />
                                     Cameo
                                 </label>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" checked={isTrainer} onChange={(e) => setIsTrainer(e.target.checked)} />
+                                <label
+                                    className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`}
+                                    title="Enable this if you are trying to search for a particular Pokemon series trainer."
+                                >
+                                    <input type="checkbox" checked={isTrainer} onChange={(e) => handleTrainerChange(e.target.checked)} disabled={isIllustrator} />
                                     Trainer
                                 </label>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" checked={isIllustrator} onChange={(e) => setIsIllustrator(e.target.checked)} />
+                                <label
+                                    className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`}
+                                    title="Enable this if you are trying to search for all cards from a particular illustrator."
+                                >
+                                    <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
                                     Illustrator
                                 </label>
                             </div>
@@ -114,10 +176,12 @@ function App() {
                                     <ArrowDownUp size={16} />
                                     {sortOrder === 'desc' ? 'Descending' : 'Ascending'}
                                 </button>
-                                <button onClick={toggleGridCols} className="grid-toggle-button">
-                                    <Settings size={16} />
-                                    {gridCols} Columns
-                                </button>
+                                {images.length > 0 && (
+                                    <button onClick={toggleGridCols} className="grid-toggle-button">
+                                        <Settings size={16} />
+                                        {gridCols} Columns
+                                    </button>
+                                )}
                             </div>
                         </div>
                     )}
@@ -129,11 +193,11 @@ function App() {
                             className="image-grid"
                             style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
                         >
-                            {images.map((key, index) => (
-                                <div key={index} className="image-card">
+                            {images.map((image) => (
+                                <div key={image.key} className="image-card" onClick={() => openModal(image)}>
                                     <img
-                                        src={`https://placehold.co/400x600/2d2d2d/FFF?text=${key}`}
-                                        alt={key}
+                                        src={`https://placehold.co/400x600/2d2d2d/FFF?text=${image.key}`}
+                                        alt={image.key}
                                         className="grid-image"
                                     />
                                 </div>
@@ -141,7 +205,7 @@ function App() {
                         </div>
                     )}
 
-                    {!loading && images.length === 0 && query && (
+                    {!loading && images.length === 0 && query && !loading && (
                         <div className="no-results">
                             <p>No cards found. Try searching for something else.</p>
                         </div>
@@ -149,6 +213,31 @@ function App() {
 
                 </div>
             </div>
+
+            {selectedImage && (
+                <div className="modal-backdrop" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={closeModal}><X size={24} /></button>
+                        <img
+                            src={`https://placehold.co/600x840/2d2d2d/FFF?text=${selectedImage.key}`}
+                            alt={selectedImage.key}
+                            className="modal-image"
+                        />
+                        <div className="modal-metadata">
+                            <h2>{selectedImage.setName}</h2>
+                            <p><strong>Card Number:</strong> {selectedImage.cardNumber}</p>
+                            <p><strong>Illustrator:</strong> {selectedImage.illustrator}</p>
+                            <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
+                            {selectedImage.description && (
+                                <div className="metadata-description">
+                                    <h3>Description</h3>
+                                    <p>{selectedImage.description}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
