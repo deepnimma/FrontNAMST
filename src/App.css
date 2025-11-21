@@ -9,6 +9,7 @@
     font-family: 'Poppins', sans-serif;
     padding-top: 50px; /* Default top padding */
     transition: padding-top 0.5s ease-in-out;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .app-wrapper.initial-state {
@@ -72,6 +73,10 @@
 
 .title-button:hover .title {
     color: #a3a8ff;
+}
+
+.title .title-mobile {
+    display: none;
 }
 
 .titleSubtext {
@@ -273,7 +278,7 @@
 
 .modal-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* Center content vertically */
     gap: 25px;
     position: relative;
     background-color: #2d2d2d;
@@ -381,4 +386,119 @@
 @keyframes slideIn {
     from { transform: scale(0.95); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 768px) {
+    .app-wrapper.initial-state {
+        padding-top: 25vh;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .title .title-desktop {
+        display: none;
+    }
+
+    .title .title-mobile {
+        display: inline;
+    }
+
+    .titleSubtext {
+        font-size: 0.9rem;
+    }
+
+    .search-and-controls-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-input {
+        width: 100%;
+        font-size: 0.9rem; /* Smaller font on mobile */
+    }
+    
+    .search-button {
+        width: 100%;
+    }
+
+    .filters-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .checkbox-group {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .modal-content {
+        flex-direction: column;
+        align-items: center; /* Center content on mobile */
+        padding: 15px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .modal-image {
+        height: auto;
+        max-width: 100%;
+        max-height: 50vh;
+    }
+
+    .modal-metadata {
+        max-height: none;
+        padding: 15px;
+    }
+
+    .modal-metadata h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-metadata p {
+        font-size: 0.9rem;
+    }
+
+    .modal-close-button {
+        top: 5px;
+        right: 5px;
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-wrapper {
+        padding-top: 20px;
+    }
+
+    .app-wrapper.initial-state {
+        padding-top: 20vh;
+    }
+
+    .main-container {
+        padding: 0 15px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .github-links {
+        top: 15px;
+        left: 15px;
+    }
+
+    .filter-buttons-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .sort-button, .grid-toggle-button {
+        width: 100%;
+        justify-content: center;
+    }
 }
