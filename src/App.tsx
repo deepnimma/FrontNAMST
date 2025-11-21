@@ -11,9 +11,9 @@ interface CardImage {
     releaseDate: string;
     description: string;
 }
-
-const R2_BUCKET_URL = "https://r2bucketgoeshere.com"
-const API_ENDPOINT = "https://downloader.something.something.dev/"
+//
+// const R2_BUCKET_URL = "https://r2bucketgoeshere.com"
+// const API_ENDPOINT = "https://downloader.something.something.dev/"
 
 const placeholderWords = ["Pokemon", "Trainer", "Illustrator"];
 
