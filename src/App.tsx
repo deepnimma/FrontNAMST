@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Settings, ArrowDownUp, X, Github } from 'lucide-react';
 
 // --- Interfaces ---
@@ -15,18 +15,32 @@ interface CardImage {
 const R2_BUCKET_URL = "https://r2bucketgoeshere.com"
 const API_ENDPOINT = "https://downloader.something.something.dev/"
 
+const placeholderWords = ["Pokemon", "Trainer", "Illustrator"];
+
 function App() {
     const [query, setQuery] = useState('');
     const [images, setImages] = useState<CardImage[]>([]);
     const [loading, setLoading] = useState(false);
     const [gridCols, setGridCols] = useState(5);
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+    // Effect for cycling placeholder text
+    useEffect(() => {
+        if (query.length > 0) return;
+
+        const intervalId = setInterval(() => {
+            setPlaceholderIndex(prevIndex => (prevIndex + 1) % placeholderWords.length);
+        }, 2000); // Change every 2 seconds
+
+        return () => clearInterval(intervalId);
+    }, [query]);
 
     const handleSearch = async () => {
         if (!query.trim()) return;
@@ -142,14 +156,23 @@ function App() {
                     </div>
 
                     <div className="search-and-controls-container">
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Search for cards (e.g., 'Dragon')..."
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                        />
+                        <div className="search-input-container">
+                            <input
+                                type="text"
+                                className="search-input"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                            {query.length === 0 && (
+                                <div className="custom-placeholder">
+                                    <span>Search for your favorite </span>
+                                    <span className="placeholder-word" key={placeholderIndex}>
+                                        {placeholderWords[placeholderIndex]}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
                         <button
                             className="search-button"
                             onClick={handleSearch}
