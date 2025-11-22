@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState, useEffect } from 'react';
-import { Search, Settings, ArrowDownUp, X, Github, Library } from 'lucide-react';
+import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles } from 'lucide-react';
 
 // --- Interfaces ---
 interface CardImage {
@@ -11,6 +11,7 @@ interface CardImage {
     releaseDate: string;
     cardTitle: string;
     tags: string;
+    isReverseHolo: number;
 }
 
 const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
@@ -43,6 +44,7 @@ function App() {
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [showSetNames, setShowSetNames] = useState(false);
+    const [showReverseHolos, setShowReverseHolos] = useState(true);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -149,6 +151,8 @@ function App() {
         );
     };
 
+    const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
+
     return (
         <>
             <div className="github-links">
@@ -219,19 +223,22 @@ function App() {
                                     <ArrowDownUp size={16} />
                                     {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                                 </button>
-                                {images.length > 0 && (
-                                    <>
-                                        <button onClick={toggleGridCols} className="grid-toggle-button">
-                                            <Settings size={16} />
-                                            {gridCols} Columns
-                                        </button>
-                                        <button onClick={() => setShowSetNames(prev => !prev)} className="set-name-toggle-button">
-                                            <Library size={16} />
-                                            {showSetNames ? 'Hide Sets' : 'Show Sets'}
-                                        </button>
-                                    </>
-                                )}
                             </div>
+                        </div>
+                        
+                        <div className={`display-controls-container ${images.length > 0 ? 'visible' : ''}`}>
+                            <button onClick={toggleGridCols} className="grid-toggle-button">
+                                <Settings size={16} />
+                                {gridCols} Columns
+                            </button>
+                            <button onClick={() => setShowSetNames(prev => !prev)} className="set-name-toggle-button">
+                                <Library size={16} />
+                                {showSetNames ? 'Hide Sets' : 'Show Sets'}
+                            </button>
+                            <button onClick={() => setShowReverseHolos(prev => !prev)} className="reverse-holo-toggle-button">
+                                <Sparkles size={16} />
+                                {showReverseHolos ? 'Hide Reverse' : 'Show Reverse'}
+                            </button>
                         </div>
                     </div>
 
@@ -239,7 +246,7 @@ function App() {
 
                     {!loading && images.length > 0 && (
                         <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-                            {images.map((image) => (
+                            {filteredImages.map((image) => (
                                 <div key={image.imageKey} className="image-card" onClick={() => openModal(image)}>
                                     <img src={`${R2_BUCKET_URL}/${image.imageKey}`} alt={image.cardTitle} className="grid-image" />
                                     {showSetNames && (
