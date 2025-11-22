@@ -61,6 +61,8 @@ html {
     cursor: pointer;
     padding: 0;
     transition: color 0.2s;
+    display: flex;
+    align-items: center;
 }
 
 .changelog-button:hover {
