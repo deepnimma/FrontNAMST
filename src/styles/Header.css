@@ -56,16 +56,31 @@
 
 /* Animation for header text change */
 .header-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+    animation: headerFadeIn 0.5s ease-in-out forwards;
 }
 
-@keyframes fadeIn {
+.header-fade-out {
+    animation: headerFadeOut 0.25s ease-in-out forwards;
+}
+
+@keyframes headerFadeIn {
     from {
+        transform: translateY(10px);
         opacity: 0;
-        transform: translateY(-10px);
     }
     to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes headerFadeOut {
+    from {
         opacity: 1;
         transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
     }
 }

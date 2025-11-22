@@ -16,7 +16,6 @@ const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
     ];
 
     const [currentMainHeader, setCurrentMainHeader] = useState(mainHeaderPhrases[0]);
-    const [isAnimating, setIsAnimating] = useState(false);
     const [hasReachedMasterSet, setHasReachedMasterSet] = useState(false);
 
     useEffect(() => {
@@ -26,20 +25,16 @@ const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
 
         // Map placeholderIndex to mainHeaderPhrases index
         let headerPhraseIndex = placeholderIndex;
+        const targetHeader = mainHeaderPhrases[headerPhraseIndex];
+
         if (placeholderWords[placeholderIndex] === "Set") {
-            headerPhraseIndex = mainHeaderPhrases.length - 1; // "Set" corresponds to "MasterSetTracker"
+            // Ensure "MasterSetTracker" is the final header
+            setCurrentMainHeader(mainHeaderPhrases[mainHeaderPhrases.length - 1]);
             setHasReachedMasterSet(true); // Stop further changes
+        } else if (currentMainHeader !== targetHeader) {
+            setCurrentMainHeader(targetHeader);
         }
-
-        setIsAnimating(true);
-        const timer = setTimeout(() => {
-            setIsAnimating(false);
-        }, 500); // Animation duration
-
-        setCurrentMainHeader(mainHeaderPhrases[headerPhraseIndex]);
-
-        return () => clearTimeout(timer);
-    }, [placeholderIndex, hasReachedMasterSet, mainHeaderPhrases]); // Depend on placeholderIndex and hasReachedMasterSet
+    }, [placeholderIndex, hasReachedMasterSet, mainHeaderPhrases]);
 
     const renderEmphasizedHeader = (headerText: string) => {
         const emphasisWords = ["PokeDex", "TrainerDex", "IllustratorDex", "MasterSet"];
@@ -70,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
         <div className="header-container">
             <button className="title-button" onClick={handleReset}>
                 <h1 className="title">
-                    <span className={`title-desktop ${isAnimating ? 'header-fade-in' : ''}`}>
+                    <span key={currentMainHeader} className="title-desktop header-revolve-animation">
                         {renderEmphasizedHeader(currentMainHeader)}
                     </span>
                     <span className="title-mobile">NottDex</span>
