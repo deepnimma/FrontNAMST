@@ -7,6 +7,7 @@
 @import './styles/Changelog.css';
 @import './styles/TopRightLinks.css';
 @import './styles/ScrollToTopButton.css';
+@import './styles/KofiButton.css';
 
 html {
     scroll-behavior: smooth;

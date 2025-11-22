@@ -12,6 +12,7 @@ import Modal from './components/Modal';
 import Changelog from './components/Changelog';
 import TopRightLinks from './components/TopRightLinks';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import KofiButton from './components/KofiButton';
 
 function App() {
     const [query, setQuery] = useState('');
@@ -63,7 +64,7 @@ function App() {
         const sortedImages = [...images].sort((a, b) => {
             const dateA = new Date(a.releaseDate).getTime();
             const dateB = new Date(b.releaseDate).getTime();
-            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - a.releaseDate;
             const cardNumA = parseInt(a.cardNumber.split('/')[0]);
             const cardNumB = parseInt(b.cardNumber.split('/')[0]);
             return newSortOrder === 'asc' ? cardNumA - cardNumB : cardNumB - cardNumA;
@@ -157,6 +158,7 @@ function App() {
                 changelogData={changelogData}
             />
             <ScrollToTopButton showScrollButton={showScrollButton} scrollToTop={scrollToTop} />
+            <KofiButton showScrollButton={showScrollButton} />
         </>
     );
 }

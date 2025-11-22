@@ -1,5 +1,10 @@
 [
     {
+      "version": "1.0.3",
+      "date": "2025-11-xx",
+      "changes": ["Added a donation button."]
+    },
+    {
         "version": "1.0.2",
         "date": "2025-11-22",
         "changes": ["Added a changelog."]
