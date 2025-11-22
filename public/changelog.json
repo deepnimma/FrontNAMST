@@ -1,0 +1,17 @@
+[
+    {
+        "version": "1.0.2",
+        "date": "2025-11-22",
+        "changes": ["Added a changelog."]
+    },
+    {
+        "version": "1.0.1",
+        "date": "2025-11-21",
+        "changes": ["Added mobile support.", "Title now changes on mobile.", "Search bar is now sticky.", "Added a scroll-to-top button.", "Added a button to show/hide reverse holofoils."]
+    },
+    {
+        "version": "1.0.0",
+        "date": "2025-11-21",
+        "changes": ["Initial release of NottDex."]
+    }
+]

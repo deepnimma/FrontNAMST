@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState, useEffect } from 'react';
-import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles, ArrowUp } from 'lucide-react';
+import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles, ArrowUp, ScrollText } from 'lucide-react';
 
 // --- Interfaces ---
 interface CardImage {
@@ -12,6 +12,12 @@ interface CardImage {
     cardTitle: string;
     tags: string;
     isReverseHolo: number;
+}
+
+interface ChangelogEntry {
+    version: string;
+    date: string;
+    changes: string[];
 }
 
 const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
@@ -46,6 +52,8 @@ function App() {
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const [isChangelogOpen, setIsChangelogOpen] = useState(false);
+    const [changelogData, setChangelogData] = useState<ChangelogEntry[]>([]);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -53,14 +61,22 @@ function App() {
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-    // Effect for cycling placeholder text and scroll button
+    // Effect for fetching changelog and managing other side effects
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 300) {
-                setShowScrollButton(true);
-            } else {
-                setShowScrollButton(false);
+        const fetchChangelog = async () => {
+            try {
+                const response = await fetch('/changelog.json');
+                const data = await response.json();
+                setChangelogData(data);
+            } catch (error) {
+                console.error("Error fetching changelog:", error);
             }
+        };
+
+        fetchChangelog();
+
+        const handleScroll = () => {
+            setShowScrollButton(window.scrollY > 300);
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -177,7 +193,10 @@ function App() {
 
     return (
         <>
-            <div className="github-links">
+            <div className="top-right-links">
+                <button onClick={() => setIsChangelogOpen(true)} className="changelog-button" title="Changelog">
+                    <ScrollText size={24} />
+                </button>
                 <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Frontend Repo">
                     <Github size={24} />
                     <span>FE</span>
@@ -301,6 +320,30 @@ function App() {
                             <p><strong>Illustrator:</strong> {capitalizeWords(selectedImage.illustrator)}</p>
                             <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
                             {renderTags()}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {isChangelogOpen && (
+                <div className="modal-backdrop" onClick={() => setIsChangelogOpen(false)}>
+                    <div className="changelog-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="modal-close-button" onClick={() => setIsChangelogOpen(false)}><X size={24} /></button>
+                        <h2>Changelog</h2>
+                        <div className="changelog-entries">
+                            {changelogData.map(entry => (
+                                <div key={entry.version} className="changelog-entry">
+                                    <div className="changelog-header">
+                                        <span className="changelog-version">v{entry.version}</span>
+                                        <span className="changelog-date">{entry.date}</span>
+                                    </div>
+                                    <ul className="changelog-changes">
+                                        {entry.changes.map((change, index) => (
+                                            <li key={index}>{change}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
