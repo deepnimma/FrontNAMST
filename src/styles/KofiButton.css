@@ -1,4 +1,9 @@
 .kofi-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    transition: right 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,4 +13,16 @@
 .kofi-button img {
     height: 50px;
     width: auto;
+}
+
+.kofi-button.scroll-visible {
+    right: 90px;
+}
+
+.kofi-button.missing-card-visible {
+    right: 180px;
+}
+
+.kofi-button.scroll-visible.missing-card-visible {
+    right: 250px;
 }

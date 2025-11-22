@@ -1,4 +1,7 @@
 .scroll-to-top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
     background-color: #2d2d2d;
     color: #ccc;
     border: 1px solid #444;

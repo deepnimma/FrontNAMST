@@ -14,7 +14,6 @@ import TopRightLinks from './components/TopRightLinks';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import KofiButton from './components/KofiButton';
 import MissingCardLink from './components/MissingCardLink';
-import './styles/FloatingButtons.css';
 
 function App() {
     const [query, setQuery] = useState('');
@@ -164,11 +163,9 @@ function App() {
                 setIsChangelogOpen={setIsChangelogOpen}
                 changelogData={changelogData}
             />
-            <div className="floating-buttons-container">
-                <KofiButton />
-                <MissingCardLink show={showMissingCardButton} />
-                <ScrollToTopButton showScrollButton={showScrollButton} scrollToTop={scrollToTop} />
-            </div>
+            <KofiButton showScrollButton={showScrollButton} showMissingCardButton={showMissingCardButton} />
+            <MissingCardLink show={showMissingCardButton} showScrollButton={showScrollButton} />
+            <ScrollToTopButton show={showScrollButton} scrollToTop={scrollToTop} />
         </>
     );
 }
