@@ -1,46 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { placeholderWords } from '../lib/constants'; // Import placeholderWords
 
 interface HeaderProps {
     handleReset: () => void;
+    placeholderIndex: number; // Accept placeholderIndex as a prop
 }
 
-const Header: React.FC<HeaderProps> = ({ handleReset }) => {
+const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
     const mainHeaderPhrases = [
         "NottAnotherPokeDexTracker",
         "NottAnotherTrainerDexTracker",
         "NottAnotherIllustratorDexTracker",
         "NottAnotherMasterSetTracker"
     ];
-    const [mainHeaderIndex, setMainHeaderIndex] = useState(0);
+
     const [currentMainHeader, setCurrentMainHeader] = useState(mainHeaderPhrases[0]);
-    const [animationStopped, setAnimationStopped] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [hasReachedMasterSet, setHasReachedMasterSet] = useState(false);
 
     useEffect(() => {
-        if (animationStopped) return;
+        if (hasReachedMasterSet) {
+            return; // Stop changing if Master Set has been reached
+        }
 
-        const interval = setInterval(() => {
-            setMainHeaderIndex(prevIndex => {
-                const nextIndex = prevIndex + 1;
-                if (nextIndex === mainHeaderPhrases.length - 1) {
-                    setAnimationStopped(true);
-                    clearInterval(interval);
-                }
-                return nextIndex % mainHeaderPhrases.length;
-            });
-        }, 3000); // Change every 3 seconds
+        // Map placeholderIndex to mainHeaderPhrases index
+        let headerPhraseIndex = placeholderIndex;
+        if (placeholderWords[placeholderIndex] === "Set") {
+            headerPhraseIndex = mainHeaderPhrases.length - 1; // "Set" corresponds to "MasterSetTracker"
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasReachedMasterSet(true); // Stop further changes
+        }
 
-        return () => clearInterval(interval);
-    }, [animationStopped]);
-
-    useEffect(() => {
         setIsAnimating(true);
         const timer = setTimeout(() => {
             setIsAnimating(false);
         }, 500); // Animation duration
-        setCurrentMainHeader(mainHeaderPhrases[mainHeaderIndex]);
+
+        setCurrentMainHeader(mainHeaderPhrases[headerPhraseIndex]);
+
         return () => clearTimeout(timer);
-    }, [mainHeaderIndex]);
+    }, [placeholderIndex, hasReachedMasterSet]); // Depend on placeholderIndex and hasReachedMasterSet
 
     const renderEmphasizedHeader = (headerText: string) => {
         const emphasisWords = ["PokeDex", "TrainerDex", "IllustratorDex", "MasterSet"];

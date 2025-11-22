@@ -23,7 +23,7 @@ function App() {
         isChangelogOpen,
         setIsChangelogOpen,
         changelogData,
-        placeholderIndex,
+        placeholderIndex, // Get placeholderIndex from useAppEffects
     } = useAppEffects(query);
 
     const [gridCols, setGridCols] = useState(5); // Default to 5 for desktop
@@ -127,7 +127,7 @@ function App() {
 
             <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
-                    <Header handleReset={handleReset} />
+                    <Header handleReset={handleReset} placeholderIndex={placeholderIndex} />
 
                     <div className="sticky-container">
                         <SearchBar
