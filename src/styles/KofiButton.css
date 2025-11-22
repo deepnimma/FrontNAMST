@@ -29,6 +29,15 @@
     .kofi-button .kofi-symbol-image {
         display: block;
     }
+
+    /* Adjust positions for mobile with 10px gap */
+    .kofi-button.missing-card-visible {
+        right: 80px; /* 10px gap from missing card button (50px width + 10px gap + 20px base right) */
+    }
+
+    .kofi-button.scroll-visible.missing-card-visible {
+        right: 140px; /* 10px gap from missing card button (50px width + 10px gap) which is 10px gap from scroll button (50px width + 10px gap + 20px base right) */
+    }
 }
 
 .kofi-button.scroll-visible {
