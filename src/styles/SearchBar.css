@@ -2,10 +2,10 @@
 .search-and-controls-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 18px;
     width: 100%;
     max-width: 700px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .search-input-container {
