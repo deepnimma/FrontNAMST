@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState, useEffect } from 'react';
-import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles } from 'lucide-react';
+import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles, ArrowUp } from 'lucide-react';
 
 // --- Interfaces ---
 interface CardImage {
@@ -45,6 +45,7 @@ function App() {
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
+    const [showScrollButton, setShowScrollButton] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -52,13 +53,30 @@ function App() {
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-    // Effect for cycling placeholder text
+    // Effect for cycling placeholder text and scroll button
     useEffect(() => {
-        if (query.length > 0) return;
+        const handleScroll = () => {
+            if (window.scrollY > 300) {
+                setShowScrollButton(true);
+            } else {
+                setShowScrollButton(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        if (query.length > 0) {
+            return () => window.removeEventListener('scroll', handleScroll);
+        }
+
         const intervalId = setInterval(() => {
             setPlaceholderIndex(prevIndex => (prevIndex + 1) % placeholderWords.length);
         }, 2000);
-        return () => clearInterval(intervalId);
+
+        return () => {
+            clearInterval(intervalId);
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, [query]);
 
     const handleSearch = async () => {
@@ -97,6 +115,10 @@ function App() {
     };
 
     const handleFocus = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -283,6 +305,13 @@ function App() {
                     </div>
                 </div>
             )}
+
+            <button 
+                className={`scroll-to-top-button ${showScrollButton ? 'visible' : ''}`}
+                onClick={scrollToTop}
+            >
+                <ArrowUp size={24} />
+            </button>
         </>
     );
 }
