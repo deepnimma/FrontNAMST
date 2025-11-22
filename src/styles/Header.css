@@ -10,7 +10,7 @@
 
 @media (max-width: 768px) {
     .header-container {
-        padding-top: 40px; /* Add padding for mobile devices */
+        padding-top: 20px; /* Add padding for mobile devices */
     }
 }
 
@@ -43,4 +43,9 @@
     color: lightgray;
     margin: 0;
     margin-top: 5px;
+}
+
+.emphasized-word {
+    font-weight: bold;
+    color: white; /* Or any other color you want for emphasis */
 }
