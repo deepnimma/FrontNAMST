@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { CardImage } from './lib/types';
 import { useCardSearch } from './hooks/useCardSearch';
 import { useAppEffects } from './hooks/useAppEffects';
@@ -13,6 +13,7 @@ import Changelog from './components/Changelog';
 import TopRightLinks from './components/TopRightLinks';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import KofiButton from './components/KofiButton';
+import MissingCardLink from './components/MissingCardLink';
 
 function App() {
     const [query, setQuery] = useState('');
@@ -29,12 +30,17 @@ function App() {
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
+    const [showMissingCardButton, setShowMissingCardButton] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+    useEffect(() => {
+        setShowMissingCardButton(images.length > 0);
+    }, [images]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -157,8 +163,9 @@ function App() {
                 setIsChangelogOpen={setIsChangelogOpen}
                 changelogData={changelogData}
             />
-            <ScrollToTopButton showScrollButton={showScrollButton} scrollToTop={scrollToTop} />
-            <KofiButton showScrollButton={showScrollButton} />
+            <KofiButton showScrollButton={showScrollButton} showMissingCardButton={showMissingCardButton} />
+            <MissingCardLink show={showMissingCardButton} showScrollButton={showScrollButton} />
+            <ScrollToTopButton show={showScrollButton} scrollToTop={scrollToTop} />
         </>
     );
 }
