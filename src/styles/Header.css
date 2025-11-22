@@ -1,0 +1,40 @@
+/* --- Header Section --- */
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.title-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
+    color: white;
+    transition: color 0.2s;
+}
+
+.title-button:hover .title {
+    color: #a3a8ff;
+}
+
+.title .title-mobile {
+    display: none;
+}
+
+.titleSubtext {
+    font-size: 1rem;
+    color: lightgray;
+    margin: 0;
+    margin-top: 5px;
+}
