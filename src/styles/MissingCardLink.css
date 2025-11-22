@@ -26,7 +26,7 @@
 }
 
 .missing-card-button.scroll-visible {
-    right: 80px; /* 15px gap from scroll button */
+    right: 80px; /* 15px gap from scroll button (50px width + 15px gap + 20px base right) */
 }
 
 .missing-card-button .missing-card-text {
@@ -52,5 +52,8 @@
     }
     .missing-card-button .missing-card-symbol {
         display: block;
+    }
+    .missing-card-button.scroll-visible {
+        right: 80px; /* 10px gap from scroll button (50px width + 10px gap + 20px base right) */
     }
 }

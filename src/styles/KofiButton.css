@@ -1,7 +1,6 @@
 .kofi-button {
     position: fixed;
     bottom: 20px;
-    right: 20px;
     z-index: 100;
     transition: right 0.3s;
     display: flex;
@@ -22,7 +21,29 @@
     display: none; /* Hidden by default */
 }
 
+/* Desktop styles (min-width: 769px) */
+@media (min-width: 769px) {
+    .kofi-button {
+        right: 20px;
+    }
+    .kofi-button.scroll-visible {
+        right: 85px;
+    }
+
+    .kofi-button.missing-card-visible {
+        right: 160px;
+    }
+
+    .kofi-button.scroll-visible.missing-card-visible {
+        right: 220px;
+    }
+}
+
+/* Mobile styles (max-width: 768px) */
 @media (max-width: 768px) {
+    .kofi-button {
+        right: 20px;
+    }
     .kofi-button .kofi-full-image {
         display: none;
     }
@@ -30,24 +51,11 @@
         display: block;
     }
 
-    /* Adjust positions for mobile with 10px gap */
     .kofi-button.missing-card-visible {
-        right: 80px; /* 10px gap from missing card button (50px width + 10px gap + 20px base right) */
+        right: 80px;
     }
 
     .kofi-button.scroll-visible.missing-card-visible {
-        right: 140px; /* 10px gap from missing card button (50px width + 10px gap) which is 10px gap from scroll button (50px width + 10px gap + 20px base right) */
+        right: 140px;
     }
-}
-
-.kofi-button.scroll-visible {
-    right: 85px; /* 15px gap from scroll button (50px width + 15px gap + 20px base right) */
-}
-
-.kofi-button.missing-card-visible {
-    right: 160px; /* 15px gap from missing card button (110px width + 15px gap + 20px base right) */
-}
-
-.kofi-button.scroll-visible.missing-card-visible {
-    right: 220px; /* 15px gap from missing card button (110px width + 15px gap) which is 15px gap from scroll button (50px width + 15px gap + 20px base right) */
 }
