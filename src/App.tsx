@@ -95,6 +95,10 @@ function App() {
         setIsIllustrator(false);
     };
 
+    const handleFocus = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const toggleSortOrder = () => {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
@@ -177,59 +181,62 @@ function App() {
                         <div className="titleSubtext">Find all the cards you need!</div>
                     </div>
 
-                    <div className="search-and-controls-container">
-                        <div className="search-input-container">
-                            <input
-                                type="text"
-                                className="search-input"
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                            />
-                            {query.length === 0 && (
-                                <div className="custom-placeholder">
-                                    <span>Search for your favorite </span>
-                                    <span className="placeholder-word" key={placeholderIndex}>
-                                        {placeholderWords[placeholderIndex]}
-                                    </span>
-                                </div>
-                            )}
-                        </div>
-                        <button
-                            className="search-button"
-                            onClick={handleSearch}
-                            disabled={loading}
-                        >
-                            {loading ? 'Searching...' : <><Search size={18} /> Search</>}
-                        </button>
-                    </div>
-
-                    <div className={`filters-container ${query.length > 0 ? 'visible' : ''}`}>
-                        <div className="checkbox-group">
-                            <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed.">
-                                <input type="checkbox" checked={isCameo} onChange={(e) => handleCameoChange(e.target.checked)} disabled={isIllustrator} />
-                                Cameo
-                            </label>
-                            <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you are trying to search for a particular Pokemon series trainer.">
-                                <input type="checkbox" checked={isTrainer} onChange={(e) => handleTrainerChange(e.target.checked)} disabled={isIllustrator} />
-                                Trainer
-                            </label>
-                            <label className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`} title="Enable this if you are trying to search for all cards from a particular illustrator.">
-                                <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
-                                Illustrator
-                            </label>
-                        </div>
-                        <div className="filter-buttons-group">
-                            <button onClick={toggleSortOrder} className="sort-button">
-                                <ArrowDownUp size={16} />
-                                {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
+                    <div className="sticky-container">
+                        <div className="search-and-controls-container">
+                            <div className="search-input-container">
+                                <input
+                                    type="text"
+                                    className="search-input"
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                    onFocus={handleFocus}
+                                />
+                                {query.length === 0 && (
+                                    <div className="custom-placeholder">
+                                        <span>Search for your favorite </span>
+                                        <span className="placeholder-word" key={placeholderIndex}>
+                                            {placeholderWords[placeholderIndex]}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            <button
+                                className="search-button"
+                                onClick={handleSearch}
+                                disabled={loading}
+                            >
+                                {loading ? 'Searching...' : <><Search size={18} /> Search</>}
                             </button>
-                            {images.length > 0 && (
-                                <button onClick={toggleGridCols} className="grid-toggle-button">
-                                    <Settings size={16} />
-                                    {gridCols} Columns
+                        </div>
+
+                        <div className={`filters-container ${query.length > 0 ? 'visible' : ''}`}>
+                            <div className="checkbox-group">
+                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed.">
+                                    <input type="checkbox" checked={isCameo} onChange={(e) => handleCameoChange(e.target.checked)} disabled={isIllustrator} />
+                                    Cameo
+                                </label>
+                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you are trying to search for a particular Pokemon series trainer.">
+                                    <input type="checkbox" checked={isTrainer} onChange={(e) => handleTrainerChange(e.target.checked)} disabled={isIllustrator} />
+                                    Trainer
+                                </label>
+                                <label className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`} title="Enable this if you are trying to search for all cards from a particular illustrator.">
+                                    <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
+                                    Illustrator
+                                </label>
+                            </div>
+                            <div className="filter-buttons-group">
+                                <button onClick={toggleSortOrder} className="sort-button">
+                                    <ArrowDownUp size={16} />
+                                    {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                                 </button>
-                            )}
+                                {images.length > 0 && (
+                                    <button onClick={toggleGridCols} className="grid-toggle-button">
+                                        <Settings size={16} />
+                                        {gridCols} Columns
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
 
