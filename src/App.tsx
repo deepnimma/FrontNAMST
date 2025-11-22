@@ -4,16 +4,23 @@ import { Search, Settings, ArrowDownUp, X, Github } from 'lucide-react';
 
 // --- Interfaces ---
 interface CardImage {
-    key: string;
+    imageKey: string;
     setName: string;
     cardNumber: string;
     illustrator: string;
     releaseDate: string;
-    description: string;
+    cardTitle: string;
 }
 
 const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
+const R2_BUCKET_URL = "https://images.nottdex.com";
 const placeholderWords = ["Pokemon", "Trainer", "Illustrator"];
+
+// Helper to capitalize words
+const capitalizeWords = (str: string) => {
+    if (!str) return '';
+    return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
 
 function App() {
     const [query, setQuery] = useState('');
@@ -51,16 +58,12 @@ function App() {
             .map(part => part.trim().toLowerCase().replace(/\s+/g, '-'))
             .join(',');
 
-        const params = new URLSearchParams({
-            q: processedQuery,
-        });
+        const params = new URLSearchParams({ q: processedQuery });
 
         if (isCameo) params.append('cameo', '1');
         if (isTrainer) params.append('trainer', '1');
         if (isIllustrator) params.append('illustrator', '1');
-        if (sortOrder === 'desc') {
-            params.append('descending', '1');
-        }
+        if (sortOrder === 'desc') params.append('descending', '1');
 
         try {
             const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
@@ -70,7 +73,7 @@ function App() {
             }
 
             const data = await response.json();
-            setImages(data); // Store the resulting JSON
+            setImages(data.image_rows || []); // Expecting the data under "image_rows"
 
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -81,9 +84,7 @@ function App() {
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            handleSearch();
-        }
+        if (e.key === 'Enter') handleSearch();
     };
 
     const handleReset = () => {
@@ -189,24 +190,15 @@ function App() {
                     {query.length > 0 && (
                         <div className="filters-container">
                             <div className="checkbox-group">
-                                <label
-                                    className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`}
-                                    title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed."
-                                >
+                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed.">
                                     <input type="checkbox" checked={isCameo} onChange={(e) => handleCameoChange(e.target.checked)} disabled={isIllustrator} />
                                     Cameo
                                 </label>
-                                <label
-                                    className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`}
-                                    title="Enable this if you are trying to search for a particular Pokemon series trainer."
-                                >
+                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you are trying to search for a particular Pokemon series trainer.">
                                     <input type="checkbox" checked={isTrainer} onChange={(e) => handleTrainerChange(e.target.checked)} disabled={isIllustrator} />
                                     Trainer
                                 </label>
-                                <label
-                                    className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`}
-                                    title="Enable this if you are trying to search for all cards from a particular illustrator."
-                                >
+                                <label className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`} title="Enable this if you are trying to search for all cards from a particular illustrator.">
                                     <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
                                     Illustrator
                                 </label>
@@ -214,7 +206,7 @@ function App() {
                             <div className="filter-buttons-group">
                                 <button onClick={toggleSortOrder} className="sort-button">
                                     <ArrowDownUp size={16} />
-                                    {sortOrder === 'desc' ? 'Descending' : 'Ascending'}
+                                    {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                                 </button>
                                 {images.length > 0 && (
                                     <button onClick={toggleGridCols} className="grid-toggle-button">
@@ -229,15 +221,12 @@ function App() {
                     {loading && <div className="loading-spinner"></div>}
 
                     {!loading && images.length > 0 && (
-                        <div
-                            className="image-grid"
-                            style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
-                        >
+                        <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
                             {images.map((image) => (
-                                <div key={image.key} className="image-card" onClick={() => openModal(image)}>
+                                <div key={image.imageKey} className="image-card" onClick={() => openModal(image)}>
                                     <img
-                                        src={`https://placehold.co/400x600/2d2d2d/FFF?text=${image.key}`}
-                                        alt={image.key}
+                                        src={`${R2_BUCKET_URL}/${image.imageKey}`}
+                                        alt={image.cardTitle}
                                         className="grid-image"
                                     />
                                 </div>
@@ -259,21 +248,16 @@ function App() {
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="modal-close-button" onClick={closeModal}><X size={24} /></button>
                         <img
-                            src={`https://placehold.co/600x840/2d2d2d/FFF?text=${selectedImage.key}`}
-                            alt={selectedImage.key}
+                            src={`${R2_BUCKET_URL}/${selectedImage.imageKey}`}
+                            alt={selectedImage.cardTitle}
                             className="modal-image"
                         />
                         <div className="modal-metadata">
-                            <h2>{selectedImage.setName}</h2>
+                            <h2>{capitalizeWords(selectedImage.cardTitle)}</h2>
+                            <p><strong>Set Name:</strong> {capitalizeWords(selectedImage.setName)}</p>
                             <p><strong>Card Number:</strong> {selectedImage.cardNumber}</p>
-                            <p><strong>Illustrator:</strong> {selectedImage.illustrator}</p>
+                            <p><strong>Illustrator:</strong> {capitalizeWords(selectedImage.illustrator)}</p>
                             <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
-                            {selectedImage.description && (
-                                <div className="metadata-description">
-                                    <h3>Description</h3>
-                                    <p>{selectedImage.description}</p>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
