@@ -11,10 +11,8 @@ interface CardImage {
     releaseDate: string;
     description: string;
 }
-//
-// const R2_BUCKET_URL = "https://r2bucketgoeshere.com"
-// const API_ENDPOINT = "https://downloader.something.something.dev/"
 
+const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
 const placeholderWords = ["Pokemon", "Trainer", "Illustrator"];
 
 function App() {
@@ -48,27 +46,31 @@ function App() {
         setLoading(true);
         setImages([]);
 
+        const processedQuery = query
+            .split(',')
+            .map(part => part.trim().toLowerCase().replace(/\s+/g, '-'))
+            .join(',');
+
         const params = new URLSearchParams({
-            query: query,
-            cameo: String(isCameo),
-            trainer: String(isTrainer),
-            illustrator: String(isIllustrator),
-            sort: sortOrder,
+            q: processedQuery,
         });
 
+        if (isCameo) params.append('cameo', '1');
+        if (isTrainer) params.append('trainer', '1');
+        if (isIllustrator) params.append('illustrator', '1');
+        if (sortOrder === 'desc') {
+            params.append('descending', '1');
+        }
+
         try {
-            // MOCK LOGIC
-            console.log("Searching with params:", params.toString());
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            const mockImages: CardImage[] = Array.from({ length: 15 }).map((_, i) => ({
-                key: `mock-image-${i}`,
-                setName: `Awesome Set ${i % 3 + 1}`,
-                cardNumber: `${i + 1}/100`,
-                illustrator: `Artist #${i % 5 + 1}`,
-                releaseDate: `2023-10-2${i}`,
-                description: i % 4 === 0 ? `This is a special card with a very long description to see how the text wraps and fits into the container.` : '',
-            }));
-            setImages(mockImages);
+            const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
+
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            setImages(data); // Store the resulting JSON
 
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -134,11 +136,13 @@ function App() {
     return (
         <>
             <div className="github-links">
-                <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" title="Frontend Repo">
+                <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Frontend Repo">
                     <Github size={24} />
+                    <span>FE</span>
                 </a>
-                <a href="https://github.com/deepnimma/NottAnotherMasterSetTrackerBackend" target="_blank" rel="noopener noreferrer" title="Backend Repo">
+                <a href="https://github.com/deepnimma/NottAnotherMasterSetTrackerBackend" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Backend Repo">
                     <Github size={24} />
+                    <span>BE</span>
                 </a>
             </div>
 

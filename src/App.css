@@ -29,18 +29,23 @@
 .github-links {
     position: absolute;
     top: 20px;
-    left: 20px;
+    right: 20px; /* Moved to the right */
     display: flex;
-    gap: 15px;
+    gap: 20px; /* Increased gap */
     z-index: 100;
 }
 
-.github-links a {
+.github-link-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
     transition: color 0.2s;
 }
 
-.github-links a:hover {
+.github-link-item:hover {
     color: #646cff;
 }
 
@@ -523,7 +528,7 @@
 
     .github-links {
         top: 15px;
-        left: 15px;
+        right: 15px;
     }
 
     .filter-buttons-group {
