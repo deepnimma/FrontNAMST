@@ -49,3 +49,24 @@
     font-weight: bold;
     color: white; /* Or any other color you want for emphasis */
 }
+
+.emphasized-header-word {
+    color: #a3a8ff; /* A different color for emphasis in the main header */
+    font-weight: bold;
+}
+
+/* Animation for header text change */
+.header-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
