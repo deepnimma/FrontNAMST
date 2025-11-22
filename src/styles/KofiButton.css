@@ -1,0 +1,20 @@
+.kofi-button {
+    position: fixed;
+    bottom: 20px;
+    right: 90px;
+    z-index: 100;
+    transition: right 0.3s;
+}
+
+.kofi-button img {
+    height: 50px;
+    width: auto;
+}
+
+.kofi-button.scroll-visible {
+    right: 90px;
+}
+
+.kofi-button.scroll-hidden {
+    right: 20px;
+}
