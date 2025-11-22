@@ -14,7 +14,8 @@ const MissingCardLink: React.FC<MissingCardLinkProps> = ({ show, showScrollButto
             rel="noopener noreferrer"
             className={`missing-card-button ${show ? 'visible' : ''} ${showScrollButton ? 'scroll-visible' : ''}`}
         >
-            <span>Missing Card?</span>
+            <span className="missing-card-text">Missing Card?</span>
+            <span className="missing-card-symbol">?</span>
         </a>
     );
 };

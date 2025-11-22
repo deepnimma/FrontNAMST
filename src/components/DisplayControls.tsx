@@ -24,7 +24,7 @@ const DisplayControls: React.FC<DisplayControlsProps> = ({
         <div className={`display-controls-container ${images.length > 0 ? 'visible' : ''}`}>
             <button onClick={toggleGridCols} className="grid-toggle-button">
                 <Settings size={16} />
-                {gridCols} Columns
+                {gridCols} Cols
             </button>
             <button onClick={() => setShowSetNames(prev => !prev)} className="set-name-toggle-button">
                 <Library size={16} />

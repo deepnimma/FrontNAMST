@@ -23,10 +23,10 @@ function App() {
         isChangelogOpen,
         setIsChangelogOpen,
         changelogData,
-        placeholderIndex,
+        placeholderIndex, // Get placeholderIndex from useAppEffects
     } = useAppEffects(query);
 
-    const [gridCols, setGridCols] = useState(5);
+    const [gridCols, setGridCols] = useState(5); // Default to 5 for desktop
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
@@ -41,6 +41,20 @@ function App() {
     useEffect(() => {
         setShowMissingCardButton(images.length > 0);
     }, [images]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 768) {
+                setGridCols(3); // Default to 3 for mobile
+            } else {
+                setGridCols(5); // Default to 5 for desktop
+            }
+        };
+
+        handleResize(); // Set initial value
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -79,7 +93,11 @@ function App() {
     };
 
     const toggleGridCols = () => {
-        setGridCols(prev => (prev === 3 ? 5 : prev === 5 ? 7 : 3));
+        setGridCols(prev => {
+            if (prev === 3) return 5;
+            if (prev === 5) return 7;
+            return 3;
+        });
     };
 
     const openModal = (image: CardImage) => setSelectedImage(image);
@@ -109,7 +127,7 @@ function App() {
 
             <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
-                    <Header handleReset={handleReset} />
+                    <Header handleReset={handleReset} placeholderIndex={placeholderIndex} />
 
                     <div className="sticky-container">
                         <SearchBar
