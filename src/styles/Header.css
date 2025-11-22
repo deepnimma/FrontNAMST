@@ -8,6 +8,12 @@
     text-align: center;
 }
 
+@media (max-width: 768px) {
+    .header-container {
+        padding-top: 40px; /* Add padding for mobile devices */
+    }
+}
+
 .title-button {
     background: none;
     border: none;
