@@ -55,15 +55,11 @@
 }
 
 /* Animation for header text change */
-.header-fade-in {
-    animation: headerFadeIn 0.5s ease-in-out forwards;
+.header-revolve-animation {
+    animation: headerRevolve 0.5s ease-in-out forwards;
 }
 
-.header-fade-out {
-    animation: headerFadeOut 0.25s ease-in-out forwards;
-}
-
-@keyframes headerFadeIn {
+@keyframes headerRevolve {
     from {
         transform: translateY(10px);
         opacity: 0;
@@ -71,16 +67,5 @@
     to {
         transform: translateY(0);
         opacity: 1;
-    }
-}
-
-@keyframes headerFadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
     }
 }
