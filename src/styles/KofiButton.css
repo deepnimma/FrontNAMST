@@ -4,6 +4,9 @@
     right: 90px;
     z-index: 100;
     transition: right 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .kofi-button img {
