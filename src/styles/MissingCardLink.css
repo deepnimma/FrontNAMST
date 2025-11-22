@@ -26,5 +26,5 @@
 }
 
 .missing-card-button.scroll-visible {
-    right: 90px;
+    right: 80px; /* 15px gap from scroll button */
 }
