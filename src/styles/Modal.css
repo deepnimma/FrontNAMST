@@ -69,7 +69,7 @@
 }
 
 .modal-metadata p strong {
-    color: #8c9eff; /* Highlight color */
+    color: #BA0C2F; /* Highlight color */
     font-weight: 500;
 }
 
@@ -112,6 +112,6 @@
 }
 
 .modal-close-button:hover {
-    background-color: #646cff;
+    background-color: #BA0C2F;
     transform: scale(1.1);
 }

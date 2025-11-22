@@ -2,13 +2,14 @@
     {
       "version": "1.0.3",
       "date": "2025-11-22",
-      "changes": ["Added a donation button.", "Add a button to report a missing card."],
       "changes": [
         "Added a donation button.",
         "Added a button to report a missing card.",
         "Update buttons to be more mobile friendly.",
         "Fix text clipping issue on mobile.",
-        "Set default grid size on mobile to 3 columns."
+        "Set default grid size on mobile to 3 columns.",
+        "Change accent color.",
+        "Add animation to website title."
       ]
     },
     {

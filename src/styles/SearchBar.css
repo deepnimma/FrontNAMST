@@ -27,7 +27,7 @@
 }
 
 .search-input:focus {
-    border-color: #646cff;
+    border-color: #BA0C2F;
 }
 
 .custom-placeholder {
@@ -42,7 +42,7 @@
 }
 
 .placeholder-word {
-    color: #a3a8ff;
+    color: #BA0C2F;
     font-weight: 500;
     margin-left: 5px;
     animation: revolve 0.5s ease-in-out;
@@ -66,7 +66,7 @@
     padding: 12px 24px;
     border-radius: 8px;
     border: none;
-    background-color: #646cff;
+    background-color: #BA0C2F;
     color: white;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -76,7 +76,7 @@
 }
 
 .search-button:hover {
-    background-color: #535bf2;
+    background-color: #9a0a27; /* A slightly darker shade for hover */
 }
 
 .search-button:disabled {

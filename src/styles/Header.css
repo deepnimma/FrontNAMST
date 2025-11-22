@@ -31,7 +31,7 @@
 }
 
 .title-button:hover .title {
-    color: #a3a8ff;
+    color: #BA0C2F;
 }
 
 .title .title-mobile {
@@ -51,7 +51,7 @@
 }
 
 .emphasized-header-word {
-    color: #a3a8ff; /* A different color for emphasis in the main header */
+    color: #BA0C2F; /* A different color for emphasis in the main header */
     font-weight: bold;
 }
 

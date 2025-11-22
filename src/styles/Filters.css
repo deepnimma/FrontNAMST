@@ -40,7 +40,7 @@
 
 
 .checkbox-label input[type="checkbox"] {
-    accent-color: #646cff;
+    accent-color: #BA0C2F;
     width: 16px;
     height: 16px;
 }
@@ -69,5 +69,5 @@
 
 .sort-button:hover {
     background-color: #3c3c3c;
-    border-color: #646cff;
+    border-color: #BA0C2F;
 }

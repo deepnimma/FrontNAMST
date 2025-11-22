@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, type JSX} from 'react';
 import { placeholderWords } from '../lib/constants'; // Import placeholderWords
 
 interface HeaderProps {
@@ -7,6 +7,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const mainHeaderPhrases = [
         "NottAnotherPokeDexTracker",
         "NottAnotherTrainerDexTracker",
@@ -27,7 +28,6 @@ const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
         let headerPhraseIndex = placeholderIndex;
         if (placeholderWords[placeholderIndex] === "Set") {
             headerPhraseIndex = mainHeaderPhrases.length - 1; // "Set" corresponds to "MasterSetTracker"
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setHasReachedMasterSet(true); // Stop further changes
         }
 
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
         setCurrentMainHeader(mainHeaderPhrases[headerPhraseIndex]);
 
         return () => clearTimeout(timer);
-    }, [placeholderIndex, hasReachedMasterSet]); // Depend on placeholderIndex and hasReachedMasterSet
+    }, [placeholderIndex, hasReachedMasterSet, mainHeaderPhrases]); // Depend on placeholderIndex and hasReachedMasterSet
 
     const renderEmphasizedHeader = (headerText: string) => {
         const emphasisWords = ["PokeDex", "TrainerDex", "IllustratorDex", "MasterSet"];
