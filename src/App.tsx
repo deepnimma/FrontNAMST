@@ -1,6 +1,6 @@
 import './App.css'
 import React, { useState, useEffect } from 'react';
-import { Search, Settings, ArrowDownUp, X, Github } from 'lucide-react';
+import { Search, Settings, ArrowDownUp, X, Github, Library } from 'lucide-react';
 
 // --- Interfaces ---
 interface CardImage {
@@ -10,7 +10,7 @@ interface CardImage {
     illustrator: string;
     releaseDate: string;
     cardTitle: string;
-    tags: string; // Tags are a string representation of a list
+    tags: string;
 }
 
 const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
@@ -26,18 +26,14 @@ const capitalizeWords = (str: string) => {
 // Helper to parse the tags string
 const parseTags = (tagsString: string): string[] => {
     try {
-        // Replace single quotes with double quotes for valid JSON
         const validJsonString = tagsString.replace(/'/g, '"');
         const tags = JSON.parse(validJsonString);
-        if (Array.isArray(tags)) {
-            return tags;
-        }
+        if (Array.isArray(tags)) return tags;
     } catch (error) {
         console.error("Error parsing tags:", error);
     }
     return [];
 };
-
 
 function App() {
     const [query, setQuery] = useState('');
@@ -46,6 +42,7 @@ function App() {
     const [gridCols, setGridCols] = useState(5);
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
+    const [showSetNames, setShowSetNames] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -56,42 +53,27 @@ function App() {
     // Effect for cycling placeholder text
     useEffect(() => {
         if (query.length > 0) return;
-
         const intervalId = setInterval(() => {
             setPlaceholderIndex(prevIndex => (prevIndex + 1) % placeholderWords.length);
-        }, 2000); // Change every 2 seconds
-
+        }, 2000);
         return () => clearInterval(intervalId);
     }, [query]);
 
     const handleSearch = async () => {
         if (!query.trim()) return;
-
         setLoading(true);
         setImages([]);
-
-        const processedQuery = query
-            .split(',')
-            .map(part => part.trim().toLowerCase().replace(/\s+/g, '-'))
-            .join(',');
-
+        const processedQuery = query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(',');
         const params = new URLSearchParams({ q: processedQuery });
-
         if (isCameo) params.append('cameo', '1');
         if (isTrainer) params.append('trainer', '1');
         if (isIllustrator) params.append('illustrator', '1');
         if (sortOrder === 'desc') params.append('descending', '1');
-
         try {
             const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
-
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-
+            if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
             const data = await response.json();
-            setImages(data.image_rows || []); // Expecting the data under "image_rows"
-
+            setImages(data.image_rows || []);
         } catch (error) {
             console.error("Error fetching images:", error);
             alert("Failed to fetch images. Check console for details.");
@@ -119,41 +101,24 @@ function App() {
     const toggleSortOrder = () => {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
-
         const sortedImages = [...images].sort((a, b) => {
             const dateA = new Date(a.releaseDate).getTime();
             const dateB = new Date(b.releaseDate).getTime();
-
-            if (dateA !== dateB) {
-                return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-            }
-
-            // If dates are the same, sort by card number
+            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             const cardNumA = parseInt(a.cardNumber.split('/')[0]);
             const cardNumB = parseInt(b.cardNumber.split('/')[0]);
             return newSortOrder === 'asc' ? cardNumA - cardNumB : cardNumB - cardNumA;
         });
-
         setImages(sortedImages);
     };
 
     const toggleGridCols = () => {
-        setGridCols(prev => {
-            if (prev === 3) return 5;
-            if (prev === 5) return 7;
-            return 3;
-        });
+        setGridCols(prev => (prev === 3 ? 5 : prev === 5 ? 7 : 3));
     };
 
-    const openModal = (image: CardImage) => {
-        setSelectedImage(image);
-    };
+    const openModal = (image: CardImage) => setSelectedImage(image);
+    const closeModal = () => setSelectedImage(null);
 
-    const closeModal = () => {
-        setSelectedImage(null);
-    };
-
-    // --- Checkbox Logic ---
     const handleCameoChange = (checked: boolean) => {
         setIsCameo(checked);
         if (checked) setIsIllustrator(false);
@@ -174,17 +139,12 @@ function App() {
 
     const renderTags = () => {
         if (!selectedImage || !selectedImage.tags) return null;
-
         const tags = parseTags(selectedImage.tags);
-
         if (tags.length === 0) return null;
-
         return (
             <div className="tags-container">
                 <h3>Tags</h3>
-                <p className="tags-text">
-                    {tags.map(tag => capitalizeWords(tag)).join(', ')}
-                </p>
+                <p className="tags-text">{tags.map(tag => capitalizeWords(tag)).join(', ')}</p>
             </div>
         );
     };
@@ -204,7 +164,6 @@ function App() {
 
             <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
-
                     <div className="header-container">
                         <button className="title-button" onClick={handleReset}>
                             <h1 className="title">
@@ -235,11 +194,7 @@ function App() {
                                     </div>
                                 )}
                             </div>
-                            <button
-                                className="search-button"
-                                onClick={handleSearch}
-                                disabled={loading}
-                            >
+                            <button className="search-button" onClick={handleSearch} disabled={loading}>
                                 {loading ? 'Searching...' : <><Search size={18} /> Search</>}
                             </button>
                         </div>
@@ -265,10 +220,16 @@ function App() {
                                     {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                                 </button>
                                 {images.length > 0 && (
-                                    <button onClick={toggleGridCols} className="grid-toggle-button">
-                                        <Settings size={16} />
-                                        {gridCols} Columns
-                                    </button>
+                                    <>
+                                        <button onClick={toggleGridCols} className="grid-toggle-button">
+                                            <Settings size={16} />
+                                            {gridCols} Columns
+                                        </button>
+                                        <button onClick={() => setShowSetNames(prev => !prev)} className="set-name-toggle-button">
+                                            <Library size={16} />
+                                            {showSetNames ? 'Hide Sets' : 'Show Sets'}
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -280,11 +241,12 @@ function App() {
                         <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
                             {images.map((image) => (
                                 <div key={image.imageKey} className="image-card" onClick={() => openModal(image)}>
-                                    <img
-                                        src={`${R2_BUCKET_URL}/${image.imageKey}`}
-                                        alt={image.cardTitle}
-                                        className="grid-image"
-                                    />
+                                    <img src={`${R2_BUCKET_URL}/${image.imageKey}`} alt={image.cardTitle} className="grid-image" />
+                                    {showSetNames && (
+                                        <div className="set-name-overlay">
+                                            <span>{capitalizeWords(image.setName)}</span>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -295,7 +257,6 @@ function App() {
                             <p>No cards found. Try searching for something else.</p>
                         </div>
                     )}
-
                 </div>
             </div>
 
@@ -303,11 +264,7 @@ function App() {
                 <div className="modal-backdrop" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <button className="modal-close-button" onClick={closeModal}><X size={24} /></button>
-                        <img
-                            src={`${R2_BUCKET_URL}/${selectedImage.imageKey}`}
-                            alt={selectedImage.cardTitle}
-                            className="modal-image"
-                        />
+                        <img src={`${R2_BUCKET_URL}/${selectedImage.imageKey}`} alt={selectedImage.cardTitle} className="modal-image" />
                         <div className="modal-metadata">
                             <h2>{capitalizeWords(selectedImage.cardTitle)}</h2>
                             <p><strong>Set Name:</strong> {capitalizeWords(selectedImage.setName)}</p>
