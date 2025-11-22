@@ -10,6 +10,7 @@ interface CardImage {
     illustrator: string;
     releaseDate: string;
     cardTitle: string;
+    tags: string; // Tags are a string representation of a list
 }
 
 const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
@@ -21,6 +22,22 @@ const capitalizeWords = (str: string) => {
     if (!str) return '';
     return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
+
+// Helper to parse the tags string
+const parseTags = (tagsString: string): string[] => {
+    try {
+        // Replace single quotes with double quotes for valid JSON
+        const validJsonString = tagsString.replace(/'/g, '"');
+        const tags = JSON.parse(validJsonString);
+        if (Array.isArray(tags)) {
+            return tags;
+        }
+    } catch (error) {
+        console.error("Error parsing tags:", error);
+    }
+    return [];
+};
+
 
 function App() {
     const [query, setQuery] = useState('');
@@ -155,6 +172,23 @@ function App() {
         }
     };
 
+    const renderTags = () => {
+        if (!selectedImage || !selectedImage.tags) return null;
+
+        const tags = parseTags(selectedImage.tags);
+
+        if (tags.length === 0) return null;
+
+        return (
+            <div className="tags-container">
+                <h3>Tags</h3>
+                <p className="tags-text">
+                    {tags.map(tag => capitalizeWords(tag)).join(', ')}
+                </p>
+            </div>
+        );
+    };
+
     return (
         <>
             <div className="github-links">
@@ -280,6 +314,7 @@ function App() {
                             <p><strong>Card Number:</strong> {selectedImage.cardNumber}</p>
                             <p><strong>Illustrator:</strong> {capitalizeWords(selectedImage.illustrator)}</p>
                             <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
+                            {renderTags()}
                         </div>
                     </div>
                 </div>
