@@ -8,6 +8,7 @@
 @import './styles/TopRightLinks.css';
 @import './styles/ScrollToTopButton.css';
 @import './styles/KofiButton.css';
+@import './styles/MissingCardLink.css';
 
 html {
     scroll-behavior: smooth;
