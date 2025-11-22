@@ -1,0 +1,53 @@
+.changelog-modal-content {
+    background-color: #2d2d2d;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+.changelog-modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 15px;
+}
+
+.changelog-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.changelog-entry {
+    border-left: 3px solid #646cff;
+    padding-left: 15px;
+}
+
+.changelog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.changelog-version {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.changelog-date {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.changelog-changes {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 0;
+    color: #ddd;
+}

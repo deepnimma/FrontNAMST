@@ -1,59 +1,33 @@
-import './App.css'
-import React, { useState, useEffect } from 'react';
-import { Search, Settings, ArrowDownUp, X, Github, Library, Sparkles, ArrowUp, ScrollText } from 'lucide-react';
-
-// --- Interfaces ---
-interface CardImage {
-    imageKey: string;
-    setName: string;
-    cardNumber: string;
-    illustrator: string;
-    releaseDate: string;
-    cardTitle: string;
-    tags: string;
-    isReverseHolo: number;
-}
-
-interface ChangelogEntry {
-    version: string;
-    date: string;
-    changes: string[];
-}
-
-const API_ENDPOINT = "https://downloader.deepnimma.workers.dev/";
-const R2_BUCKET_URL = "https://images.nottdex.com";
-const placeholderWords = ["Pokemon", "Trainer", "Illustrator"];
-
-// Helper to capitalize words
-const capitalizeWords = (str: string) => {
-    if (!str) return '';
-    return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-};
-
-// Helper to parse the tags string
-const parseTags = (tagsString: string): string[] => {
-    try {
-        const validJsonString = tagsString.replace(/'/g, '"');
-        const tags = JSON.parse(validJsonString);
-        if (Array.isArray(tags)) return tags;
-    } catch (error) {
-        console.error("Error parsing tags:", error);
-    }
-    return [];
-};
+import './App.css';
+import React, { useState } from 'react';
+import type { CardImage } from './lib/types';
+import { useCardSearch } from './hooks/useCardSearch';
+import { useAppEffects } from './hooks/useAppEffects';
+import Header from './components/Header';
+import SearchBar from './components/SearchBar';
+import Filters from './components/Filters';
+import DisplayControls from './components/DisplayControls';
+import ImageGrid from './components/ImageGrid';
+import Modal from './components/Modal';
+import Changelog from './components/Changelog';
+import TopRightLinks from './components/TopRightLinks';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 function App() {
     const [query, setQuery] = useState('');
-    const [images, setImages] = useState<CardImage[]>([]);
-    const [loading, setLoading] = useState(false);
+    const { images, setImages, loading, handleSearch } = useCardSearch();
+    const {
+        showScrollButton,
+        isChangelogOpen,
+        setIsChangelogOpen,
+        changelogData,
+        placeholderIndex,
+    } = useAppEffects(query);
+
     const [gridCols, setGridCols] = useState(5);
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
-    const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
-    const [showScrollButton, setShowScrollButton] = useState(false);
-    const [isChangelogOpen, setIsChangelogOpen] = useState(false);
-    const [changelogData, setChangelogData] = useState<ChangelogEntry[]>([]);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -61,65 +35,10 @@ function App() {
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-    // Effect for fetching changelog and managing other side effects
-    useEffect(() => {
-        const fetchChangelog = async () => {
-            try {
-                const response = await fetch('/changelog.json');
-                const data = await response.json();
-                setChangelogData(data);
-            } catch (error) {
-                console.error("Error fetching changelog:", error);
-            }
-        };
-
-        fetchChangelog();
-
-        const handleScroll = () => {
-            setShowScrollButton(window.scrollY > 300);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        if (query.length > 0) {
-            return () => window.removeEventListener('scroll', handleScroll);
-        }
-
-        const intervalId = setInterval(() => {
-            setPlaceholderIndex(prevIndex => (prevIndex + 1) % placeholderWords.length);
-        }, 2000);
-
-        return () => {
-            clearInterval(intervalId);
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [query]);
-
-    const handleSearch = async () => {
-        if (!query.trim()) return;
-        setLoading(true);
-        setImages([]);
-        const processedQuery = query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(',');
-        const params = new URLSearchParams({ q: processedQuery });
-        if (isCameo) params.append('cameo', '1');
-        if (isTrainer) params.append('trainer', '1');
-        if (isIllustrator) params.append('illustrator', '1');
-        if (sortOrder === 'desc') params.append('descending', '1');
-        try {
-            const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
-            if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
-            const data = await response.json();
-            setImages(data.image_rows || []);
-        } catch (error) {
-            console.error("Error fetching images:", error);
-            alert("Failed to fetch images. Check console for details.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') handleSearch();
+        if (e.key === 'Enter') {
+            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
+        }
     };
 
     const handleReset = () => {
@@ -177,184 +96,67 @@ function App() {
         }
     };
 
-    const renderTags = () => {
-        if (!selectedImage || !selectedImage.tags) return null;
-        const tags = parseTags(selectedImage.tags);
-        if (tags.length === 0) return null;
-        return (
-            <div className="tags-container">
-                <h3>Tags</h3>
-                <p className="tags-text">{tags.map(tag => capitalizeWords(tag)).join(', ')}</p>
-            </div>
-        );
-    };
-
-    const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
-
     return (
         <>
-            <div className="top-right-links">
-                <button onClick={() => setIsChangelogOpen(true)} className="changelog-button" title="Changelog">
-                    <ScrollText size={24} />
-                </button>
-                <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Frontend Repo">
-                    <Github size={24} />
-                    <span>FE</span>
-                </a>
-                <a href="https://github.com/deepnimma/NottAnotherMasterSetTrackerBackend" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Backend Repo">
-                    <Github size={24} />
-                    <span>BE</span>
-                </a>
-            </div>
+            <TopRightLinks setIsChangelogOpen={setIsChangelogOpen} />
 
             <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
-                    <div className="header-container">
-                        <button className="title-button" onClick={handleReset}>
-                            <h1 className="title">
-                                <span className="title-desktop">NottAnotherMasterSetTracker</span>
-                                <span className="title-mobile">NottDex</span>
-                            </h1>
-                        </button>
-                        <div className="titleSubtext">Find all the cards you need!</div>
-                    </div>
+                    <Header handleReset={handleReset} />
 
                     <div className="sticky-container">
-                        <div className="search-and-controls-container">
-                            <div className="search-input-container">
-                                <input
-                                    type="text"
-                                    className="search-input"
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                    onFocus={handleFocus}
-                                />
-                                {query.length === 0 && (
-                                    <div className="custom-placeholder">
-                                        <span>Search for your favorite </span>
-                                        <span className="placeholder-word" key={placeholderIndex}>
-                                            {placeholderWords[placeholderIndex]}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-                            <button className="search-button" onClick={handleSearch} disabled={loading}>
-                                {loading ? 'Searching...' : <><Search size={18} /> Search</>}
-                            </button>
-                        </div>
+                        <SearchBar
+                            query={query}
+                            setQuery={setQuery}
+                            handleSearch={() => handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder)}
+                            loading={loading}
+                            handleKeyDown={handleKeyDown}
+                            handleFocus={handleFocus}
+                            placeholderIndex={placeholderIndex}
+                        />
 
-                        <div className={`filters-container ${query.length > 0 ? 'visible' : ''}`}>
-                            <div className="checkbox-group">
-                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you also want cameo appearances of the particular pokemon/trainer you are searching for to be displayed.">
-                                    <input type="checkbox" checked={isCameo} onChange={(e) => handleCameoChange(e.target.checked)} disabled={isIllustrator} />
-                                    Cameo
-                                </label>
-                                <label className={`checkbox-label ${isIllustrator ? 'disabled' : ''}`} title="Enable this if you are trying to search for a particular Pokemon series trainer.">
-                                    <input type="checkbox" checked={isTrainer} onChange={(e) => handleTrainerChange(e.target.checked)} disabled={isIllustrator} />
-                                    Trainer
-                                </label>
-                                <label className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`} title="Enable this if you are trying to search for all cards from a particular illustrator.">
-                                    <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
-                                    Illustrator
-                                </label>
-                            </div>
-                            <div className="filter-buttons-group">
-                                <button onClick={toggleSortOrder} className="sort-button">
-                                    <ArrowDownUp size={16} />
-                                    {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div className={`display-controls-container ${images.length > 0 ? 'visible' : ''}`}>
-                            <button onClick={toggleGridCols} className="grid-toggle-button">
-                                <Settings size={16} />
-                                {gridCols} Columns
-                            </button>
-                            <button onClick={() => setShowSetNames(prev => !prev)} className="set-name-toggle-button">
-                                <Library size={16} />
-                                {showSetNames ? 'Hide Sets' : 'Show Sets'}
-                            </button>
-                            <button onClick={() => setShowReverseHolos(prev => !prev)} className="reverse-holo-toggle-button">
-                                <Sparkles size={16} />
-                                {showReverseHolos ? 'Hide Reverse' : 'Show Reverse'}
-                            </button>
-                        </div>
+                        <Filters
+                            isCameo={isCameo}
+                            isTrainer={isTrainer}
+                            isIllustrator={isIllustrator}
+                            handleCameoChange={handleCameoChange}
+                            handleTrainerChange={handleTrainerChange}
+                            handleIllustratorChange={handleIllustratorChange}
+                            toggleSortOrder={toggleSortOrder}
+                            sortOrder={sortOrder}
+                            query={query}
+                        />
+
+                        <DisplayControls
+                            images={images}
+                            toggleGridCols={toggleGridCols}
+                            gridCols={gridCols}
+                            setShowSetNames={setShowSetNames}
+                            showSetNames={showSetNames}
+                            setShowReverseHolos={setShowReverseHolos}
+                            showReverseHolos={showReverseHolos}
+                        />
                     </div>
 
-                    {loading && <div className="loading-spinner"></div>}
-
-                    {!loading && images.length > 0 && (
-                        <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-                            {filteredImages.map((image) => (
-                                <div key={image.imageKey} className="image-card" onClick={() => openModal(image)}>
-                                    <img src={`${R2_BUCKET_URL}/${image.imageKey}`} alt={image.cardTitle} className="grid-image" />
-                                    {showSetNames && (
-                                        <div className="set-name-overlay">
-                                            <span>{capitalizeWords(image.setName)}</span>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {!loading && images.length === 0 && query && !loading && (
-                        <div className="no-results">
-                            <p>No cards found. Try searching for something else.</p>
-                        </div>
-                    )}
+                    <ImageGrid
+                        loading={loading}
+                        images={images}
+                        gridCols={gridCols}
+                        openModal={openModal}
+                        showSetNames={showSetNames}
+                        query={query}
+                        showReverseHolos={showReverseHolos}
+                    />
                 </div>
             </div>
 
-            {selectedImage && (
-                <div className="modal-backdrop" onClick={closeModal}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close-button" onClick={closeModal}><X size={24} /></button>
-                        <img src={`${R2_BUCKET_URL}/${selectedImage.imageKey}`} alt={selectedImage.cardTitle} className="modal-image" />
-                        <div className="modal-metadata">
-                            <h2>{capitalizeWords(selectedImage.cardTitle)}</h2>
-                            <p><strong>Set Name:</strong> {capitalizeWords(selectedImage.setName)}</p>
-                            <p><strong>Card Number:</strong> {selectedImage.cardNumber}</p>
-                            <p><strong>Illustrator:</strong> {capitalizeWords(selectedImage.illustrator)}</p>
-                            <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
-                            {renderTags()}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {isChangelogOpen && (
-                <div className="modal-backdrop" onClick={() => setIsChangelogOpen(false)}>
-                    <div className="changelog-modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close-button" onClick={() => setIsChangelogOpen(false)}><X size={24} /></button>
-                        <h2>Changelog</h2>
-                        <div className="changelog-entries">
-                            {changelogData.map(entry => (
-                                <div key={entry.version} className="changelog-entry">
-                                    <div className="changelog-header">
-                                        <span className="changelog-version">v{entry.version}</span>
-                                        <span className="changelog-date">{entry.date}</span>
-                                    </div>
-                                    <ul className="changelog-changes">
-                                        {entry.changes.map((change, index) => (
-                                            <li key={index}>{change}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <button 
-                className={`scroll-to-top-button ${showScrollButton ? 'visible' : ''}`}
-                onClick={scrollToTop}
-            >
-                <ArrowUp size={24} />
-            </button>
+            <Modal selectedImage={selectedImage} closeModal={closeModal} />
+            <Changelog
+                isChangelogOpen={isChangelogOpen}
+                setIsChangelogOpen={setIsChangelogOpen}
+                changelogData={changelogData}
+            />
+            <ScrollToTopButton showScrollButton={showScrollButton} scrollToTop={scrollToTop} />
         </>
     );
 }
