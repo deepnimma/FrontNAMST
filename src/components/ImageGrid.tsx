@@ -2,6 +2,7 @@ import React from 'react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
+import LazyImage from './LazyImage'; // Import the LazyImage component
 
 interface ImageGridProps {
     loading: boolean;
@@ -39,8 +40,13 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     return (
         <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
             {filteredImages.map((image) => (
-                <div key={image.imageKey} className="image-card" onClick={() => openModal(image)}>
-                    <img src={`${R2_BUCKET_URL}/${image.imageKey}`} alt={image.cardTitle} className="grid-image" />
+                <div key={image.imageKey} className="image-card">
+                    <LazyImage
+                        src={`${R2_BUCKET_URL}/${image.imageKey}`}
+                        alt={image.cardTitle}
+                        className="grid-image"
+                        onClick={() => openModal(image)}
+                    />
                     {showSetNames && (
                         <div className="set-name-overlay">
                             <span>{capitalizeWords(image.setName)}</span>

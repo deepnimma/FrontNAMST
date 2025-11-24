@@ -1,4 +1,5 @@
 import './App.css';
+import './styles/LazyImage.css';
 import React, { useState, useEffect } from 'react';
 import type { CardImage } from './lib/types';
 import { useCardSearch } from './hooks/useCardSearch';
