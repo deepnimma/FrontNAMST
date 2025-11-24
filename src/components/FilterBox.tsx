@@ -8,6 +8,8 @@ interface FilterBoxProps {
     setShowReverseHolos: (show: boolean) => void;
     gridCols: number;
     setGridCols: (cols: number) => void;
+    hideFirstEditions: boolean;
+    setHideFirstEditions: (hide: boolean) => void;
 }
 
 const FilterBox: React.FC<FilterBoxProps> = ({
@@ -17,6 +19,8 @@ const FilterBox: React.FC<FilterBoxProps> = ({
     setShowReverseHolos,
     gridCols,
     setGridCols,
+    hideFirstEditions,
+    setHideFirstEditions,
 }) => {
     const toggleGridCols = () => {
         setGridCols(gridCols === 3 ? 5 : 3);
@@ -25,7 +29,7 @@ const FilterBox: React.FC<FilterBoxProps> = ({
     return (
         <div className="filter-box">
             <h3>Filters</h3>
-            <div className="checkbox-group">
+            <div className="filter-box-checkbox-group">
                 <label>
                     <input
                         type="checkbox"
@@ -41,6 +45,14 @@ const FilterBox: React.FC<FilterBoxProps> = ({
                         onChange={(e) => setShowReverseHolos(e.target.checked)}
                     />
                     Show Reverse Holos
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={hideFirstEditions}
+                        onChange={(e) => setHideFirstEditions(e.target.checked)}
+                    />
+                    Hide 1st Edition
                 </label>
             </div>
             <div className="grid-cols-buttons">

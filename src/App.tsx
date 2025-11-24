@@ -33,6 +33,7 @@ function App() {
     const [showReverseHolos, setShowReverseHolos] = useState(true);
     const [showMissingCardButton, setShowMissingCardButton] = useState(false);
     const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
+    const [hideFirstEditions, setHideFirstEditions] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -115,6 +116,13 @@ function App() {
         }
     };
 
+    const filteredImages = images.filter(image => {
+        if (hideFirstEditions && image.tags.includes('1st-edition')) {
+            return false;
+        }
+        return true;
+    });
+
     return (
         <>
             <TopRightLinks setIsChangelogOpen={setIsChangelogOpen} />
@@ -150,7 +158,7 @@ function App() {
                     <div className={`content-with-filters ${images.length > 0 ? 'filters-visible' : ''}`}>
                         <ImageGrid
                             loading={loading}
-                            images={images}
+                            images={filteredImages}
                             gridCols={gridCols}
                             openModal={openModal}
                             showSetNames={showSetNames}
@@ -173,6 +181,8 @@ function App() {
                                         setShowReverseHolos={setShowReverseHolos}
                                         gridCols={gridCols}
                                         setGridCols={setGridCols}
+                                        hideFirstEditions={hideFirstEditions}
+                                        setHideFirstEditions={setHideFirstEditions}
                                     />
                                 </div>
                             </>
