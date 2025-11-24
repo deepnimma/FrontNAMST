@@ -43,12 +43,11 @@ html {
 
 .content-with-filters {
     display: flex;
-    width: 100%;
+    justify-content: center;
     align-items: flex-start;
-}
-
-.image-grid {
-    flex-grow: 1;
+    width: 100%;
+    /* This transform compensates for the filter box width to keep the grid centered */
+    transform: translateX(85px);
 }
 
 /* --- Sticky Container --- */
@@ -81,7 +80,9 @@ html {
     }
     
     .content-with-filters {
+        display: flex;
         flex-direction: column-reverse;
+        transform: none; /* Remove transform on mobile */
     }
 
     .filter-box {
