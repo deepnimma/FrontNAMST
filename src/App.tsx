@@ -146,7 +146,7 @@ function App() {
                         />
                     </div>
 
-                    <div className="content-with-filters">
+                    <div className={`content-with-filters ${images.length > 0 ? 'filters-visible' : ''}`}>
                         <ImageGrid
                             loading={loading}
                             images={images}
