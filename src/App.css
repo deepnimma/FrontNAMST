@@ -54,6 +54,10 @@ html {
     transform: translateX(85px);
 }
 
+.mobile-filter-toggle {
+    display: none; /* Hidden by default */
+}
+
 /* --- Sticky Container --- */
 .sticky-container {
     position: sticky;
@@ -92,10 +96,35 @@ html {
         transform: none; /* Remove transform on mobile */
     }
 
+    .filter-box-wrapper {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        width: 100%;
+    }
+
+    .filter-box-wrapper.open {
+        max-height: 500px; /* Adjust as needed */
+        opacity: 1;
+    }
+
     .filter-box {
         margin-left: 0;
         margin-bottom: 20px;
         width: 100%;
+    }
+
+    .mobile-filter-toggle {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: #2d2d2d;
+        color: #ccc;
+        border: 1px solid #444;
+        border-radius: 8px;
+        cursor: pointer;
     }
 
     .title {

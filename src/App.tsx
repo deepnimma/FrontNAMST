@@ -32,6 +32,7 @@ function App() {
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
     const [showMissingCardButton, setShowMissingCardButton] = useState(false);
+    const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -157,14 +158,24 @@ function App() {
                             showReverseHolos={showReverseHolos}
                         />
                         {images.length > 0 && (
-                            <FilterBox
-                                showSetNames={showSetNames}
-                                setShowSetNames={setShowSetNames}
-                                showReverseHolos={showReverseHolos}
-                                setShowReverseHolos={setShowReverseHolos}
-                                gridCols={gridCols}
-                                setGridCols={setGridCols}
-                            />
+                            <>
+                                <button
+                                    className="mobile-filter-toggle"
+                                    onClick={() => setIsFilterBoxOpen(!isFilterBoxOpen)}
+                                >
+                                    {isFilterBoxOpen ? 'Hide Filters' : 'Show Filters'}
+                                </button>
+                                <div className={`filter-box-wrapper ${isFilterBoxOpen ? 'open' : ''}`}>
+                                    <FilterBox
+                                        showSetNames={showSetNames}
+                                        setShowSetNames={setShowSetNames}
+                                        showReverseHolos={showReverseHolos}
+                                        setShowReverseHolos={setShowReverseHolos}
+                                        gridCols={gridCols}
+                                        setGridCols={setGridCols}
+                                    />
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
