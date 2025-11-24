@@ -1,0 +1,22 @@
+.lazy-image-container {
+    background-color: #2d2d2d; /* A placeholder background color */
+    transition: background-color 0.3s;
+    min-height: 200px; /* Or a more appropriate height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.lazy-image-container.loaded {
+    background-color: transparent;
+}
+
+.lazy-image-container img {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.lazy-image-container.loaded img {
+    opacity: 1;
+}
