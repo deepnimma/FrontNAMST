@@ -12,6 +12,7 @@ interface ImageGridProps {
     showSetNames: boolean;
     query: string;
     showReverseHolos: boolean;
+    searchPerformed: boolean;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({
@@ -22,6 +23,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     showSetNames,
     query,
     showReverseHolos,
+    searchPerformed,
 }) => {
     const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
 
@@ -32,7 +34,11 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     if (images.length === 0 && query && !loading) {
         return (
             <div className="no-results">
-                <p>No cards found. Try searching for something else.</p>
+                {searchPerformed ? (
+                    <p>No cards found. Try searching for something else.</p>
+                ) : (
+                    <p>Did you know you can search for multiple pokemon at once? Try searching for 'Pikachu, Blastoise'</p>
+                )}
             </div>
         );
     }
