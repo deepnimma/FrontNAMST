@@ -4,31 +4,32 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    gap: 5px;
+    gap: 10px;
 }
 
 .filter-box h3 {
     margin-top: 0;
 }
 
-.filter-box .checkbox-group {
+.filter-box-checkbox-group {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Adjust this value to control the space between checkboxes */
+    gap: 10px;
 }
 
-.filter-box .checkbox-group label {
+.filter-box-checkbox-group label {
     display: flex;
     align-items: center;
 }
 
-.filter-box .checkbox-group input {
+.filter-box-checkbox-group input {
     margin-right: 10px;
 }
 
 .grid-toggle-button {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 8px 75px;
     background-color: #2d2d2d;
