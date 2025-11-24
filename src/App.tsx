@@ -34,6 +34,7 @@ function App() {
     const [showMissingCardButton, setShowMissingCardButton] = useState(false);
     const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
     const [hideFirstEditions, setHideFirstEditions] = useState(false);
+    const [searchPerformed, setSearchPerformed] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -61,8 +62,14 @@ function App() {
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
+            setSearchPerformed(true);
             handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
         }
+    };
+
+    const handleSearchClick = () => {
+        setSearchPerformed(true);
+        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
     };
 
     const handleReset = () => {
@@ -71,6 +78,7 @@ function App() {
         setIsCameo(false);
         setIsTrainer(false);
         setIsIllustrator(false);
+        setSearchPerformed(false);
     };
 
     const handleFocus = () => {
@@ -135,7 +143,7 @@ function App() {
                         <SearchBar
                             query={query}
                             setQuery={setQuery}
-                            handleSearch={() => handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder)}
+                            handleSearch={handleSearchClick}
                             loading={loading}
                             handleKeyDown={handleKeyDown}
                             handleFocus={handleFocus}
@@ -164,6 +172,7 @@ function App() {
                             showSetNames={showSetNames}
                             query={query}
                             showReverseHolos={showReverseHolos}
+                            searchPerformed={searchPerformed}
                         />
                         {images.length > 0 && (
                             <>
