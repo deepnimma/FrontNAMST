@@ -1,7 +1,6 @@
 @import './styles/Header.css';
 @import './styles/SearchBar.css';
 @import './styles/Filters.css';
-@import './styles/DisplayControls.css';
 @import './styles/ImageGrid.css';
 @import './styles/Modal.css';
 @import './styles/Changelog.css';
@@ -9,6 +8,7 @@
 @import './styles/ScrollToTopButton.css';
 @import './styles/KofiButton.css';
 @import './styles/MissingCardLink.css';
+@import './styles/FilterBox.css';
 
 html {
     scroll-behavior: smooth;
@@ -41,6 +41,23 @@ html {
     padding: 0 20px;
 }
 
+.content-with-filters {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    gap: 20px;
+}
+
+.content-with-filters.filters-visible {
+    /* This transform compensates for the filter box width to keep the grid centered */
+    transform: translateX(85px);
+}
+
+.mobile-filter-toggle {
+    display: none; /* Hidden by default */
+}
+
 /* --- Sticky Container --- */
 .sticky-container {
     position: sticky;
@@ -68,6 +85,46 @@ html {
 @media (max-width: 768px) {
     .app-wrapper.initial-state {
         padding-top: 25vh;
+    }
+    
+    .content-with-filters {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    .content-with-filters.filters-visible {
+        transform: none; /* Remove transform on mobile */
+    }
+
+    .filter-box-wrapper {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        width: 100%;
+    }
+
+    .filter-box-wrapper.open {
+        max-height: 500px; /* Adjust as needed */
+        opacity: 1;
+    }
+
+    .filter-box {
+        margin-left: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .mobile-filter-toggle {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: #2d2d2d;
+        color: #ccc;
+        border: 1px solid #444;
+        border-radius: 8px;
+        cursor: pointer;
     }
 
     .title {

@@ -3,7 +3,8 @@
       "version": "1.0.4",
       "date": "2025-MM-DD",
       "changes": [
-        "Improve image loading performance."
+        "Improve image loading performance.",
+        "Move some filters to a designated filters box."
       ]
     },
     {
