@@ -1,7 +1,6 @@
 @import './styles/Header.css';
 @import './styles/SearchBar.css';
 @import './styles/Filters.css';
-@import './styles/DisplayControls.css';
 @import './styles/ImageGrid.css';
 @import './styles/Modal.css';
 @import './styles/Changelog.css';
@@ -9,6 +8,7 @@
 @import './styles/ScrollToTopButton.css';
 @import './styles/KofiButton.css';
 @import './styles/MissingCardLink.css';
+@import './styles/FilterBox.css';
 
 html {
     scroll-behavior: smooth;
@@ -41,6 +41,16 @@ html {
     padding: 0 20px;
 }
 
+.content-with-filters {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.image-grid {
+    flex-grow: 1;
+}
+
 /* --- Sticky Container --- */
 .sticky-container {
     position: sticky;
@@ -68,6 +78,16 @@ html {
 @media (max-width: 768px) {
     .app-wrapper.initial-state {
         padding-top: 25vh;
+    }
+    
+    .content-with-filters {
+        flex-direction: column-reverse;
+    }
+
+    .filter-box {
+        margin-left: 0;
+        margin-bottom: 20px;
+        width: 100%;
     }
 
     .title {

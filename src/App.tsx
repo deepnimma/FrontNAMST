@@ -7,7 +7,6 @@ import { useAppEffects } from './hooks/useAppEffects';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import Filters from './components/Filters';
-import DisplayControls from './components/DisplayControls';
 import ImageGrid from './components/ImageGrid';
 import Modal from './components/Modal';
 import Changelog from './components/Changelog';
@@ -15,6 +14,7 @@ import TopRightLinks from './components/TopRightLinks';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import KofiButton from './components/KofiButton';
 import MissingCardLink from './components/MissingCardLink';
+import FilterBox from './components/FilterBox';
 
 function App() {
     const [query, setQuery] = useState('');
@@ -85,20 +85,12 @@ function App() {
         const sortedImages = [...images].sort((a, b) => {
             const dateA = new Date(a.releaseDate).getTime();
             const dateB = new Date(b.releaseDate).getTime();
-            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - a.releaseDate.getTime();
             const cardNumA = parseInt(a.cardNumber.split('/')[0]);
             const cardNumB = parseInt(b.cardNumber.split('/')[0]);
             return newSortOrder === 'asc' ? cardNumA - cardNumB : cardNumB - cardNumA;
         });
         setImages(sortedImages);
-    };
-
-    const toggleGridCols = () => {
-        setGridCols(prev => {
-            if (prev === 3) return 5;
-            if (prev === 5) return 7;
-            return 3;
-        });
     };
 
     const openModal = (image: CardImage) => setSelectedImage(image);
@@ -152,27 +144,29 @@ function App() {
                             sortOrder={sortOrder}
                             query={query}
                         />
-
-                        <DisplayControls
-                            images={images}
-                            toggleGridCols={toggleGridCols}
-                            gridCols={gridCols}
-                            setShowSetNames={setShowSetNames}
-                            showSetNames={showSetNames}
-                            setShowReverseHolos={setShowReverseHolos}
-                            showReverseHolos={showReverseHolos}
-                        />
                     </div>
 
-                    <ImageGrid
-                        loading={loading}
-                        images={images}
-                        gridCols={gridCols}
-                        openModal={openModal}
-                        showSetNames={showSetNames}
-                        query={query}
-                        showReverseHolos={showReverseHolos}
-                    />
+                    <div className="content-with-filters">
+                        <ImageGrid
+                            loading={loading}
+                            images={images}
+                            gridCols={gridCols}
+                            openModal={openModal}
+                            showSetNames={showSetNames}
+                            query={query}
+                            showReverseHolos={showReverseHolos}
+                        />
+                        {images.length > 0 && (
+                            <FilterBox
+                                showSetNames={showSetNames}
+                                setShowSetNames={setShowSetNames}
+                                showReverseHolos={showReverseHolos}
+                                setShowReverseHolos={setShowReverseHolos}
+                                gridCols={gridCols}
+                                setGridCols={setGridCols}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
 
