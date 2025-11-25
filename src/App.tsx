@@ -110,12 +110,18 @@ function App() {
 
     const handleCameoChange = (checked: boolean) => {
         setIsCameo(checked);
-        if (checked) setIsIllustrator(false);
+        if (checked) {
+            setIsIllustrator(false);
+            setIsSet(false);
+        }
     };
 
     const handleTrainerChange = (checked: boolean) => {
         setIsTrainer(checked);
-        if (checked) setIsIllustrator(false);
+        if (checked) {
+            setIsIllustrator(false);
+            setIsSet(false);
+        }
     };
 
     const handleIllustratorChange = (checked: boolean) => {
@@ -123,11 +129,17 @@ function App() {
         if (checked) {
             setIsCameo(false);
             setIsTrainer(false);
+            setIsSet(false);
         }
     };
 
     const handleSetChange = (checked: boolean) => {
         setIsSet(checked);
+        if (checked) {
+            setIsCameo(false);
+            setIsTrainer(false);
+            setIsIllustrator(false);
+        }
     };
 
     const filteredImages = images.filter(image => {
