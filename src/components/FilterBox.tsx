@@ -10,6 +10,8 @@ interface FilterBoxProps {
     setGridCols: (cols: number) => void;
     hideFirstEditions: boolean;
     setHideFirstEditions: (hide: boolean) => void;
+    showEnergyCards: boolean;
+    setShowEnergyCards: (show: boolean) => void;
 }
 
 const FilterBox: React.FC<FilterBoxProps> = ({
@@ -21,6 +23,8 @@ const FilterBox: React.FC<FilterBoxProps> = ({
     setGridCols,
     hideFirstEditions,
     setHideFirstEditions,
+    showEnergyCards,
+    setShowEnergyCards,
 }) => {
     const toggleGridCols = () => {
         setGridCols(gridCols === 3 ? 5 : 3);
@@ -53,6 +57,14 @@ const FilterBox: React.FC<FilterBoxProps> = ({
                         onChange={(e) => setHideFirstEditions(e.target.checked)}
                     />
                     Hide 1st Edition
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showEnergyCards}
+                        onChange={(e) => setShowEnergyCards(e.target.checked)}
+                    />
+                    Show Energy Cards
                 </label>
             </div>
             <div className="grid-cols-buttons">
