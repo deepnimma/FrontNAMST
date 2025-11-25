@@ -40,6 +40,7 @@ function App() {
     const [isCameo, setIsCameo] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
+    const [isSet, setIsSet] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     useEffect(() => {
@@ -63,13 +64,13 @@ function App() {
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             setSearchPerformed(true);
-            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
+            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
         }
     };
 
     const handleSearchClick = () => {
         setSearchPerformed(true);
-        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
+        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
     };
 
     const handleReset = () => {
@@ -78,6 +79,7 @@ function App() {
         setIsCameo(false);
         setIsTrainer(false);
         setIsIllustrator(false);
+        setIsSet(false);
         setSearchPerformed(false);
     };
 
@@ -124,6 +126,10 @@ function App() {
         }
     };
 
+    const handleSetChange = (checked: boolean) => {
+        setIsSet(checked);
+    };
+
     const filteredImages = images.filter(image => {
         if (hideFirstEditions && image.tags.includes('1st-edition')) {
             return false;
@@ -154,9 +160,11 @@ function App() {
                             isCameo={isCameo}
                             isTrainer={isTrainer}
                             isIllustrator={isIllustrator}
+                            isSet={isSet}
                             handleCameoChange={handleCameoChange}
                             handleTrainerChange={handleTrainerChange}
                             handleIllustratorChange={handleIllustratorChange}
+                            handleSetChange={handleSetChange}
                             toggleSortOrder={toggleSortOrder}
                             sortOrder={sortOrder}
                             query={query}

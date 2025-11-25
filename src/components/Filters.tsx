@@ -5,9 +5,11 @@ interface FiltersProps {
     isCameo: boolean;
     isTrainer: boolean;
     isIllustrator: boolean;
+    isSet: boolean;
     handleCameoChange: (checked: boolean) => void;
     handleTrainerChange: (checked: boolean) => void;
     handleIllustratorChange: (checked: boolean) => void;
+    handleSetChange: (checked: boolean) => void;
     toggleSortOrder: () => void;
     sortOrder: 'asc' | 'desc';
     query: string;
@@ -17,9 +19,11 @@ const Filters: React.FC<FiltersProps> = ({
     isCameo,
     isTrainer,
     isIllustrator,
+    isSet,
     handleCameoChange,
     handleTrainerChange,
     handleIllustratorChange,
+    handleSetChange,
     toggleSortOrder,
     sortOrder,
     query,
@@ -38,6 +42,10 @@ const Filters: React.FC<FiltersProps> = ({
                 <label className={`checkbox-label ${isCameo || isTrainer ? 'disabled' : ''}`} title="Enable this if you are trying to search for all cards from a particular illustrator.">
                     <input type="checkbox" checked={isIllustrator} onChange={(e) => handleIllustratorChange(e.target.checked)} disabled={isCameo || isTrainer} />
                     Illustrator
+                </label>
+                <label className="checkbox-label" title="Enable this if you are trying to search for all cards from a particular set.">
+                    <input type="checkbox" checked={isSet} onChange={(e) => handleSetChange(e.target.checked)} />
+                    Set
                 </label>
             </div>
             <div className="filter-buttons-group">
