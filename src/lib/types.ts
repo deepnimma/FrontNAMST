@@ -7,6 +7,7 @@ export interface CardImage {
     cardTitle: string;
     tags: string;
     isReverseHolo: number;
+    item: number;
 }
 
 export interface ChangelogEntry {
