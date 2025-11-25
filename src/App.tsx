@@ -44,7 +44,7 @@ function App() {
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
     const [isSet, setIsSet] = useState(false);
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
         setShowMissingCardButton(images.length > 0);
