@@ -65,18 +65,18 @@ const FilterBox: React.FC<FilterBoxProps> = ({
                 <label>
                     <input
                         type="checkbox"
-                        checked={showEnergyCards}
-                        onChange={(e) => setShowEnergyCards(e.target.checked)}
+                        checked={showItemCards}
+                        onChange={(e) => setShowItemCards(e.target.checked)}
                     />
-                    Show Energy Cards
+                    Show Trainer Cards
                 </label>
                 <label>
                     <input
                         type="checkbox"
-                        checked={showItemCards}
-                        onChange={(e) => setShowItemCards(e.target.checked)}
+                        checked={showEnergyCards}
+                        onChange={(e) => setShowEnergyCards(e.target.checked)}
                     />
-                    Show Item Cards
+                    Show Energy Cards
                 </label>
             </div>
             <div className="grid-cols-buttons">
