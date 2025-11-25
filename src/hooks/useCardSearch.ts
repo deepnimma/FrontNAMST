@@ -11,7 +11,8 @@ export const useCardSearch = () => {
         isCameo: boolean,
         isTrainer: boolean,
         isIllustrator: boolean,
-        sortOrder: 'asc' | 'desc'
+        sortOrder: 'asc' | 'desc',
+        isSet: boolean
     ) => {
         if (!query.trim()) return;
         setLoading(true);
@@ -22,6 +23,7 @@ export const useCardSearch = () => {
         if (isTrainer) params.append('trainer', '1');
         if (isIllustrator) params.append('illustrator', '1');
         if (sortOrder === 'desc') params.append('descending', '1');
+        if (isSet) params.append('set', '1');
         try {
             const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
             if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);

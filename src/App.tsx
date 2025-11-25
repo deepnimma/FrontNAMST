@@ -40,6 +40,7 @@ function App() {
     const [isCameo, setIsCameo] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
+    const [isSet, setIsSet] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
     useEffect(() => {
@@ -63,13 +64,13 @@ function App() {
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             setSearchPerformed(true);
-            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
+            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
         }
     };
 
     const handleSearchClick = () => {
         setSearchPerformed(true);
-        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder);
+        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
     };
 
     const handleReset = () => {
@@ -78,6 +79,7 @@ function App() {
         setIsCameo(false);
         setIsTrainer(false);
         setIsIllustrator(false);
+        setIsSet(false);
         setSearchPerformed(false);
     };
 
@@ -108,12 +110,18 @@ function App() {
 
     const handleCameoChange = (checked: boolean) => {
         setIsCameo(checked);
-        if (checked) setIsIllustrator(false);
+        if (checked) {
+            setIsIllustrator(false);
+            setIsSet(false);
+        }
     };
 
     const handleTrainerChange = (checked: boolean) => {
         setIsTrainer(checked);
-        if (checked) setIsIllustrator(false);
+        if (checked) {
+            setIsIllustrator(false);
+            setIsSet(false);
+        }
     };
 
     const handleIllustratorChange = (checked: boolean) => {
@@ -121,6 +129,16 @@ function App() {
         if (checked) {
             setIsCameo(false);
             setIsTrainer(false);
+            setIsSet(false);
+        }
+    };
+
+    const handleSetChange = (checked: boolean) => {
+        setIsSet(checked);
+        if (checked) {
+            setIsCameo(false);
+            setIsTrainer(false);
+            setIsIllustrator(false);
         }
     };
 
@@ -154,9 +172,11 @@ function App() {
                             isCameo={isCameo}
                             isTrainer={isTrainer}
                             isIllustrator={isIllustrator}
+                            isSet={isSet}
                             handleCameoChange={handleCameoChange}
                             handleTrainerChange={handleTrainerChange}
                             handleIllustratorChange={handleIllustratorChange}
+                            handleSetChange={handleSetChange}
                             toggleSortOrder={toggleSortOrder}
                             sortOrder={sortOrder}
                             query={query}
