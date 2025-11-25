@@ -53,6 +53,14 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                         className="grid-image"
                         onClick={() => openModal(image)}
                     />
+                    <div className="badge-container">
+                        {image.tags.includes('1st-edition') && (
+                            <div className="first-edition-badge">1st</div>
+                        )}
+                        {image.isReverseHolo === 1 && (
+                            <div className="reverse-holo-badge">RH</div>
+                        )}
+                    </div>
                     {showSetNames && (
                         <div className="set-name-overlay">
                             <span>{capitalizeWords(image.setName)}</span>
