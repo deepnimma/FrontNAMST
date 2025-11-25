@@ -37,6 +37,7 @@ function App() {
     const [searchPerformed, setSearchPerformed] = useState(false);
     const [showEnergyCards, setShowEnergyCards] = useState(false);
     const [showItemCards, setShowItemCards] = useState(true);
+    const [showTrainerOwned, setShowTrainerOwned] = useState(true);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -154,6 +155,9 @@ function App() {
         if (!showItemCards && image.item === 1) {
             return false;
         }
+        if (!showTrainerOwned && image.trainerOwned === 1) {
+            return false;
+        }
         return true;
     });
 
@@ -224,6 +228,8 @@ function App() {
                                         setShowEnergyCards={setShowEnergyCards}
                                         showItemCards={showItemCards}
                                         setShowItemCards={setShowItemCards}
+                                        showTrainerOwned={showTrainerOwned}
+                                        setShowTrainerOwned={setShowTrainerOwned}
                                     />
                                 </div>
                             </>
