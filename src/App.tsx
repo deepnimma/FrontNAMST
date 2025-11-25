@@ -36,6 +36,7 @@ function App() {
     const [hideFirstEditions, setHideFirstEditions] = useState(false);
     const [searchPerformed, setSearchPerformed] = useState(false);
     const [showEnergyCards, setShowEnergyCards] = useState(false);
+    const [showItemCards, setShowItemCards] = useState(true);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -150,6 +151,9 @@ function App() {
         if (!showEnergyCards && image.tags.includes('energy')) {
             return false;
         }
+        if (!showItemCards && image.item === 1) {
+            return false;
+        }
         return true;
     });
 
@@ -218,6 +222,8 @@ function App() {
                                         setHideFirstEditions={setHideFirstEditions}
                                         showEnergyCards={showEnergyCards}
                                         setShowEnergyCards={setShowEnergyCards}
+                                        showItemCards={showItemCards}
+                                        setShowItemCards={setShowItemCards}
                                     />
                                 </div>
                             </>
