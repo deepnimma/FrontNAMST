@@ -16,7 +16,7 @@
       "changes": [
         "Improve image loading performance.",
         "Move some filters to a designated filters box.",
-        "Add a button to filter out 1st edition card.",
+        "Add a button to filter out 1st edition cards.",
         "Fix sort button.",
         "Add a helpful search tip."
       ]
