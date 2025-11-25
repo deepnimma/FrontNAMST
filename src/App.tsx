@@ -35,6 +35,7 @@ function App() {
     const [isFilterBoxOpen, setIsFilterBoxOpen] = useState(false);
     const [hideFirstEditions, setHideFirstEditions] = useState(false);
     const [searchPerformed, setSearchPerformed] = useState(false);
+    const [showEnergyCards, setShowEnergyCards] = useState(false);
 
     // State for filters
     const [isCameo, setIsCameo] = useState(false);
@@ -146,6 +147,9 @@ function App() {
         if (hideFirstEditions && image.tags.includes('1st-edition')) {
             return false;
         }
+        if (!showEnergyCards && image.tags.includes('energy')) {
+            return false;
+        }
         return true;
     });
 
@@ -212,6 +216,8 @@ function App() {
                                         setGridCols={setGridCols}
                                         hideFirstEditions={hideFirstEditions}
                                         setHideFirstEditions={setHideFirstEditions}
+                                        showEnergyCards={showEnergyCards}
+                                        setShowEnergyCards={setShowEnergyCards}
                                     />
                                 </div>
                             </>
