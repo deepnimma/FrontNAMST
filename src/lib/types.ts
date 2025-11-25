@@ -8,6 +8,7 @@ export interface CardImage {
     tags: string;
     isReverseHolo: number;
     item: number;
+    trainerOwned: number;
 }
 
 export interface ChangelogEntry {

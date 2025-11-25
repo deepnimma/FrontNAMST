@@ -6,7 +6,8 @@
         "Implement set searching.",
         "Added a filter to show/hide energy cards.",
         "Fix an issue with the filters box moving when there are no images in the grid.",
-        "Add a filter to show/hide trainer cards."
+        "Add a filter to show/hide trainer cards.",
+        "Add a filter to show/hide trainer owned pokemon."
       ]
     },
     {

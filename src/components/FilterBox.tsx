@@ -14,6 +14,8 @@ interface FilterBoxProps {
     setShowEnergyCards: (show: boolean) => void;
     showItemCards: boolean;
     setShowItemCards: (show: boolean) => void;
+    showTrainerOwned: boolean;
+    setShowTrainerOwned: (show: boolean) => void;
 }
 
 const FilterBox: React.FC<FilterBoxProps> = ({
@@ -29,6 +31,8 @@ const FilterBox: React.FC<FilterBoxProps> = ({
     setShowEnergyCards,
     showItemCards,
     setShowItemCards,
+    showTrainerOwned,
+    setShowTrainerOwned,
 }) => {
     const toggleGridCols = () => {
         setGridCols(gridCols === 3 ? 5 : 3);
@@ -77,6 +81,14 @@ const FilterBox: React.FC<FilterBoxProps> = ({
                         onChange={(e) => setShowEnergyCards(e.target.checked)}
                     />
                     Show Energy Cards
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showTrainerOwned}
+                        onChange={(e) => setShowTrainerOwned(e.target.checked)}
+                    />
+                    Show Trainer's PKMN
                 </label>
             </div>
             <div className="grid-cols-buttons">
