@@ -3,7 +3,8 @@
       "version": "1.1.1",
       "date": "2025-11-xx",
       "changes": [
-        "Reorder entries in the filters box."
+        "Reorder entries in the filters box.",
+        "Fix release date ordering button."
       ]
     },
     {
