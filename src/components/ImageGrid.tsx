@@ -16,6 +16,7 @@ interface ImageGridProps {
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
+    sortOrder: 'asc' | 'desc';
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({
@@ -30,16 +31,49 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     loadMore,
     hasMore,
     loadingMore,
+    sortOrder,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+    const isInitialMount = useRef(true);
 
+    // Effect for new searches: Reset loaded images when the query changes.
     useEffect(() => {
         setLoadedImages(new Set());
     }, [query]);
 
+    // Effect for sorting: Re-trigger animation when sortOrder changes.
+    useEffect(() => {
+        // Skip the animation on the initial load of the component.
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
+
+        if (images.length > 0) {
+            // 1. Reset the loaded state to remove the 'loaded' class.
+            setLoadedImages(new Set());
+
+            // 2. Use setTimeout to push the next state update to the end of the event queue.
+            //    This ensures the browser has processed the removal of the 'loaded' class.
+            const timer = setTimeout(() => {
+                // 3. Re-add all images to the loaded set to trigger the animation.
+                setLoadedImages(new Set(images.map(img => img.imageKey)));
+            }, 0);
+
+            return () => clearTimeout(timer);
+        }
+    }, [sortOrder]);
+
     const handleImageLoad = (imageKey: string) => {
-        setLoadedImages(prev => new Set(prev).add(imageKey));
+        setLoadedImages(prev => {
+            if (prev.has(imageKey)) {
+                return prev;
+            }
+            const newSet = new Set(prev);
+            newSet.add(imageKey);
+            return newSet;
+        });
     };
 
     const lastImageElementRef = useCallback((node: HTMLDivElement) => {
