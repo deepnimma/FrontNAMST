@@ -1,6 +1,6 @@
 import './App.css';
 import './styles/LazyImage.css';
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import type { CardImage } from './lib/types';
 import { useCardSearch } from './hooks/useCardSearch';
 import { useAppEffects } from './hooks/useAppEffects';
@@ -167,21 +167,24 @@ function App() {
         }
     };
 
-    const filteredImages = images.filter(image => {
-        if (hideFirstEditions && image.tags.includes('1st-edition')) {
-            return false;
-        }
-        if (!showEnergyCards && image.tags.includes('energy')) {
-            return false;
-        }
-        if (!showItemCards && image.item === 1) {
-            return false;
-        }
-        if (!showTrainerOwned && image.trainerOwned === 1) {
-            return false;
-        }
-        return true;
-    });
+    const filteredImages = useMemo(() => {
+        return images.filter(image => {
+            if (hideFirstEditions && image.tags.includes('1st-edition')) {
+                return false;
+            }
+            if (!showEnergyCards && image.tags.includes('energy')) {
+                return false;
+            }
+            if (!showItemCards && image.item === 1) {
+                return false;
+            }
+            if (!showTrainerOwned && image.trainerOwned === 1) {
+                return false;
+            }
+            return true;
+        });
+    }, [images, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+
 
     return (
         <>
