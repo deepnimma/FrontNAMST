@@ -64,16 +64,22 @@ function App() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const performSearch = () => {
+        setSearchPerformed(true);
+        const newSortOrder = 'asc';
+        setSortOrder(newSortOrder);
+        handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
+    };
+
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
-            setSearchPerformed(true);
-            handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
+            performSearch();
         }
     };
 
     const handleSearchClick = () => {
-        setSearchPerformed(true);
-        handleSearch(query, isCameo, isTrainer, isIllustrator, sortOrder, isSet);
+        performSearch();
     };
 
     const handleReset = () => {
@@ -97,24 +103,28 @@ function App() {
     const toggleSortOrder = () => {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
-        const sortedImages = [...images].sort((a, b) => {
-            const dateA = new Date(a.releaseDate).getTime();
-            const dateB = new Date(b.releaseDate).getTime();
-            if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+        if (searchPerformed) {
+            handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
+        } else {
+            const sortedImages = [...images].sort((a, b) => {
+                const dateA = new Date(a.releaseDate).getTime();
+                const dateB = new Date(b.releaseDate).getTime();
+                if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
 
-            const cardNumA = a.cardNumber.split('/')[0];
-            const cardNumB = b.cardNumber.split('/')[0];
+                const cardNumA = a.cardNumber.split('/')[0];
+                const cardNumB = b.cardNumber.split('/')[0];
 
-            const numA = parseInt(cardNumA, 10);
-            const numB = parseInt(cardNumB, 10);
+                const numA = parseInt(cardNumA, 10);
+                const numB = parseInt(cardNumB, 10);
 
-            if (!isNaN(numA) && !isNaN(numB)) {
-                return newSortOrder === 'asc' ? numA - numB : numB - numA;
-            }
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return newSortOrder === 'asc' ? numA - numB : numB - numA;
+                }
 
-            return newSortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
-        });
-        setImages(sortedImages);
+                return newSortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
+            });
+            setImages(sortedImages);
+        }
     };
 
     const openModal = (image: CardImage) => setSelectedImage(image);
@@ -217,6 +227,7 @@ function App() {
                             loadMore={loadMore}
                             hasMore={hasMore}
                             loadingMore={loadingMore}
+                            sortOrder={sortOrder}
                         />
                         {images.length > 0 && (
                             <>
