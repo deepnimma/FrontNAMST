@@ -18,6 +18,7 @@ import FilterBox from './components/FilterBox';
 
 function App() {
     const [query, setQuery] = useState('');
+    const [lastExecutedQuery, setLastExecutedQuery] = useState('');
     const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore } = useCardSearch();
     const {
         showScrollButton,
@@ -68,6 +69,7 @@ function App() {
         setSearchPerformed(true);
         const newSortOrder = 'asc';
         setSortOrder(newSortOrder);
+        setLastExecutedQuery(query);
         handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
     };
 
@@ -84,6 +86,7 @@ function App() {
 
     const handleReset = () => {
         setQuery('');
+        setLastExecutedQuery('');
         setImages([]);
         setIsCameo(false);
         setIsTrainer(false);
@@ -221,7 +224,7 @@ function App() {
                             gridCols={gridCols}
                             openModal={openModal}
                             showSetNames={showSetNames}
-                            query={query}
+                            query={lastExecutedQuery}
                             showReverseHolos={showReverseHolos}
                             searchPerformed={searchPerformed}
                             loadMore={loadMore}
