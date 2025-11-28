@@ -1,7 +1,7 @@
 [
     {
       "version": "1.1.1",
-      "date": "2025-11-xx",
+      "date": "2025-11-27",
       "changes": [
         "Reorder entries in the filters box.",
         "Fix release date ordering button.",
