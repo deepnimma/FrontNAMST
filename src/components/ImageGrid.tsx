@@ -31,8 +31,8 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     hasMore,
     loadingMore,
 }) => {
-    const observer = useRef<IntersectionObserver>();
-    const lastImageElementRef = useCallback(node => {
+    const observer = useRef<IntersectionObserver | null>(null);
+    const lastImageElementRef = useCallback((node: HTMLDivElement) => {
         if (loading || loadingMore) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
@@ -73,7 +73,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                                 alt={image.cardTitle}
                                 className="grid-image"
                                 onClick={() => openModal(image)}
-                                style={{ animationDelay: `${index * 50}ms` }}
+                                style={{ animationDelay: `${(index % 30) * 50}ms` }}
                             />
                             <div className="badge-container">
                                 {image.tags.includes('1st-edition') && (
