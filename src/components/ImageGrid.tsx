@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
@@ -16,6 +16,7 @@ interface ImageGridProps {
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
+    sortOrder: 'asc' | 'desc';
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({
@@ -30,8 +31,51 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     loadMore,
     hasMore,
     loadingMore,
+    sortOrder,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
+    const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+    const isInitialMount = useRef(true);
+
+    // Effect for new searches: Reset loaded images when the query changes.
+    useEffect(() => {
+        setLoadedImages(new Set());
+    }, [query]);
+
+    // Effect for sorting: Re-trigger animation when sortOrder changes.
+    useEffect(() => {
+        // Skip the animation on the initial load of the component.
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
+
+        if (images.length > 0) {
+            // 1. Reset the loaded state to remove the 'loaded' class.
+            setLoadedImages(new Set());
+
+            // 2. Use setTimeout to push the next state update to the end of the event queue.
+            //    This ensures the browser has processed the removal of the 'loaded' class.
+            const timer = setTimeout(() => {
+                // 3. Re-add all images to the loaded set to trigger the animation.
+                setLoadedImages(new Set(images.map(img => img.imageKey)));
+            }, 0);
+
+            return () => clearTimeout(timer);
+        }
+    }, [sortOrder]);
+
+    const handleImageLoad = (imageKey: string) => {
+        setLoadedImages(prev => {
+            if (prev.has(imageKey)) {
+                return prev;
+            }
+            const newSet = new Set(prev);
+            newSet.add(imageKey);
+            return newSet;
+        });
+    };
+
     const lastImageElementRef = useCallback((node: HTMLDivElement) => {
         if (loading || loadingMore) return;
         if (observer.current) observer.current.disconnect();
@@ -66,16 +110,21 @@ const ImageGrid: React.FC<ImageGridProps> = ({
             <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
                 {filteredImages.map((image, index) => {
                     const isLastElement = index === filteredImages.length - 1;
+                    const isLoaded = loadedImages.has(image.imageKey);
                     return (
-                        <div key={image.imageKey} ref={isLastElement ? lastImageElementRef : null} className="image-card">
+                        <div
+                            key={image.imageKey}
+                            ref={isLastElement ? lastImageElementRef : null}
+                            className={`image-card ${isLoaded ? 'loaded' : ''}`}
+                        >
                             <LazyImage
                                 src={`${R2_BUCKET_URL}/${image.imageKey}`}
                                 alt={image.cardTitle}
                                 className="grid-image"
                                 onClick={() => openModal(image)}
-                                style={{ animationDelay: `${(index % 30) * 50}ms` }}
+                                onImageLoad={() => handleImageLoad(image.imageKey)}
                             />
-                            <div className="badge-container">
+                            <div className={`badge-container ${isLoaded ? 'loaded' : ''}`}>
                                 {image.tags.includes('1st-edition') && (
                                     <div className="first-edition-badge">1st</div>
                                 )}
