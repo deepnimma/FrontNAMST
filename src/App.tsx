@@ -18,7 +18,7 @@ import FilterBox from './components/FilterBox';
 
 function App() {
     const [query, setQuery] = useState('');
-    const { images, setImages, loading, handleSearch } = useCardSearch();
+    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore } = useCardSearch();
     const {
         showScrollButton,
         isChangelogOpen,
@@ -214,6 +214,9 @@ function App() {
                             query={query}
                             showReverseHolos={showReverseHolos}
                             searchPerformed={searchPerformed}
+                            loadMore={loadMore}
+                            hasMore={hasMore}
+                            loadingMore={loadingMore}
                         />
                         {images.length > 0 && (
                             <>
