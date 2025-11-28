@@ -5,4 +5,4 @@ If you want to see a repository that more accurately represents my coding abilit
 
 Feel free to open up issues for bug requests, features or missing cards!
 
-Also feel free to contact me by email (deepnimma@gmail.com) or discord NottCurious#4351 to discuss anything about the website.
+Also feel free to contact me on discord `@nottcurious` to discuss anything about the website.
