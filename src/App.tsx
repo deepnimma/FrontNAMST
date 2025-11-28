@@ -101,9 +101,18 @@ function App() {
             const dateA = new Date(a.releaseDate).getTime();
             const dateB = new Date(b.releaseDate).getTime();
             if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-            const cardNumA = parseInt(a.cardNumber.split('/')[0]);
-            const cardNumB = parseInt(b.cardNumber.split('/')[0]);
-            return newSortOrder === 'asc' ? cardNumA - cardNumB : cardNumB - cardNumA;
+
+            const cardNumA = a.cardNumber.split('/')[0];
+            const cardNumB = b.cardNumber.split('/')[0];
+
+            const numA = parseInt(cardNumA, 10);
+            const numB = parseInt(cardNumB, 10);
+
+            if (!isNaN(numA) && !isNaN(numB)) {
+                return newSortOrder === 'asc' ? numA - numB : numB - numA;
+            }
+
+            return newSortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
         });
         setImages(sortedImages);
     };
