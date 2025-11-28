@@ -74,13 +74,16 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                     const isLastElement = index === filteredImages.length - 1;
                     const isLoaded = loadedImages.has(image.imageKey);
                     return (
-                        <div key={image.imageKey} ref={isLastElement ? lastImageElementRef : null} className="image-card">
+                        <div
+                            key={image.imageKey}
+                            ref={isLastElement ? lastImageElementRef : null}
+                            className={`image-card ${isLoaded ? 'loaded' : ''}`}
+                        >
                             <LazyImage
                                 src={`${R2_BUCKET_URL}/${image.imageKey}`}
                                 alt={image.cardTitle}
                                 className="grid-image"
                                 onClick={() => openModal(image)}
-                                style={{ animationDelay: `${(index % 30) * 50}ms` }}
                                 onImageLoad={() => handleImageLoad(image.imageKey)}
                             />
                             <div className={`badge-container ${isLoaded ? 'loaded' : ''}`}>
