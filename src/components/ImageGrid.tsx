@@ -45,13 +45,14 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 
     return (
         <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-            {filteredImages.map((image) => (
+            {filteredImages.map((image, index) => (
                 <div key={image.imageKey} className="image-card">
                     <LazyImage
                         src={`${R2_BUCKET_URL}/${image.imageKey}`}
                         alt={image.cardTitle}
                         className="grid-image"
                         onClick={() => openModal(image)}
+                        style={{ animationDelay: `${index * 50}ms` }}
                     />
                     <div className="badge-container">
                         {image.tags.includes('1st-edition') && (
