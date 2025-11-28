@@ -16,10 +16,9 @@ interface ImageGridProps {
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
-    sortOrder: 'asc' | 'desc';
 }
 
-const ImageGrid: React.FC<ImageGridProps> = ({
+const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     loading,
     images,
     gridCols,
@@ -31,39 +30,49 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     loadMore,
     hasMore,
     loadingMore,
-    sortOrder,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
     const isInitialMount = useRef(true);
+    const prevImagesRef = useRef<CardImage[]>([]);
 
-    // Effect for new searches: Reset loaded images when the query changes.
     useEffect(() => {
-        setLoadedImages(new Set());
-    }, [query]);
+        const prevImages = prevImagesRef.current;
+        // Update ref early so we have it in all logic paths.
+        prevImagesRef.current = images;
 
-    // Effect for sorting: Re-trigger animation when sortOrder changes.
-    useEffect(() => {
-        // Skip the animation on the initial load of the component.
         if (isInitialMount.current) {
             isInitialMount.current = false;
+            // Animate initial images if they exist.
+            if (images.length > 0) {
+                const timer = setTimeout(() => {
+                    setLoadedImages(new Set(images.map(img => img.imageKey)));
+                }, 0);
+                return () => clearTimeout(timer);
+            }
             return;
         }
 
-        if (images.length > 0) {
-            // 1. Reset the loaded state to remove the 'loaded' class.
+        if (!prevImages) return;
+
+        // Heuristic to detect "load more" vs "new list"
+        const isLoadMore = images.length > prevImages.length &&
+            prevImages.length > 0 &&
+            images[0].imageKey === prevImages[0].imageKey;
+
+        if (!isLoadMore) {
+            // This is a new search or sort. Re-animate everything.
             setLoadedImages(new Set());
-
-            // 2. Use setTimeout to push the next state update to the end of the event queue.
-            //    This ensures the browser has processed the removal of the 'loaded' class.
             const timer = setTimeout(() => {
-                // 3. Re-add all images to the loaded set to trigger the animation.
-                setLoadedImages(new Set(images.map(img => img.imageKey)));
-            }, 0);
-
+                if (images.length > 0) {
+                    setLoadedImages(new Set(images.map(img => img.imageKey)));
+                }
+            }, 20);
             return () => clearTimeout(timer);
         }
-    }, [sortOrder]);
+        // For "load more", we do nothing here; `handleImageLoad` will animate new images.
+    }, [images]);
+
 
     const handleImageLoad = (imageKey: string) => {
         setLoadedImages(prev => {
@@ -144,6 +153,6 @@ const ImageGrid: React.FC<ImageGridProps> = ({
             {loadingMore && <div className="loading-spinner"></div>}
         </>
     );
-};
+});
 
 export default ImageGrid;
