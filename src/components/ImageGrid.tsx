@@ -16,7 +16,6 @@ interface ImageGridProps {
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
-    sortOrder: 'asc' | 'desc';
 }
 
 const ImageGrid: React.FC<ImageGridProps> = React.memo(({
@@ -31,7 +30,6 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     loadMore,
     hasMore,
     loadingMore,
-    sortOrder,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());

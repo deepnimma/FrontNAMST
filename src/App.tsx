@@ -233,7 +233,6 @@ function App() {
                             loadMore={loadMore}
                             hasMore={hasMore}
                             loadingMore={loadingMore}
-                            sortOrder={sortOrder}
                         />
                         {images.length > 0 && (
                             <>
