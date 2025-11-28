@@ -4,6 +4,7 @@
       "date": "2025-11-28",
       "changes": [
         "Make sure sort button resets to default state upon a new search.",
+        "Fix badges not being animated upon a search."
       ]
     },
     {
