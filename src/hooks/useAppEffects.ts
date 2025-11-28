@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { ChangelogEntry } from '../lib/types';
 import { placeholderWords } from '../lib/constants';
+
+const CACHE_KEY = 'changelogData';
+const CACHE_DURATION = 6 * 60 * 60 * 1000; // 6 hours
 
 export const useAppEffects = (query: string) => {
     const [showScrollButton, setShowScrollButton] = useState(false);
@@ -8,19 +11,33 @@ export const useAppEffects = (query: string) => {
     const [changelogData, setChangelogData] = useState<ChangelogEntry[]>([]);
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-    useEffect(() => {
-        const fetchChangelog = async () => {
-            try {
-                const response = await fetch('/changelog.json');
-                const data = await response.json();
+    const fetchChangelog = useCallback(async () => {
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) {
+            const { timestamp, data } = JSON.parse(cachedData);
+            if (Date.now() - timestamp < CACHE_DURATION) {
                 setChangelogData(data);
-            } catch (error) {
-                console.error("Error fetching changelog:", error);
+                return;
             }
-        };
+        }
 
-        fetchChangelog();
+        try {
+            const response = await fetch('/changelog.json');
+            const data = await response.json();
+            setChangelogData(data);
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), data }));
+        } catch (error) {
+            console.error("Error fetching changelog:", error);
+        }
+    }, []);
 
+    useEffect(() => {
+        if (isChangelogOpen && changelogData.length === 0) {
+            fetchChangelog();
+        }
+    }, [isChangelogOpen, changelogData, fetchChangelog]);
+
+    useEffect(() => {
         const handleScroll = () => {
             setShowScrollButton(window.scrollY > 300);
         };
