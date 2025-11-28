@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
@@ -32,6 +32,12 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     loadingMore,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
+    const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+    const handleImageLoad = (imageKey: string) => {
+        setLoadedImages(prev => new Set(prev).add(imageKey));
+    };
+
     const lastImageElementRef = useCallback((node: HTMLDivElement) => {
         if (loading || loadingMore) return;
         if (observer.current) observer.current.disconnect();
@@ -66,6 +72,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
             <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
                 {filteredImages.map((image, index) => {
                     const isLastElement = index === filteredImages.length - 1;
+                    const isLoaded = loadedImages.has(image.imageKey);
                     return (
                         <div key={image.imageKey} ref={isLastElement ? lastImageElementRef : null} className="image-card">
                             <LazyImage
@@ -74,8 +81,9 @@ const ImageGrid: React.FC<ImageGridProps> = ({
                                 className="grid-image"
                                 onClick={() => openModal(image)}
                                 style={{ animationDelay: `${(index % 30) * 50}ms` }}
+                                onImageLoad={() => handleImageLoad(image.imageKey)}
                             />
-                            <div className="badge-container">
+                            <div className={`badge-container ${isLoaded ? 'loaded' : ''}`}>
                                 {image.tags.includes('1st-edition') && (
                                     <div className="first-edition-badge">1st</div>
                                 )}

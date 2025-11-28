@@ -6,9 +6,10 @@ interface LazyImageProps {
     className?: string;
     onClick: () => void;
     style?: React.CSSProperties;
+    onImageLoad?: () => void;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, style }) => {
+const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, style, onImageLoad }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isInView, setIsInView] = useState(false);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -37,6 +38,13 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
         };
     }, []);
 
+    const handleImageLoad = () => {
+        setIsLoaded(true);
+        if (onImageLoad) {
+            onImageLoad();
+        }
+    };
+
     return (
         <div
             className={`lazy-image-container ${isLoaded ? 'loaded' : ''}`}
@@ -49,7 +57,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
                     src={src}
                     alt={alt}
                     className={className}
-                    onLoad={() => setIsLoaded(true)}
+                    onLoad={handleImageLoad}
                 />
             )}
         </div>
