@@ -1,15 +1,31 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .lazy-image-container {
-    background-color: #2d2d2d; /* A placeholder background color */
-    transition: background-color 0.3s;
-    min-height: 200px; /* Or a more appropriate height */
+    background-color: #2d2d2d;
+    min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
 }
 
 .lazy-image-container.loaded {
     background-color: transparent;
+}
+
+.lazy-image-container.error {
+    background-color: #222; /* Darker background for error state */
 }
 
 .lazy-image-container img {
@@ -19,4 +35,10 @@
 
 .lazy-image-container.loaded img {
     opacity: 1;
+}
+
+.image-error-placeholder {
+    color: #555;
+    font-size: 50px;
+    font-weight: bold;
 }

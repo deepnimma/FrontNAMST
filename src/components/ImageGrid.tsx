@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
-import LazyImage from './LazyImage'; // Import the LazyImage component
+import LazyImage from './LazyImage';
 
 interface ImageGridProps {
     loading: boolean;
@@ -13,6 +13,9 @@ interface ImageGridProps {
     query: string;
     showReverseHolos: boolean;
     searchPerformed: boolean;
+    loadMore: () => void;
+    hasMore: boolean;
+    loadingMore: boolean;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({
@@ -24,7 +27,22 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     query,
     showReverseHolos,
     searchPerformed,
+    loadMore,
+    hasMore,
+    loadingMore,
 }) => {
+    const observer = useRef<IntersectionObserver>();
+    const lastImageElementRef = useCallback(node => {
+        if (loading || loadingMore) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                loadMore();
+            }
+        });
+        if (node) observer.current.observe(node);
+    }, [loading, loadingMore, hasMore, loadMore]);
+
     const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
 
     if (loading) {
@@ -44,31 +62,38 @@ const ImageGrid: React.FC<ImageGridProps> = ({
     }
 
     return (
-        <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-            {filteredImages.map((image) => (
-                <div key={image.imageKey} className="image-card">
-                    <LazyImage
-                        src={`${R2_BUCKET_URL}/${image.imageKey}`}
-                        alt={image.cardTitle}
-                        className="grid-image"
-                        onClick={() => openModal(image)}
-                    />
-                    <div className="badge-container">
-                        {image.tags.includes('1st-edition') && (
-                            <div className="first-edition-badge">1st</div>
-                        )}
-                        {image.isReverseHolo === 1 && (
-                            <div className="reverse-holo-badge">RH</div>
-                        )}
-                    </div>
-                    {showSetNames && (
-                        <div className="set-name-overlay">
-                            <span>{capitalizeWords(image.setName)}</span>
+        <>
+            <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
+                {filteredImages.map((image, index) => {
+                    const isLastElement = index === filteredImages.length - 1;
+                    return (
+                        <div key={image.imageKey} ref={isLastElement ? lastImageElementRef : null} className="image-card">
+                            <LazyImage
+                                src={`${R2_BUCKET_URL}/${image.imageKey}`}
+                                alt={image.cardTitle}
+                                className="grid-image"
+                                onClick={() => openModal(image)}
+                                style={{ animationDelay: `${index * 50}ms` }}
+                            />
+                            <div className="badge-container">
+                                {image.tags.includes('1st-edition') && (
+                                    <div className="first-edition-badge">1st</div>
+                                )}
+                                {image.isReverseHolo === 1 && (
+                                    <div className="reverse-holo-badge">RH</div>
+                                )}
+                            </div>
+                            {showSetNames && (
+                                <div className="set-name-overlay">
+                                    <span>{capitalizeWords(image.setName)}</span>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            ))}
-        </div>
+                    );
+                })}
+            </div>
+            {loadingMore && <div className="loading-spinner"></div>}
+        </>
     );
 };
 

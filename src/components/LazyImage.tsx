@@ -5,12 +5,13 @@ interface LazyImageProps {
     alt: string;
     className?: string;
     onClick: () => void;
+    style?: React.CSSProperties;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick }) => {
+const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, style }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isInView, setIsInView] = useState(false);
-    const imgRef = useRef<HTMLImageElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -21,33 +22,34 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick }) =
                 }
             },
             {
-                rootMargin: '100px', // Load images 100px before they enter the viewport
+                rootMargin: '200px',
             }
         );
 
-        if (imgRef.current) {
-            observer.observe(imgRef.current);
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
         }
 
         return () => {
-            if (imgRef.current) {
-                observer.unobserve(imgRef.current);
+            if (containerRef.current) {
+                observer.unobserve(containerRef.current);
             }
         };
     }, []);
 
-    const handleImageLoad = () => {
-        setIsLoaded(true);
-    };
-
     return (
-        <div className={`lazy-image-container ${isLoaded ? 'loaded' : ''}`} ref={imgRef} onClick={onClick}>
+        <div
+            className={`lazy-image-container ${isLoaded ? 'loaded' : ''}`}
+            ref={containerRef}
+            onClick={onClick}
+            style={style}
+        >
             {isInView && (
                 <img
                     src={src}
                     alt={alt}
                     className={className}
-                    onLoad={handleImageLoad}
+                    onLoad={() => setIsLoaded(true)}
                 />
             )}
         </div>
