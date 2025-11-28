@@ -22,7 +22,7 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
                 }
             },
             {
-                rootMargin: '200px', // Start loading images 200px before they enter the viewport
+                rootMargin: '200px',
             }
         );
 
@@ -37,16 +37,6 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
         };
     }, []);
 
-    useEffect(() => {
-        if (isInView) {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => {
-                setIsLoaded(true);
-            };
-        }
-    }, [isInView, src]);
-
     return (
         <div
             className={`lazy-image-container ${isLoaded ? 'loaded' : ''}`}
@@ -54,11 +44,12 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
             onClick={onClick}
             style={style}
         >
-            {isLoaded && (
+            {isInView && (
                 <img
                     src={src}
                     alt={alt}
                     className={className}
+                    onLoad={() => setIsLoaded(true)}
                 />
             )}
         </div>
