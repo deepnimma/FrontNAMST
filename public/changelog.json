@@ -5,7 +5,8 @@
       "changes": [
         "Reorder entries in the filters box.",
         "Fix release date ordering button.",
-        "Add stamps for 1st edition and reverse holo cards."
+        "Add stamps for 1st edition and reverse holo cards.",
+        "Fix cards with alphabets in their card numbers not showing up."
       ]
     },
     {
