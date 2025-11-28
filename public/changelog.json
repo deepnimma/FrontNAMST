@@ -6,7 +6,7 @@
         "Reorder entries in the filters box.",
         "Fix release date ordering button.",
         "Add stamps for 1st edition and reverse holo cards.",
-        "Fix cards with alphabets in their card numbers not showing up."
+        "Fix cards with non numeric card numbers not showing up in the grid."
       ]
     },
     {
