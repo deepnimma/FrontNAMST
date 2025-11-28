@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
@@ -33,6 +33,10 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+
+    useEffect(() => {
+        setLoadedImages(new Set());
+    }, [query]);
 
     const handleImageLoad = (imageKey: string) => {
         setLoadedImages(prev => new Set(prev).add(imageKey));
