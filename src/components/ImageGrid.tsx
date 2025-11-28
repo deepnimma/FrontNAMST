@@ -19,7 +19,7 @@ interface ImageGridProps {
     sortOrder: 'asc' | 'desc';
 }
 
-const ImageGrid: React.FC<ImageGridProps> = ({
+const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     loading,
     images,
     gridCols,
@@ -155,6 +155,6 @@ const ImageGrid: React.FC<ImageGridProps> = ({
             {loadingMore && <div className="loading-spinner"></div>}
         </>
     );
-};
+});
 
 export default ImageGrid;
