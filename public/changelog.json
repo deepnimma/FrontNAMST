@@ -7,7 +7,8 @@
         "Fix release date ordering button.",
         "Add stamps for 1st edition and reverse holo cards.",
         "Fix cards with non numeric card numbers not showing up in the grid.",
-        "Fix cards not loading properly when there are too many on the screen."
+        "Fix cards not loading properly when there are too many on the screen.",
+        "Improve file loading performance."
       ]
     },
     {
