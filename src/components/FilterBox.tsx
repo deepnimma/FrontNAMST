@@ -38,6 +38,10 @@ const FilterBox: React.FC<FilterBoxProps> = ({
         setGridCols(gridCols === 3 ? 5 : 3);
     };
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     return (
         <div className="filter-box">
             <h3>Filters</h3>
@@ -94,6 +98,9 @@ const FilterBox: React.FC<FilterBoxProps> = ({
             <div className="grid-cols-buttons">
                 <button onClick={toggleGridCols} className="grid-toggle-button">
                     {gridCols === 5 ? '3 Cols' : '5 Cols'}
+                </button>
+                <button onClick={handlePrint} className="print-button">
+                    Print
                 </button>
             </div>
         </div>
