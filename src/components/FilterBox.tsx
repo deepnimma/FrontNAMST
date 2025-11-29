@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/FilterBox.css';
 
 interface FilterBoxProps {
@@ -34,12 +34,21 @@ const FilterBox: React.FC<FilterBoxProps> = ({
     showTrainerOwned,
     setShowTrainerOwned,
 }) => {
+    const [copied, setCopied] = useState(false);
+
     const toggleGridCols = () => {
         setGridCols(gridCols === 3 ? 5 : 3);
     };
 
     const handlePrint = () => {
         window.print();
+    };
+
+    const handleShare = () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
     };
 
     return (
@@ -98,6 +107,9 @@ const FilterBox: React.FC<FilterBoxProps> = ({
             <div className="grid-cols-buttons">
                 <button onClick={toggleGridCols} className="grid-toggle-button">
                     {gridCols === 5 ? '3 Cols' : '5 Cols'}
+                </button>
+                <button onClick={handleShare} className="share-button">
+                    {copied ? 'Copied!' : 'Share'}
                 </button>
                 <button onClick={handlePrint} className="print-button">
                     Print
