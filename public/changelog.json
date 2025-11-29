@@ -1,5 +1,14 @@
 [
     {
+      "version": "1.2.0",
+      "date": "2025-11-xx",
+      "changes": [
+        "Add a button to print out the cards currently displayed in search.",
+        "Reflect the search bar in the website url to make it easier to share.",
+        "Implement a share button that copies the current website url into your clipboard."
+      ]
+    },
+    {
       "version": "1.1.2",
       "date": "2025-11-28",
       "changes": [
