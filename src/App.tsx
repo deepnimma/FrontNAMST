@@ -48,6 +48,31 @@ function App() {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setQuery(params.get('query') || '');
+        setIsCameo(params.get('isCameo') === 'true');
+        setIsTrainer(params.get('isTrainer') === 'true');
+        setIsIllustrator(params.get('isIllustrator') === 'true');
+        setIsSet(params.get('isSet') === 'true');
+        const sortOrderFromUrl = params.get('sortOrder');
+        if (sortOrderFromUrl === 'asc' || sortOrderFromUrl === 'desc') {
+            setSortOrder(sortOrderFromUrl);
+        }
+    }, []);
+
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (query) params.set('query', query);
+        if (isCameo) params.set('isCameo', 'true');
+        if (isTrainer) params.set('isTrainer', 'true');
+        if (isIllustrator) params.set('isIllustrator', 'true');
+        if (isSet) params.set('isSet', 'true');
+        if (sortOrder !== 'asc') params.set('sortOrder', sortOrder);
+
+        window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+    }, [query, isCameo, isTrainer, isIllustrator, isSet, sortOrder]);
+
+    useEffect(() => {
         setShowMissingCardButton(images.length > 0);
     }, [images]);
 
