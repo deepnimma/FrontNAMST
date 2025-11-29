@@ -48,6 +48,24 @@ function App() {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const queryFromUrl = params.get('query');
+        if (queryFromUrl) {
+            setQuery(queryFromUrl);
+        }
+    }, []);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (query) {
+            params.set('query', query);
+        } else {
+            params.delete('query');
+        }
+        window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+    }, [query]);
+
+    useEffect(() => {
         setShowMissingCardButton(images.length > 0);
     }, [images]);
 
