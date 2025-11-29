@@ -267,7 +267,8 @@ html {
     .scroll-to-top-button,
     .modal,
     .changelog,
-    .header-container {
+    .header-container,
+    .missing-card-button {
         display: none !important;
     }
 
