@@ -1,6 +1,6 @@
 import './App.css';
 import './styles/LazyImage.css';
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import type { CardImage } from './lib/types';
 import { useCardSearch } from './hooks/useCardSearch';
 import { useAppEffects } from './hooks/useAppEffects';
@@ -47,8 +47,6 @@ function App() {
     const [isSet, setIsSet] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    const isInitialMount = useRef(true);
-
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         setQuery(params.get('query') || '');
@@ -91,16 +89,6 @@ function App() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-        } else {
-            if (searchPerformed) {
-                setSearchId(id => id + 1);
-            }
-        }
-    }, [showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
     const performSearch = () => {
         setSearchId(id => id + 1);
@@ -228,6 +216,10 @@ function App() {
         return tempImages;
     }, [images, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
+    const imageGridKey = useMemo(() => {
+        return `${searchId}-${showReverseHolos}-${hideFirstEditions}-${showEnergyCards}-${showItemCards}-${showTrainerOwned}`;
+    }, [searchId, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+
 
     return (
         <>
@@ -265,7 +257,7 @@ function App() {
 
                     <div className={`content-with-filters ${images.length > 0 ? 'filters-visible' : ''}`}>
                         <ImageGrid
-                            key={searchId}
+                            key={imageGridKey}
                             loading={loading}
                             images={filteredImages}
                             gridCols={gridCols}
