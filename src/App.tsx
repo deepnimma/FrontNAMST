@@ -133,7 +133,6 @@ function App() {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
         if (searchPerformed) {
-            setSearchId(id => id + 1);
             handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
         } else {
             const sortedImages = [...images].sort((a, b) => {
@@ -217,8 +216,8 @@ function App() {
     }, [images, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
     const imageGridKey = useMemo(() => {
-        return `${searchId}-${showReverseHolos}-${hideFirstEditions}-${showEnergyCards}-${showItemCards}-${showTrainerOwned}`;
-    }, [searchId, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+        return `${searchId}-${sortOrder}-${showReverseHolos}-${hideFirstEditions}-${showEnergyCards}-${showItemCards}-${showTrainerOwned}`;
+    }, [searchId, sortOrder, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
 
     return (
