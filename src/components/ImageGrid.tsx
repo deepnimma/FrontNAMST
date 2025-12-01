@@ -11,11 +11,11 @@ interface ImageGridProps {
     openModal: (image: CardImage) => void;
     showSetNames: boolean;
     query: string;
-    showReverseHolos: boolean;
     searchPerformed: boolean;
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
+    isNewSearch: boolean;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = React.memo(({
@@ -25,54 +25,24 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     openModal,
     showSetNames,
     query,
-    showReverseHolos,
     searchPerformed,
     loadMore,
     hasMore,
     loadingMore,
+    isNewSearch,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-    const isInitialMount = useRef(true);
-    const prevImagesRef = useRef<CardImage[]>([]);
 
     useEffect(() => {
-        const prevImages = prevImagesRef.current;
-        // Update ref early so we have it in all logic paths.
-        prevImagesRef.current = images;
-
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            // Animate initial images if they exist.
-            if (images.length > 0) {
-                const timer = setTimeout(() => {
-                    setLoadedImages(new Set(images.map(img => img.imageKey)));
-                }, 0);
-                return () => clearTimeout(timer);
-            }
-            return;
-        }
-
-        if (!prevImages) return;
-
-        // Heuristic to detect "load more" vs "new list"
-        const isLoadMore = images.length > prevImages.length &&
-            prevImages.length > 0 &&
-            images[0].imageKey === prevImages[0].imageKey;
-
-        if (!isLoadMore) {
-            // This is a new search or sort. Re-animate everything.
-            setLoadedImages(new Set());
+        // Animate initial images on mount
+        if (images.length > 0) {
             const timer = setTimeout(() => {
-                if (images.length > 0) {
-                    setLoadedImages(new Set(images.map(img => img.imageKey)));
-                }
-            }, 20);
+                setLoadedImages(new Set(images.map(img => img.imageKey)));
+            }, 0);
             return () => clearTimeout(timer);
         }
-        // For "load more", we do nothing here; `handleImageLoad` will animate new images.
     }, [images]);
-
 
     const handleImageLoad = (imageKey: string) => {
         setLoadedImages(prev => {
@@ -96,9 +66,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
         if (node) observer.current.observe(node);
     }, [loading, loadingMore, hasMore, loadMore]);
 
-    const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
-
-    if (loading) {
+    if (loading && isNewSearch) {
         return <div className="loading-spinner"></div>;
     }
 
@@ -117,8 +85,8 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     return (
         <>
             <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-                {filteredImages.map((image, index) => {
-                    const isLastElement = index === filteredImages.length - 1;
+                {images.map((image, index) => {
+                    const isLastElement = index === images.length - 1;
                     const isLoaded = loadedImages.has(image.imageKey);
                     return (
                         <div

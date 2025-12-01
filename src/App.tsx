@@ -19,16 +19,16 @@ import FilterBox from './components/FilterBox';
 function App() {
     const [query, setQuery] = useState('');
     const [lastExecutedQuery, setLastExecutedQuery] = useState('');
-    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore } = useCardSearch();
+    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch } = useCardSearch();
     const {
         showScrollButton,
         isChangelogOpen,
         setIsChangelogOpen,
         changelogData,
-        placeholderIndex, // Get placeholderIndex from useAppEffects
+        placeholderIndex,
     } = useAppEffects(query);
 
-    const [gridCols, setGridCols] = useState(5); // Default to 5 for desktop
+    const [gridCols, setGridCols] = useState(5);
     const [selectedImage, setSelectedImage] = useState<CardImage | null>(null);
     const [showSetNames, setShowSetNames] = useState(false);
     const [showReverseHolos, setShowReverseHolos] = useState(true);
@@ -39,8 +39,8 @@ function App() {
     const [showEnergyCards, setShowEnergyCards] = useState(false);
     const [showItemCards, setShowItemCards] = useState(true);
     const [showTrainerOwned, setShowTrainerOwned] = useState(true);
+    const [searchId, setSearchId] = useState(0);
 
-    // State for filters
     const [isCameo, setIsCameo] = useState(false);
     const [isTrainer, setIsTrainer] = useState(false);
     const [isIllustrator, setIsIllustrator] = useState(false);
@@ -79,25 +79,25 @@ function App() {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 768) {
-                setGridCols(3); // Default to 3 for mobile
+                setGridCols(3);
             } else {
-                setGridCols(5); // Default to 5 for desktop
+                setGridCols(5);
             }
         };
 
-        handleResize(); // Set initial value
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const performSearch = () => {
+        setSearchId(id => id + 1);
         setSearchPerformed(true);
         const newSortOrder = 'asc';
         setSortOrder(newSortOrder);
         setLastExecutedQuery(query);
         handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
     };
-
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -118,6 +118,7 @@ function App() {
         setIsIllustrator(false);
         setIsSet(false);
         setSearchPerformed(false);
+        setSearchId(0);
     };
 
     const handleFocus = () => {
@@ -193,22 +194,30 @@ function App() {
     };
 
     const filteredImages = useMemo(() => {
-        return images.filter(image => {
-            if (hideFirstEditions && image.tags.includes('1st-edition')) {
-                return false;
-            }
-            if (!showEnergyCards && image.tags.includes('energy')) {
-                return false;
-            }
-            if (!showItemCards && image.item === 1) {
-                return false;
-            }
-            if (!showTrainerOwned && image.trainerOwned === 1) {
-                return false;
-            }
-            return true;
-        });
-    }, [images, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+        let tempImages = images;
+
+        if (!showReverseHolos) {
+            tempImages = tempImages.filter(image => image.isReverseHolo !== 1);
+        }
+        if (hideFirstEditions) {
+            tempImages = tempImages.filter(image => !image.tags.includes('1st-edition'));
+        }
+        if (!showEnergyCards) {
+            tempImages = tempImages.filter(image => !image.tags.includes('energy'));
+        }
+        if (!showItemCards) {
+            tempImages = tempImages.filter(image => image.item !== 1);
+        }
+        if (!showTrainerOwned) {
+            tempImages = tempImages.filter(image => image.trainerOwned !== 1);
+        }
+
+        return tempImages;
+    }, [images, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+
+    const imageGridKey = useMemo(() => {
+        return `${searchId}-${sortOrder}-${showReverseHolos}-${hideFirstEditions}-${showEnergyCards}-${showItemCards}-${showTrainerOwned}`;
+    }, [searchId, sortOrder, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
 
     return (
@@ -247,17 +256,18 @@ function App() {
 
                     <div className={`content-with-filters ${images.length > 0 ? 'filters-visible' : ''}`}>
                         <ImageGrid
+                            key={imageGridKey}
                             loading={loading}
                             images={filteredImages}
                             gridCols={gridCols}
                             openModal={openModal}
                             showSetNames={showSetNames}
                             query={lastExecutedQuery}
-                            showReverseHolos={showReverseHolos}
                             searchPerformed={searchPerformed}
                             loadMore={loadMore}
                             hasMore={hasMore}
                             loadingMore={loadingMore}
+                            isNewSearch={isNewSearch}
                         />
                         {images.length > 0 && (
                             <>

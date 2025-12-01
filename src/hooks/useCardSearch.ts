@@ -12,11 +12,12 @@ export const useCardSearch = () => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
     const [currentQuery, setCurrentQuery] = useState({});
+    const [isNewSearch, setIsNewSearch] = useState(false);
 
-    const fetchImages = useCallback(async (searchParams: any, isNewSearch: boolean) => {
-        if (isNewSearch) {
+    const fetchImages = useCallback(async (searchParams: any, isNew: boolean) => {
+        if (isNew) {
             setLoading(true);
-            setImages([]);
+            setIsNewSearch(true);
         } else {
             setLoadingMore(true);
         }
@@ -28,14 +29,18 @@ export const useCardSearch = () => {
             const data = await response.json();
             const newImages = data.image_rows || [];
 
-            setImages(prev => isNewSearch ? newImages : [...prev, ...newImages]);
-            setHasMore(newImages.length === (isNewSearch ? PAGE_SIZE_INITIAL : PAGE_SIZE_MORE));
+            setImages(prev => (isNew ? newImages : [...prev, ...newImages]));
+            setHasMore(newImages.length === (isNew ? PAGE_SIZE_INITIAL : PAGE_SIZE_MORE));
         } catch (error) {
             console.error("Error fetching images:", error);
             alert("Failed to fetch images. Check console for details.");
+            if (isNew) {
+                setImages([]); // On error, clear the grid for a new search.
+            }
         } finally {
             setLoading(false);
             setLoadingMore(false);
+            setIsNewSearch(false);
         }
     }, []);
 
@@ -74,5 +79,5 @@ export const useCardSearch = () => {
         fetchImages(newQuery, false);
     }, [loadingMore, hasMore, page, currentQuery, fetchImages]);
 
-    return { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore };
+    return { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch };
 };
