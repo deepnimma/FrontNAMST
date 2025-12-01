@@ -35,37 +35,13 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
-    const isInitialMount = useRef(true);
-    const prevImagesRef = useRef<CardImage[]>([]);
 
     useEffect(() => {
-        const prevImages = prevImagesRef.current;
-        prevImagesRef.current = images;
-
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            if (images.length > 0) {
-                const timer = setTimeout(() => {
-                    setLoadedImages(new Set(images.map(img => img.imageKey)));
-                }, 0);
-                return () => clearTimeout(timer);
-            }
-            return;
-        }
-
-        if (!prevImages) return;
-
-        const isLoadMore = images.length > prevImages.length &&
-            prevImages.length > 0 &&
-            images[0].imageKey === prevImages[0].imageKey;
-
-        if (!isLoadMore) {
-            setLoadedImages(new Set());
+        // Animate initial images on mount
+        if (images.length > 0) {
             const timer = setTimeout(() => {
-                if (images.length > 0) {
-                    setLoadedImages(new Set(images.map(img => img.imageKey)));
-                }
-            }, 20);
+                setLoadedImages(new Set(images.map(img => img.imageKey)));
+            }, 0);
             return () => clearTimeout(timer);
         }
     }, [images]);

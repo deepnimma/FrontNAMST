@@ -34,6 +34,9 @@ export const useCardSearch = () => {
         } catch (error) {
             console.error("Error fetching images:", error);
             alert("Failed to fetch images. Check console for details.");
+            if (isNew) {
+                setImages([]); // On error, clear the grid for a new search.
+            }
         } finally {
             setLoading(false);
             setLoadingMore(false);
@@ -44,7 +47,6 @@ export const useCardSearch = () => {
     const handleSearch = useCallback((query: string, isCameo: boolean, isTrainer: boolean, isIllustrator: boolean, sortOrder: 'asc' | 'desc', isSet: boolean) => {
         if (!query.trim()) return;
 
-        setImages([]);
         const newQuery = {
             q: query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(','),
             limit: PAGE_SIZE_INITIAL,
