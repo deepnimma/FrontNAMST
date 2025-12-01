@@ -16,6 +16,7 @@ interface ImageGridProps {
     loadMore: () => void;
     hasMore: boolean;
     loadingMore: boolean;
+    isNewSearch: boolean;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = React.memo(({
@@ -30,6 +31,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     loadMore,
     hasMore,
     loadingMore,
+    isNewSearch,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
@@ -38,12 +40,10 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 
     useEffect(() => {
         const prevImages = prevImagesRef.current;
-        // Update ref early so we have it in all logic paths.
         prevImagesRef.current = images;
 
         if (isInitialMount.current) {
             isInitialMount.current = false;
-            // Animate initial images if they exist.
             if (images.length > 0) {
                 const timer = setTimeout(() => {
                     setLoadedImages(new Set(images.map(img => img.imageKey)));
@@ -55,13 +55,11 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 
         if (!prevImages) return;
 
-        // Heuristic to detect "load more" vs "new list"
         const isLoadMore = images.length > prevImages.length &&
             prevImages.length > 0 &&
             images[0].imageKey === prevImages[0].imageKey;
 
         if (!isLoadMore) {
-            // This is a new search or sort. Re-animate everything.
             setLoadedImages(new Set());
             const timer = setTimeout(() => {
                 if (images.length > 0) {
@@ -70,9 +68,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
             }, 20);
             return () => clearTimeout(timer);
         }
-        // For "load more", we do nothing here; `handleImageLoad` will animate new images.
     }, [images]);
-
 
     const handleImageLoad = (imageKey: string) => {
         setLoadedImages(prev => {
@@ -98,7 +94,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 
     const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
 
-    if (loading) {
+    if (loading && isNewSearch) {
         return <div className="loading-spinner"></div>;
     }
 

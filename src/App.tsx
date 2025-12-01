@@ -19,7 +19,7 @@ import FilterBox from './components/FilterBox';
 function App() {
     const [query, setQuery] = useState('');
     const [lastExecutedQuery, setLastExecutedQuery] = useState('');
-    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore } = useCardSearch();
+    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch } = useCardSearch();
     const {
         showScrollButton,
         isChangelogOpen,
@@ -258,6 +258,7 @@ function App() {
                             loadMore={loadMore}
                             hasMore={hasMore}
                             loadingMore={loadingMore}
+                            isNewSearch={isNewSearch}
                         />
                         {images.length > 0 && (
                             <>
