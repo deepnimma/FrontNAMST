@@ -49,15 +49,29 @@ function App() {
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        setQuery(params.get('query') || '');
-        setIsCameo(params.get('isCameo') === 'true');
-        setIsTrainer(params.get('isTrainer') === 'true');
-        setIsIllustrator(params.get('isIllustrator') === 'true');
-        setIsSet(params.get('isSet') === 'true');
-        const sortOrderFromUrl = params.get('sortOrder');
-        if (sortOrderFromUrl === 'asc' || sortOrderFromUrl === 'desc') {
-            setSortOrder(sortOrderFromUrl);
+        const queryFromUrl = params.get('query');
+
+        if (queryFromUrl) {
+            const isCameoFromUrl = params.get('isCameo') === 'true';
+            const isTrainerFromUrl = params.get('isTrainer') === 'true';
+            const isIllustratorFromUrl = params.get('isIllustrator') === 'true';
+            const isSetFromUrl = params.get('isSet') === 'true';
+            const sortOrderFromUrl = params.get('sortOrder');
+            const newSortOrder = (sortOrderFromUrl === 'asc' || sortOrderFromUrl === 'desc') ? sortOrderFromUrl : 'asc';
+
+            setQuery(queryFromUrl);
+            setIsCameo(isCameoFromUrl);
+            setIsTrainer(isTrainerFromUrl);
+            setIsIllustrator(isIllustratorFromUrl);
+            setIsSet(isSetFromUrl);
+            setSortOrder(newSortOrder);
+
+            setSearchId(id => id + 1);
+            setSearchPerformed(true);
+            setLastExecutedQuery(queryFromUrl);
+            handleSearch(queryFromUrl, isCameoFromUrl, isTrainerFromUrl, isIllustratorFromUrl, newSortOrder, isSetFromUrl);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
