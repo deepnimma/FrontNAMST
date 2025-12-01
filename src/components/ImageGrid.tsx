@@ -11,7 +11,6 @@ interface ImageGridProps {
     openModal: (image: CardImage) => void;
     showSetNames: boolean;
     query: string;
-    showReverseHolos: boolean;
     searchPerformed: boolean;
     loadMore: () => void;
     hasMore: boolean;
@@ -26,7 +25,6 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     openModal,
     showSetNames,
     query,
-    showReverseHolos,
     searchPerformed,
     loadMore,
     hasMore,
@@ -68,8 +66,6 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
         if (node) observer.current.observe(node);
     }, [loading, loadingMore, hasMore, loadMore]);
 
-    const filteredImages = showReverseHolos ? images : images.filter(image => image.isReverseHolo !== 1);
-
     if (loading && isNewSearch) {
         return <div className="loading-spinner"></div>;
     }
@@ -89,8 +85,8 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     return (
         <>
             <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-                {filteredImages.map((image, index) => {
-                    const isLastElement = index === filteredImages.length - 1;
+                {images.map((image, index) => {
+                    const isLastElement = index === images.length - 1;
                     const isLoaded = loadedImages.has(image.imageKey);
                     return (
                         <div

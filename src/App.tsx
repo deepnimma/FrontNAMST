@@ -1,6 +1,6 @@
 import './App.css';
 import './styles/LazyImage.css';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import type { CardImage } from './lib/types';
 import { useCardSearch } from './hooks/useCardSearch';
 import { useAppEffects } from './hooks/useAppEffects';
@@ -47,6 +47,8 @@ function App() {
     const [isSet, setIsSet] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+    const isInitialMount = useRef(true);
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         setQuery(params.get('query') || '');
@@ -89,6 +91,16 @@ function App() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            if (searchPerformed) {
+                setSearchId(id => id + 1);
+            }
+        }
+    }, [showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
 
     const performSearch = () => {
         setSearchId(id => id + 1);
@@ -195,22 +207,27 @@ function App() {
     };
 
     const filteredImages = useMemo(() => {
-        return images.filter(image => {
-            if (hideFirstEditions && image.tags.includes('1st-edition')) {
-                return false;
-            }
-            if (!showEnergyCards && image.tags.includes('energy')) {
-                return false;
-            }
-            if (!showItemCards && image.item === 1) {
-                return false;
-            }
-            if (!showTrainerOwned && image.trainerOwned === 1) {
-                return false;
-            }
-            return true;
-        });
-    }, [images, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+        let tempImages = images;
+
+        if (!showReverseHolos) {
+            tempImages = tempImages.filter(image => image.isReverseHolo !== 1);
+        }
+        if (hideFirstEditions) {
+            tempImages = tempImages.filter(image => !image.tags.includes('1st-edition'));
+        }
+        if (!showEnergyCards) {
+            tempImages = tempImages.filter(image => !image.tags.includes('energy'));
+        }
+        if (!showItemCards) {
+            tempImages = tempImages.filter(image => image.item !== 1);
+        }
+        if (!showTrainerOwned) {
+            tempImages = tempImages.filter(image => image.trainerOwned !== 1);
+        }
+
+        return tempImages;
+    }, [images, showReverseHolos, hideFirstEditions, showEnergyCards, showItemCards, showTrainerOwned]);
+
 
     return (
         <>
@@ -255,7 +272,6 @@ function App() {
                             openModal={openModal}
                             showSetNames={showSetNames}
                             query={lastExecutedQuery}
-                            showReverseHolos={showReverseHolos}
                             searchPerformed={searchPerformed}
                             loadMore={loadMore}
                             hasMore={hasMore}
