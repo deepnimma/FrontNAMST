@@ -27,7 +27,7 @@ export const useCardSearch = () => {
             const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
             if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
             const data = await response.json();
-            const newImages = data.image_rows || [];
+            const newImages: CardImage[] = data.image_rows || [];
 
             if (isNew) {
                 setImages(newImages);
