@@ -29,13 +29,21 @@ export const useCardSearch = () => {
             const data = await response.json();
             const newImages = data.image_rows || [];
 
-            setImages(prev => (isNew ? newImages : [...prev, ...newImages]));
+            if (isNew) {
+                setImages(newImages);
+            } else {
+                setImages(prev => {
+                    const existingKeys = new Set(prev.map(img => img.imageKey));
+                    const uniqueNewImages = newImages.filter(img => !existingKeys.has(img.imageKey));
+                    return [...prev, ...uniqueNewImages];
+                });
+            }
             setHasMore(newImages.length === (isNew ? PAGE_SIZE_INITIAL : PAGE_SIZE_MORE));
         } catch (error) {
             console.error("Error fetching images:", error);
             alert("Failed to fetch images. Check console for details.");
             if (isNew) {
-                setImages([]); // On error, clear the grid for a new search.
+                setImages([]);
             }
         } finally {
             setLoading(false);
@@ -47,6 +55,7 @@ export const useCardSearch = () => {
     const handleSearch = useCallback((query: string, isCameo: boolean, isTrainer: boolean, isIllustrator: boolean, sortOrder: 'asc' | 'desc', isSet: boolean) => {
         if (!query.trim()) return;
 
+        setImages([]); // Clear images for new search
         const newQuery = {
             q: query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(','),
             limit: PAGE_SIZE_INITIAL,
