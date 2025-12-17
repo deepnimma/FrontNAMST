@@ -38,17 +38,28 @@
     object-fit: cover;
 }
 
-.set-name-overlay {
+.set-name-badge {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
     background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 8px;
-    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
     text-align: center;
     box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transition-delay: 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.set-name-badge.loaded {
+    opacity: 1;
 }
 
 .badge-container {
