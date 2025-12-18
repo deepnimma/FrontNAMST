@@ -2,7 +2,8 @@ import React from 'react';
 import { X } from 'lucide-react';
 import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
-import { capitalizeWords, parseTags } from '../lib/utils';
+import { capitalizeWords, parseTags, generateTcgplayerLink } from '../lib/utils';
+import '../styles/Modal.css';
 
 interface ModalProps {
     selectedImage: CardImage | null;
@@ -11,6 +12,8 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ selectedImage, closeModal }) => {
     if (!selectedImage) return null;
+
+    const tcgplayerLink = generateTcgplayerLink(selectedImage.setName, selectedImage.cardTitle);
 
     const renderTags = () => {
         if (!selectedImage || !selectedImage.tags) return null;
@@ -36,6 +39,9 @@ const Modal: React.FC<ModalProps> = ({ selectedImage, closeModal }) => {
                     <p><strong>Illustrator:</strong> {capitalizeWords(selectedImage.illustrator)}</p>
                     <p><strong>Release Date:</strong> {selectedImage.releaseDate}</p>
                     {renderTags()}
+                    <a href={tcgplayerLink} target="_blank" rel="noopener noreferrer" className="tcgplayer-button">
+                        View on TCGPlayer
+                    </a>
                 </div>
             </div>
         </div>

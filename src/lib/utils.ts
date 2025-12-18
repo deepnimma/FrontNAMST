@@ -15,3 +15,12 @@ export const parseTags = (tagsString: string): string[] => {
     }
     return [];
 };
+
+// Helper to generate TCGPlayer link
+export const generateTcgplayerLink = (setName: string, cardTitle: string): string => {
+    const searchString = `${cardTitle.toLowerCase().replace(/-/g, ' ')} ${setName.toLowerCase().replace(/-/g, ' ')}`;
+    const tcgplayerLink = `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${searchString}&view=grid&productTypeName=cards`;
+    const encodedTcgplayerLink = encodeURIComponent(tcgplayerLink);
+
+    return `https://partner.tcgplayer.com/namst?u=${encodedTcgplayerLink}`;
+};

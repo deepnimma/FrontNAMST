@@ -116,3 +116,19 @@
     background-color: #BA0C2F;
     transform: scale(1.1);
 }
+
+.tcgplayer-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #1a73e8;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.tcgplayer-button:hover {
+    background-color: #1669c1;
+}
