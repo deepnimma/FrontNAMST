@@ -11,8 +11,14 @@ export interface CardImage {
     trainerOwned: number;
 }
 
+export interface ChangeItem {
+    category: 'new' | 'improvements' | 'fixes' | 'cards';
+    description: string;
+}
+
 export interface ChangelogEntry {
     version: string;
     date: string;
-    changes: string[];
+    title?: string; // Optional title for the version
+    changes: ChangeItem[];
 }

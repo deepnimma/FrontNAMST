@@ -1,89 +1,101 @@
 [
     {
-      "version": "1.2.1",
-      "date": "2025-12-03",
-      "changes": [
-        "Fix duplicate images appearing when searching with the cameo flag enabled."
-      ]
+        "version": "1.2.1",
+        "date": "2025-12-03",
+        "changes": [
+            { "category": "fixes", "description": "Fix duplicate images appearing when searching with the cameo flag enabled." }
+        ]
     },
     {
-      "version": "1.2.0",
-      "date": "2025-11-30",
-      "changes": [
-        "Add a button to print out the cards currently displayed in search.",
-        "Reflect the search bar in the website url to make it easier to share.",
-        "Implement a share button that copies the current website url into your clipboard.",
-        "Fix issue with filters when the cameo flag was enabled."
-      ]
+        "version": "1.2.0",
+        "date": "2025-11-30",
+        "title": "The 'Share & Print' Update",
+        "changes": [
+            { "category": "new", "description": "Add a button to print out the cards currently displayed in search." },
+            { "category": "new", "description": "Reflect the search bar in the website url to make it easier to share." },
+            { "category": "new", "description": "Implement a share button that copies the current website url into your clipboard." },
+            { "category": "fixes", "description": "Fix issue with filters when the cameo flag was enabled." }
+        ]
     },
     {
-      "version": "1.1.2",
-      "date": "2025-11-28",
-      "changes": [
-        "Make sure sort button resets to default state upon a new search.",
-        "Fix badges not being animated upon a search."
-      ]
+        "version": "1.1.2",
+        "date": "2025-11-28",
+        "changes": [
+            { "category": "improvements", "description": "Make sure sort button resets to default state upon a new search." },
+            { "category": "fixes", "description": "Fix badges not being animated upon a search." }
+        ]
     },
     {
-      "version": "1.1.1",
-      "date": "2025-11-27",
-      "changes": [
-        "Reorder entries in the filters box.",
-        "Fix release date ordering button.",
-        "Add stamps for 1st edition and reverse holo cards.",
-        "Fix cards with non numeric card numbers not showing up in the grid.",
-        "Fix cards not loading properly when there are too many on the screen.",
-        "Improve file loading performance."
-      ]
+        "version": "1.1.1",
+        "date": "2025-11-27",
+        "changes": [
+            { "category": "improvements", "description": "Reorder entries in the filters box." },
+            { "category": "fixes", "description": "Fix release date ordering button." },
+            { "category": "new", "description": "Add stamps for 1st edition and reverse holo cards." },
+            { "category": "fixes", "description": "Fix cards with non numeric card numbers not showing up in the grid." },
+            { "category": "fixes", "description": "Fix cards not loading properly when there are too many on the screen." },
+            { "category": "improvements", "description": "Improve file loading performance." }
+        ]
     },
     {
-      "version": "1.1.0",
-      "date": "2025-11-25",
-      "changes": [
-        "Implement set searching.",
-        "Added a filter to show/hide energy cards.",
-        "Fix an issue with the filters box moving when there are no images in the grid.",
-        "Add a filter to show/hide trainer cards.",
-        "Add a filter to show/hide trainer owned pokemon."
-      ]
+        "version": "1.1.0",
+        "date": "2025-11-25",
+        "changes": [
+            { "category": "new", "description": "Implement set searching." },
+            { "category": "new", "description": "Added a filter to show/hide energy cards." },
+            { "category": "fixes", "description": "Fix an issue with the filters box moving when there are no images in the grid." },
+            { "category": "new", "description": "Add a filter to show/hide trainer cards." },
+            { "category": "new", "description": "Add a filter to show/hide trainer owned pokemon." }
+        ]
     },
     {
-      "version": "1.0.4",
-      "date": "2025-11-23",
-      "changes": [
-        "Improve image loading performance.",
-        "Move some filters to a designated filters box.",
-        "Add a button to filter out 1st edition cards.",
-        "Fix sort button.",
-        "Add a helpful search tip."
-      ]
+        "version": "1.0.4",
+        "date": "2025-11-23",
+        "changes": [
+            { "category": "improvements", "description": "Improve image loading performance." },
+            { "category": "improvements", "description": "Move some filters to a designated filters box." },
+            { "category": "new", "description": "Add a button to filter out 1st edition cards." },
+            { "category": "fixes", "description": "Fix sort button." },
+            { "category": "new", "description": "Add a helpful search tip." }
+        ]
     },
     {
-      "version": "1.0.3",
-      "date": "2025-11-22",
-      "changes": [
-        "Added a donation button.",
-        "Added a button to report a missing card.",
-        "Update buttons to be more mobile friendly.",
-        "Fix text clipping issue on mobile.",
-        "Set default grid size on mobile to 3 columns.",
-        "Change accent color.",
-        "Add animation to website title."
-      ]
+        "version": "1.0.3",
+        "date": "2025-11-22",
+        "changes": [
+            { "category": "new", "description": "Added a donation button." },
+            { "category": "new", "description": "Added a button to report a missing card." },
+            { "category": "improvements", "description": "Update buttons to be more mobile friendly." },
+            { "category": "fixes", "description": "Fix text clipping issue on mobile." },
+            { "category": "improvements", "description": "Set default grid size on mobile to 3 columns." },
+            { "category": "improvements", "description": "Change accent color." },
+            { "category": "new", "description": "Add animation to website title." }
+        ]
     },
     {
         "version": "1.0.2",
         "date": "2025-11-22",
-        "changes": ["Added a changelog."]
+        "changes": [
+            { "category": "new", "description": "Added a changelog." }
+        ]
     },
     {
         "version": "1.0.1",
         "date": "2025-11-21",
-        "changes": ["Added mobile support.", "Title now changes on mobile.", "Search bar is now sticky.", "Added a scroll-to-top button.", "Added a button to show/hide reverse holofoils."]
+        "changes": [
+            { "category": "improvements", "description": "Added mobile support." },
+            { "category": "improvements", "description": "Title now changes on mobile." },
+            { "category": "improvements", "description": "Search bar is now sticky." },
+            { "category": "new", "description": "Added a scroll-to-top button." },
+            { "category": "new", "description": "Added a button to show/hide reverse holofoils." }
+        ]
     },
     {
         "version": "1.0.0",
         "date": "2025-11-21",
-        "changes": ["Initial release of NottDex."]
+        "title": "Initial Release",
+        "changes": [
+            { "category": "new", "description": "Initial release of NottDex." }
+        ]
     }
 ]

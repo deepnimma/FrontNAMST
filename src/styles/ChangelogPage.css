@@ -1,0 +1,311 @@
+.changelog-page-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    background-color: #1e1e1e;
+    min-height: 100vh;
+    flex-direction: row-reverse;
+    overscroll-behavior: none;
+}
+
+.changelog-header {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 0;
+    background: transparent;
+    margin: 0;
+    width: auto;
+    z-index: 1000;
+}
+
+.changelog-page {
+    padding: 20px;
+    padding-top: 80px;
+    background-color: transparent;
+    color: #e0e0e0;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+}
+
+.home-link-button {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.home-link-button:hover {
+    color: #BA0C2F;
+}
+
+.changelog-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.changelog-title {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #BA0C2F;
+    border-bottom: 3px solid #BA0C2F;
+    padding-bottom: 15px;
+}
+
+.version-section {
+    margin-bottom: 40px;
+    padding: 25px;
+    border-radius: 12px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    scroll-margin-top: 140px;
+}
+
+.version-section.major {
+    border: 2px solid #BA0C2F;
+    box-shadow: 0 0 15px rgba(186, 12, 47, 0.3);
+}
+
+.version-section.minor {
+    border-left: 4px solid #BA0C2F;
+}
+
+.version-section.patch {
+    border-left: 4px solid #444;
+}
+
+.version-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.version-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.version-subtitle {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #aaa;
+    margin: 5px 0 0 0;
+}
+
+.release-date {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+.changes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.change-category {
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid transparent;
+}
+
+.change-category.new {
+    background-color: rgba(186, 12, 47, 0.1);
+    border-color: rgba(186, 12, 47, 0.3);
+}
+
+.change-category.cards {
+    background-color: rgba(186, 12, 47, 0.1);
+    border-color: rgba(186, 12, 47, 0.3);
+}
+
+.change-category.improvements {
+    background-color: rgba(224, 224, 224, 0.05);
+    border-color: rgba(224, 224, 224, 0.1);
+}
+
+.change-category.fixes {
+    background-color: rgba(136, 136, 136, 0.05);
+    border-color: rgba(136, 136, 136, 0.1);
+}
+
+.category-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #555;
+}
+
+.change-category.new .category-title { color: #BA0C2F; }
+.change-category.cards .category-title { color: #BA0C2F; }
+.change-category.improvements .category-title { color: #e0e0e0; }
+.change-category.fixes .category-title { color: #888; }
+
+
+.changes-list {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.change-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.change-item:last-child {
+    border-bottom: none;
+}
+
+.version-tree {
+    position: sticky;
+    top: 100px;
+    width: 260px;
+    margin-right: 20px;
+    margin-left: 20px;
+    align-self: flex-start;
+    background-color: transparent;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.tree-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #BA0C2F;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-left: 10px;
+    border-bottom: none;
+}
+
+.version-tree ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 3px solid #444;
+}
+
+.version-tree li button {
+    background: none;
+    border: none;
+    color: #888;
+    padding: 12px 20px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s, transform 0.2s;
+    position: relative;
+}
+
+.version-tree li button:hover {
+    color: #e0e0e0;
+    transform: translateX(5px);
+}
+
+.version-tree li.active button {
+    color: #BA0C2F;
+    font-weight: 600;
+    transform: translateX(5px);
+}
+
+.version-tree li.active button::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #BA0C2F;
+    border-radius: 50%;
+}
+
+@media (max-width: 1024px) {
+    .changelog-page-wrapper {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .changelog-header {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 10px;
+        text-align: center;
+        width: 100%;
+        display: block;
+        padding: 20px 0;
+    }
+
+    .changelog-page {
+        padding-top: 10px;
+        max-width: 100%;
+    }
+
+    .version-tree {
+        display: block;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 10px 20px;
+        background-color: #1e1e1e;
+        z-index: 900;
+        border-bottom: 1px solid #333;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .tree-title {
+        display: none;
+    }
+
+    .version-tree ul {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        border-left: none;
+        gap: 10px;
+        padding-bottom: 5px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .version-tree ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .version-tree li button {
+        background-color: #2d2d2d;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        color: #e0e0e0;
+        transform: none !important;
+    }
+
+    .version-tree li.active button {
+        background-color: #BA0C2F;
+        color: white;
+        transform: none !important;
+    }
+
+    .version-tree li.active button::before {
+        display: none;
+    }
+}

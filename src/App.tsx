@@ -9,7 +9,6 @@ import SearchBar from './components/SearchBar';
 import Filters from './components/Filters';
 import ImageGrid from './components/ImageGrid';
 import Modal from './components/Modal';
-import Changelog from './components/Changelog';
 import TopRightLinks from './components/TopRightLinks';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import KofiButton from './components/KofiButton';
@@ -22,9 +21,6 @@ function App() {
     const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch } = useCardSearch();
     const {
         showScrollButton,
-        isChangelogOpen,
-        setIsChangelogOpen,
-        changelogData,
         placeholderIndex,
     } = useAppEffects(query);
 
@@ -236,7 +232,7 @@ function App() {
 
     return (
         <>
-            <TopRightLinks setIsChangelogOpen={setIsChangelogOpen} />
+            <TopRightLinks />
 
             <div className={`app-wrapper ${query.length === 0 ? 'initial-state' : ''}`}>
                 <div className="main-container">
@@ -316,11 +312,6 @@ function App() {
             </div>
 
             <Modal selectedImage={selectedImage} closeModal={closeModal} />
-            <Changelog
-                isChangelogOpen={isChangelogOpen}
-                setIsChangelogOpen={setIsChangelogOpen}
-                changelogData={changelogData}
-            />
             <KofiButton showScrollButton={showScrollButton} showMissingCardButton={showMissingCardButton} />
             <MissingCardLink show={showMissingCardButton} showScrollButton={showScrollButton} />
             <ScrollToTopButton show={showScrollButton} scrollToTop={scrollToTop} />
