@@ -142,9 +142,9 @@
     border-color: #BA0C2F;
 }
 
-.referral-disclaimer {
-    font-size: 0.75rem;
+.modal-metadata .referral-disclaimer {
+    font-size: 0.6rem;
     color: #888;
-    text-align: center;
     margin-top: 5px;
+    text-align: center;
 }
