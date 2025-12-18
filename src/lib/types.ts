@@ -12,12 +12,13 @@ export interface CardImage {
 }
 
 export interface ChangeItem {
-    category: 'new' | 'improvements' | 'fixes';
+    category: 'new' | 'improvements' | 'fixes' | 'cards';
     description: string;
 }
 
 export interface ChangelogEntry {
     version: string;
     date: string;
+    title?: string; // Optional title for the version
     changes: ChangeItem[];
 }

@@ -1,14 +1,5 @@
 [
     {
-        "version": "1.3.0",
-        "date": "2026-01-01",
-        "changes": [
-            { "category": "fixes", "description": "Change calendar year." },
-            { "category": "improvements", "description": "Move the changelog to its own page."},
-            { "category": "improvements", "description": "Move the set name to the bottom of the card's image and make it look nicer."}
-        ]
-    },
-    {
         "version": "1.2.1",
         "date": "2025-12-03",
         "changes": [
@@ -18,6 +9,7 @@
     {
         "version": "1.2.0",
         "date": "2025-11-30",
+        "title": "The 'Share & Print' Update",
         "changes": [
             { "category": "new", "description": "Add a button to print out the cards currently displayed in search." },
             { "category": "new", "description": "Reflect the search bar in the website url to make it easier to share." },
@@ -101,6 +93,7 @@
     {
         "version": "1.0.0",
         "date": "2025-11-21",
+        "title": "Initial Release",
         "changes": [
             { "category": "new", "description": "Initial release of NottDex." }
         ]

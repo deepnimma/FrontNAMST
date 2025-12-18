@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import type { ChangelogEntry } from '../lib/types';
 import '../styles/ChangelogPage.css';
 
+const getVersionType = (version: string): 'major' | 'minor' | 'patch' => {
+    const parts = version.split('.').map(Number);
+    if (parts[2] > 0) return 'patch';
+    if (parts[1] > 0) return 'minor';
+    return 'major';
+};
+
 const ChangelogPage: React.FC = () => {
     const [changelogData, setChangelogData] = useState<ChangelogEntry[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -31,7 +38,6 @@ const ChangelogPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // The top margin is set to -80px to account for the 80px top padding on the page.
         const topMargin = -80;
         observer.current = new IntersectionObserver(
             (entries) => {
@@ -75,10 +81,12 @@ const ChangelogPage: React.FC = () => {
                     {error && <p className="error-message">{error}</p>}
                     {changelogData.length > 0 ? (
                         changelogData.map(entry => {
+                            const versionType = getVersionType(entry.version);
                             const categorizedChanges = {
                                 new: entry.changes.filter(c => c.category === 'new'),
                                 improvements: entry.changes.filter(c => c.category === 'improvements'),
                                 fixes: entry.changes.filter(c => c.category === 'fixes'),
+                                cards: entry.changes.filter(c => c.category === 'cards'),
                             };
 
                             return (
@@ -88,9 +96,12 @@ const ChangelogPage: React.FC = () => {
                                     ref={el => {
                                         if (el) versionRefs.current[entry.version] = el;
                                     }}
-                                    className="version-section"
+                                    className={`version-section ${versionType}`}
                                 >
-                                    <h2 className="version-title">Version {entry.version}</h2>
+                                    <div className="version-header">
+                                        <h2 className="version-title">Version {entry.version}</h2>
+                                        {entry.title && <p className="version-subtitle">{entry.title}</p>}
+                                    </div>
                                     <p className="release-date">Released on: {entry.date}</p>
                                     <div className="changes-container">
                                         {categorizedChanges.new.length > 0 && (
@@ -118,6 +129,16 @@ const ChangelogPage: React.FC = () => {
                                                 <h3 className="category-title fixes">Bug Fixes</h3>
                                                 <ul className="changes-list">
                                                     {categorizedChanges.fixes.map((item, index) => (
+                                                        <li key={index} className="change-item">{item.description}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                        {categorizedChanges.cards.length > 0 && (
+                                            <div className="change-category">
+                                                <h3 className="category-title cards">Card Updates</h3>
+                                                <ul className="changes-list">
+                                                    {categorizedChanges.cards.map((item, index) => (
                                                         <li key={index} className="change-item">{item.description}</li>
                                                     ))}
                                                 </ul>
