@@ -43,6 +43,9 @@ const Modal: React.FC<ModalProps> = ({ selectedImage, closeModal }) => {
                         View on TCGPlayer
                         <ExternalLink size={16} />
                     </a>
+                    <p className="referral-disclaimer">
+                        Clicking this link may result in us receiving a commission.
+                    </p>
                 </div>
             </div>
         </div>

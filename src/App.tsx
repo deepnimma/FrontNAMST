@@ -314,10 +314,15 @@ function App() {
                                         setShowTrainerOwned={setShowTrainerOwned}
                                     />
                                     {searchPerformed && images.length > 0 && (
-                                        <button onClick={handleTcgPlayerSearch} className="tcgplayer-set-button">
-                                            View on TCGPlayer
-                                            <ExternalLink size={16} />
-                                        </button>
+                                        <>
+                                            <button onClick={handleTcgPlayerSearch} className="tcgplayer-set-button">
+                                                View on TCGPlayer
+                                                <ExternalLink size={16} />
+                                            </button>
+                                            <p className="referral-disclaimer">
+                                                Clicking this link may result in us receiving a commission.
+                                            </p>
+                                        </>
                                     )}
                                 </div>
                             </div>
