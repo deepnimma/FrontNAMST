@@ -3,6 +3,7 @@ import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
 import LazyImage from './LazyImage';
+import '../styles/ImageGrid.css';
 
 interface ImageGridProps {
     loading: boolean;
@@ -110,7 +111,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
                                 )}
                             </div>
                             {showSetNames && (
-                                <div className="set-name-overlay">
+                                <div className={`set-name-badge ${isLoaded ? 'loaded' : ''}`}>
                                     <span>{capitalizeWords(image.setName)}</span>
                                 </div>
                             )}
