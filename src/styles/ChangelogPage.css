@@ -1,28 +1,33 @@
 .changelog-page-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Changed to center */
     position: relative;
-}
-
-.changelog-page {
-    padding: 20px;
     background-color: #1e1e1e;
-    color: #e0e0e0;
     min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    flex-grow: 1;
-    max-width: 1200px; /* Adjust as needed */
+    flex-direction: row-reverse;
 }
 
 .changelog-header {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     padding: 0;
     background: transparent;
     margin: 0;
     width: auto;
+    z-index: 1000;
+}
+
+.changelog-page {
+    padding: 20px;
+    padding-top: 80px;
+    background-color: transparent;
+    color: #e0e0e0;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    /* margin: 0 auto; removed this to allow flexbox to center it */
 }
 
 .home-link-button {
@@ -38,8 +43,8 @@
 }
 
 .changelog-container {
-    max-width: 900px;
-    margin: 60px auto 0 auto;
+    max-width: 100%;
+    margin: 0 auto;
     padding: 0 20px;
     background-color: transparent;
     box-shadow: none;
@@ -61,7 +66,7 @@
     border-left: 4px solid #444;
     padding-left: 25px;
     transition: border-color 0.3s ease;
-    scroll-margin-top: 20px; /* Offset for smooth scrolling */
+    scroll-margin-top: 140px; /* Increased to clear sticky header/nav on mobile */
 }
 
 .version-section:hover {
@@ -121,74 +126,145 @@
     border-bottom: none;
 }
 
+/* --- Version Tree (Desktop) --- */
 .version-tree {
     position: sticky;
-    top: 80px;
-    width: 200px;
-    margin-left: 40px;
+    top: 100px;
+    width: 260px; /* Increased width */
+    margin-right: 20px;
+    margin-left: 20px;
     align-self: flex-start;
-    background-color: #2d2d2d;
-    padding: 20px;
-    border-radius: 8px;
+    background-color: transparent;
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .tree-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem; /* Larger title */
     font-weight: 600;
     color: #BA0C2F;
     margin-top: 0;
     margin-bottom: 15px;
-    border-bottom: 2px solid #BA0C2F;
-    padding-bottom: 10px;
+    padding-left: 10px;
+    border-bottom: none;
 }
 
 .version-tree ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    border-left: 3px solid #444; /* Thicker border */
 }
 
 .version-tree li button {
     background: none;
     border: none;
-    color: #e0e0e0;
-    padding: 10px 15px;
+    color: #888;
+    padding: 12px 20px; /* Larger padding */
     width: 100%;
     text-align: left;
     cursor: pointer;
-    font-size: 1rem;
-    border-radius: 4px;
-    transition: background-color 0.2s, color 0.2s;
+    font-size: 1.1rem; /* Larger font */
+    transition: color 0.2s, transform 0.2s;
+    position: relative;
 }
 
 .version-tree li button:hover {
-    background-color: #444;
+    color: #e0e0e0;
+    transform: translateX(5px);
 }
 
 .version-tree li.active button {
-    background-color: #BA0C2F;
-    color: white;
+    color: #BA0C2F;
     font-weight: 600;
+    transform: translateX(5px);
 }
 
-@media (max-width: 1200px) {
-    .version-tree {
-        display: none; /* Hide the tree on smaller screens */
+.version-tree li.active button::before {
+    content: '';
+    position: absolute;
+    left: -18px; /* Adjusted for thicker border */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px; /* Larger dot */
+    height: 8px;
+    background-color: #BA0C2F;
+    border-radius: 50%;
+}
+
+/* --- Mobile / Tablet Styles --- */
+@media (max-width: 1024px) {
+    .changelog-page-wrapper {
+        flex-direction: column;
+        justify-content: flex-start;
     }
-}
 
-@media (max-width: 768px) {
     .changelog-header {
         position: relative;
         top: 0;
         left: 0;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         text-align: center;
         width: 100%;
         display: block;
+        padding: 20px 0;
     }
 
-    .changelog-container {
-        margin-top: 0;
+    .changelog-page {
+        padding-top: 10px;
+        max-width: 100%;
+    }
+
+    .version-tree {
+        display: block;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 10px 20px;
+        background-color: #1e1e1e; /* Background to cover content when scrolling */
+        z-index: 900;
+        border-bottom: 1px solid #333;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .tree-title {
+        display: none;
+    }
+
+    .version-tree ul {
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        border-left: none;
+        gap: 10px;
+        padding-bottom: 5px;
+        /* Hide scrollbar for cleaner look */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE 10+ */
+    }
+
+    .version-tree ul::-webkit-scrollbar {
+        display: none;  /* Chrome/Safari */
+    }
+
+    .version-tree li button {
+        background-color: #2d2d2d;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        color: #e0e0e0;
+        transform: none !important; /* Disable hover transform on mobile */
+    }
+
+    .version-tree li.active button {
+        background-color: #BA0C2F;
+        color: white;
+        transform: none !important;
+    }
+
+    .version-tree li.active button::before {
+        display: none;
     }
 }

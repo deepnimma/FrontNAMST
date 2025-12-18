@@ -31,6 +31,8 @@ const ChangelogPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        // The top margin is set to -80px to account for the 80px top padding on the page.
+        const topMargin = -80;
         observer.current = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -39,7 +41,7 @@ const ChangelogPage: React.FC = () => {
                     }
                 });
             },
-            { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
+            { rootMargin: `${topMargin}px 0px -50% 0px`, threshold: 0 }
         );
 
         Object.values(versionRefs.current).forEach((ref) => {
@@ -62,12 +64,12 @@ const ChangelogPage: React.FC = () => {
 
     return (
         <div className="changelog-page-wrapper">
+            <header className="changelog-header">
+                <Link to="/" className="home-link-button">
+                    NottAnotherMasterSetTracker
+                </Link>
+            </header>
             <div className="changelog-page">
-                <header className="changelog-header">
-                    <Link to="/" className="home-link-button">
-                        NottAnotherMasterSetTracker
-                    </Link>
-                </header>
                 <div className="changelog-container">
                     <h1 className="changelog-title">Changelog</h1>
                     {error && <p className="error-message">{error}</p>}
