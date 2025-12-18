@@ -204,7 +204,7 @@ function App() {
         }
     };
 
-    const handleTcgPlayerSetSearch = () => {
+    const handleTcgPlayerSearch = () => {
         const searchString = query.toLowerCase().replace(/-/g, ' ');
         const tcgplayerLink = `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${searchString}&view=grid&productTypeName=Cards`;
         const encodedTcgplayerLink = encodeURIComponent(tcgplayerLink);
@@ -313,9 +313,9 @@ function App() {
                                         showTrainerOwned={showTrainerOwned}
                                         setShowTrainerOwned={setShowTrainerOwned}
                                     />
-                                    {isSet && images.length > 0 && (
-                                        <button onClick={handleTcgPlayerSetSearch} className="tcgplayer-set-button">
-                                            View Full Set on TCGPlayer
+                                    {searchPerformed && images.length > 0 && (
+                                        <button onClick={handleTcgPlayerSearch} className="tcgplayer-set-button">
+                                            View on TCGPlayer
                                             <ExternalLink size={16} />
                                         </button>
                                     )}
