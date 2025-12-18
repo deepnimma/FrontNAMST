@@ -5,7 +5,8 @@
         "changes": [
             { "category": "fixes", "description": "Fix newest/oldest first ordering button." },
             { "category": "improvements", "description": "Move changelog to its own page." },
-            { "category": "improvements", "description": "Move the set name to be a floating badge at the bottom of a card image instead of at the top to decrease clutter and make it more visible." }
+            { "category": "improvements", "description": "Move the set name to be a floating badge at the bottom of a card image instead of at the top to decrease clutter and make it more visible." },
+            { "category": "improvements", "description": "Add website version to the changelog button."}
         ]
     },
     {
