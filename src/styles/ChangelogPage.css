@@ -1,63 +1,96 @@
 .changelog-page {
-    padding: 40px 20px;
-    background-color: #1a1a1a;
+    padding: 20px;
+    background-color: #1e1e1e;
     color: #e0e0e0;
     min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.changelog-header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 0;
+    background: transparent;
+    margin: 0;
+    width: auto;
+}
+
+.home-link-button {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #a89ee6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.home-link-button:hover {
+    color: #646cff;
 }
 
 .changelog-container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #242424;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    max-width: 900px;
+    margin: 60px auto 0 auto; /* Added top margin to clear the absolute header if needed, or just spacing */
+    padding: 0 20px;
+    /* Removed box styling */
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .changelog-title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+    font-weight: 700;
     margin-bottom: 30px;
     color: #646cff;
-    border-bottom: 2px solid #646cff;
-    padding-bottom: 10px;
+    border-bottom: 3px solid #646cff;
+    padding-bottom: 15px;
 }
 
 .version-section {
     margin-bottom: 40px;
-    border-left: 3px solid #444;
-    padding-left: 20px;
+    border-left: 4px solid #444;
+    padding-left: 25px;
+    transition: border-color 0.3s ease;
+}
+
+.version-section:hover {
+    border-left-color: #646cff;
 }
 
 .version-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 600;
     color: #a89ee6;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .release-date {
-    font-size: 0.9rem;
-    color: #888;
-    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 25px;
 }
 
 .changes-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
 .change-category {
-    background-color: #2d2d2d;
-    border-radius: 6px;
-    padding: 15px;
+    background-color: #2d2d2d; /* Kept this to distinguish categories, or should I remove it too? User said "changelog box", usually implies the main wrapper. I'll keep category boxes for readability unless asked. */
+    border-radius: 8px;
+    padding: 20px;
 }
 
 .category-title {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #555;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #555;
 }
 
 .category-title.new { color: #4caf50; }
@@ -65,31 +98,33 @@
 .category-title.fixes { color: #f44336; }
 
 .changes-list {
-    list-style-type: none;
-    padding-left: 0;
+    list-style-type: disc;
+    padding-left: 20px;
 }
 
 .change-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #3a3a3a;
-    line-height: 1.6;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+    line-height: 1.7;
+    font-size: 1rem;
 }
 
 .change-item:last-child {
     border-bottom: none;
 }
 
-.back-link {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #646cff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+@media (max-width: 768px) {
+    .changelog-header {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        text-align: center;
+        width: 100%;
+        display: block;
+    }
 
-.back-link:hover {
-    background-color: #535bf2;
+    .changelog-container {
+        margin-top: 0;
+    }
 }
