@@ -148,7 +148,7 @@ function App() {
             const sortedImages = [...images].sort((a, b) => {
                 const dateA = new Date(a.releaseDate).getTime();
                 const dateB = new Date(b.releaseDate).getTime();
-                if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - a.releaseDate;
+                if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
 
                 const cardNumA = a.cardNumber.split('/')[0];
                 const cardNumB = b.cardNumber.split('/')[0];
