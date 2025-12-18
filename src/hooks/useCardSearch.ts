@@ -56,16 +56,17 @@ export const useCardSearch = () => {
         if (!query.trim()) return;
 
         setImages([]); // Clear images for new search
-        const newQuery = {
+        const newQuery: any = {
             q: query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(','),
             limit: PAGE_SIZE_INITIAL,
             offset: 0,
-            ...(isCameo && { cameo: '1' }),
-            ...(isTrainer && { trainer: '1' }),
-            ...(isIllustrator && { illustrator: '1' }),
-            ...(sortOrder === 'desc' && { descending: '1' }),
-            ...(isSet && { set: '1' }),
         };
+
+        if (isCameo) newQuery.cameo = '1';
+        if (isTrainer) newQuery.trainer = '1';
+        if (isIllustrator) newQuery.illustrator = '1';
+        if (isSet) newQuery.set = '1';
+        if (sortOrder === 'desc') newQuery.descending = '1';
 
         setCurrentQuery(newQuery);
         setPage(1);
