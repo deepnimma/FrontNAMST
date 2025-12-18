@@ -52,6 +52,7 @@ html {
 .right-sidebar {
     width: 240px; /* Adjust as needed */
     flex-shrink: 0;
+    margin-bottom: 100px;
 }
 
 .content-with-filters.filters-visible {
