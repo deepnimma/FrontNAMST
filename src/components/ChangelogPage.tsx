@@ -105,8 +105,8 @@ const ChangelogPage: React.FC = () => {
                                     <p className="release-date">Released on: {entry.date}</p>
                                     <div className="changes-container">
                                         {categorizedChanges.new.length > 0 && (
-                                            <div className="change-category">
-                                                <h3 className="category-title new">New Features</h3>
+                                            <div className="change-category new">
+                                                <h3 className="category-title">New Features</h3>
                                                 <ul className="changes-list">
                                                     {categorizedChanges.new.map((item, index) => (
                                                         <li key={index} className="change-item">{item.description}</li>
@@ -115,8 +115,8 @@ const ChangelogPage: React.FC = () => {
                                             </div>
                                         )}
                                         {categorizedChanges.improvements.length > 0 && (
-                                            <div className="change-category">
-                                                <h3 className="category-title improvements">Improvements</h3>
+                                            <div className="change-category improvements">
+                                                <h3 className="category-title">Improvements</h3>
                                                 <ul className="changes-list">
                                                     {categorizedChanges.improvements.map((item, index) => (
                                                         <li key={index} className="change-item">{item.description}</li>
@@ -125,8 +125,8 @@ const ChangelogPage: React.FC = () => {
                                             </div>
                                         )}
                                         {categorizedChanges.fixes.length > 0 && (
-                                            <div className="change-category">
-                                                <h3 className="category-title fixes">Bug Fixes</h3>
+                                            <div className="change-category fixes">
+                                                <h3 className="category-title">Bug Fixes</h3>
                                                 <ul className="changes-list">
                                                     {categorizedChanges.fixes.map((item, index) => (
                                                         <li key={index} className="change-item">{item.description}</li>
@@ -135,8 +135,8 @@ const ChangelogPage: React.FC = () => {
                                             </div>
                                         )}
                                         {categorizedChanges.cards.length > 0 && (
-                                            <div className="change-category">
-                                                <h3 className="category-title cards">Card Updates</h3>
+                                            <div className="change-category cards">
+                                                <h3 className="category-title">Card Updates</h3>
                                                 <ul className="changes-list">
                                                     {categorizedChanges.cards.map((item, index) => (
                                                         <li key={index} className="change-item">{item.description}</li>

@@ -75,7 +75,7 @@
 }
 
 .version-section.minor {
-    border-left: 4px solid #2196f3;
+    border-left: 4px solid #BA0C2F;
 }
 
 .version-section.patch {
@@ -115,9 +115,29 @@
 }
 
 .change-category {
-    background-color: #2d2d2d;
     border-radius: 8px;
     padding: 20px;
+    border: 1px solid transparent;
+}
+
+.change-category.new {
+    background-color: rgba(186, 12, 47, 0.1);
+    border-color: rgba(186, 12, 47, 0.3);
+}
+
+.change-category.cards {
+    background-color: rgba(186, 12, 47, 0.1);
+    border-color: rgba(186, 12, 47, 0.3);
+}
+
+.change-category.improvements {
+    background-color: rgba(224, 224, 224, 0.05);
+    border-color: rgba(224, 224, 224, 0.1);
+}
+
+.change-category.fixes {
+    background-color: rgba(136, 136, 136, 0.05);
+    border-color: rgba(136, 136, 136, 0.1);
 }
 
 .category-title {
@@ -128,10 +148,11 @@
     border-bottom: 2px solid #555;
 }
 
-.category-title.new { color: #4caf50; }
-.category-title.improvements { color: #2196f3; }
-.category-title.fixes { color: #f44336; }
-.category-title.cards { color: #ff9800; }
+.change-category.new .category-title { color: #BA0C2F; }
+.change-category.cards .category-title { color: #BA0C2F; }
+.change-category.improvements .category-title { color: #e0e0e0; }
+.change-category.fixes .category-title { color: #888; }
+
 
 .changes-list {
     list-style-type: disc;
