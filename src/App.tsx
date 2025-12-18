@@ -14,6 +14,7 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 import KofiButton from './components/KofiButton';
 import MissingCardLink from './components/MissingCardLink';
 import FilterBox from './components/FilterBox';
+import { ExternalLink } from 'lucide-react';
 
 function App() {
     const [query, setQuery] = useState('');
@@ -203,6 +204,14 @@ function App() {
         }
     };
 
+    const handleTcgPlayerSetSearch = () => {
+        const searchString = query.toLowerCase().replace(/-/g, ' ');
+        const tcgplayerLink = `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${searchString}&view=grid&productTypeName=Cards`;
+        const encodedTcgplayerLink = encodeURIComponent(tcgplayerLink);
+        const partnerLink = `https://partner.tcgplayer.com/namst?u=${encodedTcgplayerLink}`;
+        window.open(partnerLink, '_blank');
+    };
+
     const filteredImages = useMemo(() => {
         let tempImages = images;
 
@@ -280,7 +289,7 @@ function App() {
                             isNewSearch={isNewSearch}
                         />
                         {images.length > 0 && (
-                            <>
+                            <div className="right-sidebar">
                                 <button
                                     className="mobile-filter-toggle"
                                     onClick={() => setIsFilterBoxOpen(!isFilterBoxOpen)}
@@ -304,8 +313,14 @@ function App() {
                                         showTrainerOwned={showTrainerOwned}
                                         setShowTrainerOwned={setShowTrainerOwned}
                                     />
+                                    {isSet && images.length > 0 && (
+                                        <button onClick={handleTcgPlayerSetSearch} className="tcgplayer-set-button">
+                                            View Full Set on TCGPlayer
+                                            <ExternalLink size={16} />
+                                        </button>
+                                    )}
                                 </div>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
