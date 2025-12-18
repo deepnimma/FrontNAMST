@@ -5,6 +5,7 @@
     background-color: #1e1e1e;
     min-height: 100vh;
     flex-direction: row-reverse;
+    overscroll-behavior: none; /* Prevents the rubber band scroll effect */
 }
 
 .changelog-header {
