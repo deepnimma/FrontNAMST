@@ -55,11 +55,12 @@ html {
 }
 
 .results-count {
-    text-align: center;
+    text-align: left;
     margin-bottom: 10px;
     font-size: 1.1rem;
     color: #ccc;
     font-weight: 500;
+    padding-left: 1rem;
 }
 
 .right-sidebar {
