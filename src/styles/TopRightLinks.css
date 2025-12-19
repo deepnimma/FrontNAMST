@@ -23,6 +23,20 @@
     color: #BA0C2F;
 }
 
+.discord-link-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.discord-link-item:hover {
+    color: #5865F2; /* Discord Blurple */
+}
+
 .changelog-button {
     background: none;
     border: none;

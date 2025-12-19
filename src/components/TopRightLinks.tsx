@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Github, ScrollText } from 'lucide-react';
+import { Github, ScrollText, Bot } from 'lucide-react';
 
 const TopRightLinks: React.FC = () => {
     const [version, setVersion] = useState<string | null>(null);
@@ -24,6 +24,9 @@ const TopRightLinks: React.FC = () => {
                 <ScrollText size={24} />
                 {version && <span className="version-text">{version}</span>}
             </Link>
+            <a href="https://discord.gg/abCD74sKnB" target="_blank" rel="noopener noreferrer" className="discord-link-item" title="Discord Server">
+                <Bot size={24} />
+            </a>
             <a href="https://github.com/deepnimma/FrontNAMST" target="_blank" rel="noopener noreferrer" className="github-link-item" title="Frontend Repo">
                 <Github size={24} />
                 <span>FE</span>
