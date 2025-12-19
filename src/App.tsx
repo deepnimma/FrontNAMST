@@ -44,6 +44,13 @@ function App() {
     const [isSet, setIsSet] = useState(false);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+    const getVariantOrder = (cardNumber: string) => {
+        if (cardNumber.endsWith('-MB')) return 3;
+        if (cardNumber.endsWith('-PB')) return 2;
+        if (cardNumber.endsWith('-RH')) return 1;
+        return 0; // Normal
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const queryFromUrl = params.get('query');
@@ -70,6 +77,45 @@ function App() {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Effect to sort images when they are loaded if it's a set search
+    useEffect(() => {
+        if (isSet && images.length > 0) {
+            const sortedImages = [...images].sort((a, b) => {
+                const dateA = new Date(a.releaseDate).getTime();
+                const dateB = new Date(b.releaseDate).getTime();
+
+                if (dateA !== dateB) {
+                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+                }
+
+                const cardNumA = a.cardNumber.split('/')[0];
+                const cardNumB = b.cardNumber.split('/')[0];
+
+                const numA = parseInt(cardNumA, 10);
+                const numB = parseInt(cardNumB, 10);
+
+                if (!isNaN(numA) && !isNaN(numB) && numA !== numB) {
+                    return sortOrder === 'asc' ? numA - numB : numB - numA;
+                }
+
+                const variantOrderA = getVariantOrder(a.cardNumber);
+                const variantOrderB = getVariantOrder(b.cardNumber);
+
+                if (variantOrderA !== variantOrderB) {
+                    return sortOrder === 'asc' ? variantOrderA - variantOrderB : variantOrderB - variantOrderA;
+                }
+
+                return sortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
+            });
+            
+            // Only update if the order is actually different to avoid infinite loops
+            const isDifferent = sortedImages.some((img, index) => img.imageKey !== images[index].imageKey);
+            if (isDifferent) {
+                setImages(sortedImages);
+            }
+        }
+    }, [images, isSet, sortOrder]);
 
     useEffect(() => {
         const params = new URLSearchParams();
@@ -144,20 +190,7 @@ function App() {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
         if (isSet) {
-            const sortedImages = [...images].sort((a, b) => {
-                const cardNumA = a.cardNumber.split('/')[0];
-                const cardNumB = b.cardNumber.split('/')[0];
-
-                const numA = parseInt(cardNumA, 10);
-                const numB = parseInt(cardNumB, 10);
-
-                if (!isNaN(numA) && !isNaN(numB)) {
-                    return newSortOrder === 'asc' ? numA - numB : numB - numA;
-                }
-
-                return newSortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
-            });
-            setImages(sortedImages);
+            // Sorting will be handled by the useEffect
         } else {
             handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
         }
