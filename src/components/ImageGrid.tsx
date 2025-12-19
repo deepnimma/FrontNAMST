@@ -107,7 +107,15 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
                                     <div className="first-edition-badge">1st</div>
                                 )}
                                 {image.isReverseHolo === 1 && (
-                                    <div className="reverse-holo-badge">RH</div>
+                                    <>
+                                        {image.cardNumber.endsWith('-MB') ? (
+                                            <div className="master-ball-badge">MB</div>
+                                        ) : image.cardNumber.endsWith('-PB') ? (
+                                            <div className="poke-ball-badge">PB</div>
+                                        ) : (
+                                            <div className="reverse-holo-badge">RH</div>
+                                        )}
+                                    </>
                                 )}
                             </div>
                             {showSetNames && (

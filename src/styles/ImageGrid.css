@@ -100,6 +100,26 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+.master-ball-badge {
+    background-color: #7E30E1;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.poke-ball-badge {
+    background-color: #FFFFFF;
+    color: #BA0C2F;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
 .no-results {
     margin-top: 50px;
     color: #666;
