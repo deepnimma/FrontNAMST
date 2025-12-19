@@ -270,20 +270,27 @@ function App() {
                     </div>
 
                     <div className={`content-with-filters ${images.length > 0 ? 'filters-visible' : ''}`}>
-                        <ImageGrid
-                            key={imageGridKey}
-                            loading={loading}
-                            images={filteredImages}
-                            gridCols={gridCols}
-                            openModal={openModal}
-                            showSetNames={showSetNames}
-                            query={lastExecutedQuery}
-                            searchPerformed={searchPerformed}
-                            loadMore={loadMore}
-                            hasMore={hasMore}
-                            loadingMore={loadingMore}
-                            isNewSearch={isNewSearch}
-                        />
+                        <div className="image-grid-container">
+                            {searchPerformed && filteredImages.length > 0 && (
+                                <div className="results-count">
+                                    {filteredImages.length} Cards
+                                </div>
+                            )}
+                            <ImageGrid
+                                key={imageGridKey}
+                                loading={loading}
+                                images={filteredImages}
+                                gridCols={gridCols}
+                                openModal={openModal}
+                                showSetNames={showSetNames}
+                                query={lastExecutedQuery}
+                                searchPerformed={searchPerformed}
+                                loadMore={loadMore}
+                                hasMore={hasMore}
+                                loadingMore={loadingMore}
+                                isNewSearch={isNewSearch}
+                            />
+                        </div>
                         {images.length > 0 && (
                             <div className="right-sidebar">
                                 <button

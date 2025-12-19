@@ -7,7 +7,8 @@
             { "category": "improvements", "description": "Move the set name to be a floating badge at the bottom of a card image instead of at the top to decrease clutter and make it more visible." },
             { "category": "improvements", "description": "Add website version to the changelog button."},
             { "category": "new", "description": "Add buttons to search for stuff on TCGPlayer." },
-            { "category": "fixes", "description": "Fix newest/oldest first re-ordering not working when the 'set' search filter is enabled. "}
+            { "category": "fixes", "description": "Fix newest/oldest first re-ordering not working when the 'set' search filter is enabled." },
+            { "category": "new", "description": "Add image count to the top of the image grid to show how many cards are being displayed." }
         ]
     },
     {
