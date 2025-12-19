@@ -49,6 +49,19 @@ html {
     gap: 20px;
 }
 
+.image-grid-container {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.results-count {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #ccc;
+    font-weight: 500;
+}
+
 .right-sidebar {
     width: 240px; /* Adjust as needed */
     flex-shrink: 0;
