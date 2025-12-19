@@ -143,14 +143,8 @@ function App() {
     const toggleSortOrder = () => {
         const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
         setSortOrder(newSortOrder);
-        if (searchPerformed) {
-            handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
-        } else {
+        if (isSet) {
             const sortedImages = [...images].sort((a, b) => {
-                const dateA = new Date(a.releaseDate).getTime();
-                const dateB = new Date(b.releaseDate).getTime();
-                if (dateA !== dateB) return newSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-
                 const cardNumA = a.cardNumber.split('/')[0];
                 const cardNumB = b.cardNumber.split('/')[0];
 
@@ -164,6 +158,8 @@ function App() {
                 return newSortOrder === 'asc' ? cardNumA.localeCompare(cardNumB) : cardNumB.localeCompare(cardNumA);
             });
             setImages(sortedImages);
+        } else {
+            handleSearch(query, isCameo, isTrainer, isIllustrator, newSortOrder, isSet);
         }
     };
 
