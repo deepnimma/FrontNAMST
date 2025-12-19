@@ -8,7 +8,9 @@
             { "category": "improvements", "description": "Add website version to the changelog button."},
             { "category": "new", "description": "Add buttons to search for stuff on TCGPlayer." },
             { "category": "fixes", "description": "Fix newest/oldest first re-ordering not working when the 'set' search filter is enabled." },
-            { "category": "new", "description": "Add image count to the top of the image grid to show how many cards are being displayed." }
+            { "category": "new", "description": "Add image count to the top of the image grid to show how many cards are being displayed." },
+            { "category": "fixes", "description": "Fix master balls and poke balls appearing before reverse holo in 'oldest first' sorting configuration." },
+            { "category": "new", "description": "Add badges for Poke Ball and Master Ball reverse holo variants." }
         ]
     },
     {
