@@ -45,6 +45,17 @@
     height: 16px;
 }
 
+/* Active state colors matching the search bar placeholder words */
+.checkbox-label.active-cameo       { color: #3B9EFF; }
+.checkbox-label.active-trainer     { color: #2ECC71; }
+.checkbox-label.active-illustrator { color: #A855F7; }
+.checkbox-label.active-set         { color: var(--color-accent); }
+
+.checkbox-label.active-cameo       input[type="checkbox"] { accent-color: #3B9EFF; }
+.checkbox-label.active-trainer     input[type="checkbox"] { accent-color: #2ECC71; }
+.checkbox-label.active-illustrator input[type="checkbox"] { accent-color: #A855F7; }
+.checkbox-label.active-set         input[type="checkbox"] { accent-color: var(--color-accent); }
+
 .filter-buttons-group {
     display: flex;
     gap: 10px;

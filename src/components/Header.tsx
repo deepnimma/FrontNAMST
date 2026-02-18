@@ -3,14 +3,14 @@ import { placeholderWords } from '../lib/constants';
 import { useSearchContext } from '../context/SearchContext';
 
 const MAIN_HEADER_PHRASES = [
-    "NottAnotherPokeDexTracker",
+    "NottAnotherPokéDexTracker",
     "NottAnotherTrainerDexTracker",
     "NottAnotherIllustratorDexTracker",
     "NottAnotherMasterSetTracker"
 ];
 
 const WORD_CLASSES: Record<string, string> = {
-    PokeDex: 'emphasized-pokedex',
+    PokéDex: 'emphasized-pokedex',
     TrainerDex: 'emphasized-trainerdex',
     IllustratorDex: 'emphasized-illustratordex',
     MasterSet: 'emphasized-masterset',
@@ -55,12 +55,13 @@ const Header: React.FC = () => {
         return () => clearTimeout(t);
     }, [phase]);
 
-    // entering → visible
+    // entering → visible (longer delay for MasterSet to let the spring animation finish)
     useEffect(() => {
         if (phase !== 'entering') return;
-        const t = setTimeout(() => setPhase('visible'), 300);
+        const isMasterSet = displayedPhrase === MAIN_HEADER_PHRASES[MAIN_HEADER_PHRASES.length - 1];
+        const t = setTimeout(() => setPhase('visible'), isMasterSet ? 550 : 300);
         return () => clearTimeout(t);
-    }, [phase]);
+    }, [phase, displayedPhrase]);
 
     const renderEmphasizedHeader = (headerText: string) => {
         const emphasisWords = Object.keys(WORD_CLASSES);
@@ -86,11 +87,20 @@ const Header: React.FC = () => {
         return renderedText;
     };
 
+    const isMasterSetPhrase = displayedPhrase === MAIN_HEADER_PHRASES[MAIN_HEADER_PHRASES.length - 1];
+
+    const phaseClass = (() => {
+        if (phase === 'exiting') return 'header-exiting';
+        if (phase === 'entering') return isMasterSetPhrase ? 'header-masterset-entering' : 'header-entering';
+        if (phase === 'visible' && isMasterSetPhrase) return 'header-masterset-active';
+        return '';
+    })();
+
     return (
         <div className="header-container">
             <button className="title-button" onClick={handleReset} aria-label="Return to home">
                 <h1 className="title">
-                    <span className={`title-desktop header-phrase${phase !== 'visible' ? ` header-${phase}ing` : ''}`}>
+                    <span className={`title-desktop header-phrase${phaseClass ? ` ${phaseClass}` : ''}`}>
                         {renderEmphasizedHeader(displayedPhrase)}
                     </span>
                     <span className="title-mobile">NottDex</span>
