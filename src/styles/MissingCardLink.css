@@ -25,6 +25,12 @@
     visibility: visible;
 }
 
+.missing-card-button:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
 .missing-card-button.scroll-visible {
     right: 80px; /* 15px gap from scroll button (50px width + 15px gap + 20px base right) */
 }

@@ -101,10 +101,20 @@
     color: #ffffff;
 }
 
-.tags-text {
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag-chip {
+    display: inline-block;
+    background-color: var(--color-bg-hover);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
 }
 
 

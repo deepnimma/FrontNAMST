@@ -1,5 +1,19 @@
 [
     {
+        "version": "1.3.2",
+        "date": "2026-02-18",
+        "title": "The 'A Splash of Color' Update",
+        "changes": [
+            { "category": "improvements", "description": "Reverse Holo badge is now teal instead of grey, making it visually distinct from other badges." },
+            { "category": "improvements", "description": "The sort button now highlights in red when sorted Oldest First to indicate a non-default sort order is active." },
+            { "category": "improvements", "description": "The card count number in the results header is now displayed in red for emphasis." },
+            { "category": "improvements", "description": "The 'Filters' heading in the sidebar is now accent-colored." },
+            { "category": "improvements", "description": "FilterBox checkboxes now use accent color, and their labels turn red when checked." },
+            { "category": "improvements", "description": "Modal tags are now displayed as individual pill chips instead of comma-separated text." },
+            { "category": "improvements", "description": "The scroll-to-top and missing card floating buttons now turn accent red on hover." }
+        ]
+    },
+    {
         "version": "1.3.1",
         "date": "2026-02-18",
         "title": "The 'Under the Hood' Update",

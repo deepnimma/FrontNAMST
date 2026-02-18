@@ -40,7 +40,7 @@ function AppContent() {
                         <div className="image-grid-container">
                             {searchPerformed && filteredImages.length > 0 && (
                                 <div className="results-count">
-                                    {filteredImages.length} Cards
+                                    <span className="results-count-number">{filteredImages.length}</span> Cards
                                 </div>
                             )}
                             <ErrorBoundary>

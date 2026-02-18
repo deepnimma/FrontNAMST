@@ -31,7 +31,7 @@ const Filters: React.FC = () => {
                 </label>
             </div>
             <div className="filter-buttons-group">
-                <button onClick={toggleSortOrder} className="sort-button">
+                <button onClick={toggleSortOrder} className={`sort-button${sortOrder === 'asc' ? ' sort-active' : ''}`}>
                     <ArrowDownUp size={16} />
                     {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
                 </button>

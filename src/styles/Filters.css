@@ -82,3 +82,8 @@
     background-color: var(--color-bg-hover);
     border-color: var(--color-accent);
 }
+
+.sort-button.sort-active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}

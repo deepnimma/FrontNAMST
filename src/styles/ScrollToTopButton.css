@@ -25,4 +25,5 @@
 .scroll-to-top-button:hover {
     background-color: var(--color-bg-hover);
     border-color: var(--color-accent);
+    color: var(--color-accent);
 }

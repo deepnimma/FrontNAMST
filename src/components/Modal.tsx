@@ -22,7 +22,11 @@ const Modal: React.FC<ModalProps> = ({ selectedImage, closeModal }) => {
         return (
             <div className="tags-container">
                 <h3>Tags</h3>
-                <p className="tags-text">{tags.map(tag => capitalizeWords(tag)).join(', ')}</p>
+                <div className="tags-list">
+                    {tags.map((tag, i) => (
+                        <span key={i} className="tag-chip">{capitalizeWords(tag)}</span>
+                    ))}
+                </div>
             </div>
         );
     };
