@@ -3,45 +3,23 @@ import type { CardImage } from '../lib/types';
 import { R2_BUCKET_URL } from '../lib/constants';
 import { capitalizeWords } from '../lib/utils';
 import LazyImage from './LazyImage';
+import { useSearchContext } from '../context/SearchContext';
 import '../styles/ImageGrid.css';
 
-interface ImageGridProps {
-    loading: boolean;
-    images: CardImage[];
-    gridCols: number;
-    openModal: (image: CardImage) => void;
-    showSetNames: boolean;
-    query: string;
-    searchPerformed: boolean;
-    loadMore: () => void;
-    hasMore: boolean;
-    loadingMore: boolean;
-    isNewSearch: boolean;
-    error?: string | null;
-}
+const ImageGrid: React.FC = React.memo(() => {
+    const {
+        loading, filteredImages: images, gridCols, openModal, showSetNames,
+        lastExecutedQuery: query, searchPerformed, loadMore, hasMore, loadingMore,
+        isNewSearch, error,
+    } = useSearchContext();
 
-const ImageGrid: React.FC<ImageGridProps> = React.memo(({
-    loading,
-    images,
-    gridCols,
-    openModal,
-    showSetNames,
-    query,
-    searchPerformed,
-    loadMore,
-    hasMore,
-    loadingMore,
-    isNewSearch,
-    error,
-}) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
 
     useEffect(() => {
-        // Animate initial images on mount
         if (images.length > 0) {
             const timer = setTimeout(() => {
-                setLoadedImages(new Set(images.map(img => img.imageKey)));
+                setLoadedImages(new Set(images.map((img: CardImage) => img.imageKey)));
             }, 0);
             return () => clearTimeout(timer);
         }
@@ -49,9 +27,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 
     const handleImageLoad = (imageKey: string) => {
         setLoadedImages(prev => {
-            if (prev.has(imageKey)) {
-                return prev;
-            }
+            if (prev.has(imageKey)) return prev;
             const newSet = new Set(prev);
             newSet.add(imageKey);
             return newSet;
@@ -62,9 +38,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
         if (loading || loadingMore) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore) {
-                loadMore();
-            }
+            if (entries[0].isIntersecting && hasMore) loadMore();
         });
         if (node) observer.current.observe(node);
     }, [loading, loadingMore, hasMore, loadMore]);
@@ -85,9 +59,9 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
         return (
             <div className="no-results">
                 {searchPerformed ? (
-                    <p>No cards found. Try searching for something else.</p>
+                    <p>No cards found for <strong>"{query}"</strong>. Try a different spelling or adjust your filters.</p>
                 ) : (
-                    <p>Did you know you can search for multiple pokemon at once? Try searching for 'Pikachu, Blastoise'</p>
+                    <p>Press Search or hit Enter to find cards. You can also search multiple Pokémon at once — try <strong>Pikachu, Eevee</strong>.</p>
                 )}
             </div>
         );
@@ -96,7 +70,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     return (
         <>
             <div className="image-grid" style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}>
-                {images.map((image, index) => {
+                {images.map((image: CardImage, index: number) => {
                     const isLastElement = index === images.length - 1;
                     const isLoaded = loadedImages.has(image.imageKey);
                     return (
@@ -111,6 +85,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
                                 className="grid-image"
                                 onClick={() => openModal(image)}
                                 onImageLoad={() => handleImageLoad(image.imageKey)}
+                                isPriority={index < gridCols}
                             />
                             <div className={`badge-container ${isLoaded ? 'loaded' : ''}`}>
                                 {image.tags.includes('1st-edition') && (
@@ -137,7 +112,12 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
                     );
                 })}
             </div>
-            {loadingMore && <div className="loading-spinner"></div>}
+            {loadingMore && (
+                <div className="loading-more-indicator">
+                    <div className="loading-more-spinner"></div>
+                    <span>Loading more...</span>
+                </div>
+            )}
         </>
     );
 });

@@ -137,7 +137,22 @@
     margin: 50px auto;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.loading-more-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.loading-more-spinner {
+    border: 3px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
 }

@@ -122,16 +122,6 @@ html {
     margin-top: 5px;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from { transform: scale(0.95); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
     .app-wrapper.initial-state {

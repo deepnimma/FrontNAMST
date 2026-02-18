@@ -1,5 +1,6 @@
-import React, {useState, useEffect, type JSX} from 'react';
-import { placeholderWords } from '../lib/constants'; // Import placeholderWords
+import React, { useState, useEffect, type JSX } from 'react';
+import { placeholderWords } from '../lib/constants';
+import { useSearchContext } from '../context/SearchContext';
 
 const MAIN_HEADER_PHRASES = [
     "NottAnotherPokeDexTracker",
@@ -8,29 +9,20 @@ const MAIN_HEADER_PHRASES = [
     "NottAnotherMasterSetTracker"
 ];
 
-interface HeaderProps {
-    handleReset: () => void;
-    placeholderIndex: number; // Accept placeholderIndex as a prop
-}
-
-const Header: React.FC<HeaderProps> = ({ handleReset, placeholderIndex }) => {
+const Header: React.FC = () => {
+    const { handleReset, placeholderIndex } = useSearchContext();
 
     const [currentMainHeader, setCurrentMainHeader] = useState(MAIN_HEADER_PHRASES[0]);
     const [hasReachedMasterSet, setHasReachedMasterSet] = useState(false);
 
     useEffect(() => {
-        if (hasReachedMasterSet) {
-            return; // Stop changing if Master Set has been reached
-        }
+        if (hasReachedMasterSet) return;
 
-        // Map placeholderIndex to MAIN_HEADER_PHRASES index
-        const headerPhraseIndex = placeholderIndex;
-        const targetHeader = MAIN_HEADER_PHRASES[headerPhraseIndex];
+        const targetHeader = MAIN_HEADER_PHRASES[placeholderIndex];
 
         if (placeholderWords[placeholderIndex] === "Set") {
-            // Ensure "MasterSetTracker" is the final header
             setCurrentMainHeader(MAIN_HEADER_PHRASES[MAIN_HEADER_PHRASES.length - 1]);
-            setHasReachedMasterSet(true); // Stop further changes
+            setHasReachedMasterSet(true);
         } else if (currentMainHeader !== targetHeader) {
             setCurrentMainHeader(targetHeader);
         }
