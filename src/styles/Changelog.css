@@ -1,5 +1,5 @@
 .changelog-modal-content {
-    background-color: #2d2d2d;
+    background-color: var(--color-bg-secondary);
     padding: 25px;
     border-radius: 12px;
     max-width: 600px;
@@ -13,7 +13,7 @@
 .changelog-modal-content h2 {
     margin-top: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 15px;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .changelog-entry {
-    border-left: 3px solid #646cff;
+    border-left: 3px solid var(--color-version-accent);
     padding-left: 15px;
 }
 
@@ -42,7 +42,7 @@
 
 .changelog-date {
     font-size: 0.9rem;
-    color: #ccc;
+    color: var(--color-text-secondary);
 }
 
 .changelog-changes {

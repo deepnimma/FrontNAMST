@@ -30,7 +30,7 @@
 }
 
 .title-button:hover .title {
-    color: #BA0C2F;
+    color: var(--color-accent);
 }
 
 .title .title-mobile {
@@ -50,7 +50,7 @@
 }
 
 .emphasized-header-word {
-    color: #BA0C2F; /* A different color for emphasis in the main header */
+    color: var(--color-accent); /* A different color for emphasis in the main header */
     font-weight: bold;
 }
 

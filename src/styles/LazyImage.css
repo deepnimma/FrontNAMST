@@ -10,7 +10,7 @@
 }
 
 .lazy-image-container {
-    background-color: #2d2d2d;
+    background-color: var(--color-bg-secondary);
     min-height: 200px;
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@
 }
 
 .lazy-image-container.error {
-    background-color: #222; /* Darker background for error state */
+    background-color: var(--color-bg-dark); /* Darker background for error state */
 }
 
 .lazy-image-container img {

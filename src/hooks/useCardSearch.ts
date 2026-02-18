@@ -5,16 +5,19 @@ import { API_ENDPOINT } from '../lib/constants';
 const PAGE_SIZE_INITIAL = 30;
 const PAGE_SIZE_MORE = 20;
 
+type SearchParams = Record<string, string>;
+
 export const useCardSearch = () => {
     const [images, setImages] = useState<CardImage[]>([]);
     const [loading, setLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
-    const [currentQuery, setCurrentQuery] = useState({});
+    const [currentQuery, setCurrentQuery] = useState<SearchParams>({});
     const [isNewSearch, setIsNewSearch] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const fetchImages = useCallback(async (searchParams: any, isNew: boolean) => {
+    const fetchImages = useCallback(async (searchParams: SearchParams, isNew: boolean) => {
         if (isNew) {
             setLoading(true);
             setIsNewSearch(true);
@@ -23,6 +26,7 @@ export const useCardSearch = () => {
         }
 
         const params = new URLSearchParams(searchParams);
+        setError(null);
         try {
             const response = await fetch(`${API_ENDPOINT}?${params.toString()}`);
             if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -39,9 +43,9 @@ export const useCardSearch = () => {
                 });
             }
             setHasMore(newImages.length === (isNew ? PAGE_SIZE_INITIAL : PAGE_SIZE_MORE));
-        } catch (error) {
-            console.error("Error fetching images:", error);
-            alert("Failed to fetch images. Check console for details.");
+        } catch (err) {
+            console.error("Error fetching images:", err);
+            setError("Failed to load cards. Please try again.");
             if (isNew) {
                 setImages([]);
             }
@@ -56,10 +60,10 @@ export const useCardSearch = () => {
         if (!query.trim()) return;
 
         setImages([]); // Clear images for new search
-        const newQuery: any = {
+        const newQuery: SearchParams = {
             q: query.split(',').map(part => part.trim().toLowerCase().replace(/\s+/g, '-')).join(','),
-            limit: PAGE_SIZE_INITIAL,
-            offset: 0,
+            limit: String(PAGE_SIZE_INITIAL),
+            offset: '0',
         };
 
         if (isCameo) newQuery.cameo = '1';
@@ -79,15 +83,15 @@ export const useCardSearch = () => {
         const nextPage = page + 1;
         const newOffset = (page * PAGE_SIZE_MORE) + (PAGE_SIZE_INITIAL - PAGE_SIZE_MORE);
         
-        const newQuery = {
+        const newQuery: SearchParams = {
             ...currentQuery,
-            limit: PAGE_SIZE_MORE,
-            offset: newOffset,
+            limit: String(PAGE_SIZE_MORE),
+            offset: String(newOffset),
         };
 
         setPage(nextPage);
         fetchImages(newQuery, false);
     }, [loadingMore, hasMore, page, currentQuery, fetchImages]);
 
-    return { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch };
+    return { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch, error };
 };

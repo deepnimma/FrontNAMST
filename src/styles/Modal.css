@@ -19,7 +19,7 @@
     align-items: center; /* Center content vertically */
     gap: 25px;
     position: relative;
-    background-color: #2d2d2d;
+    background-color: var(--color-bg-secondary);
     padding: 25px;
     border-radius: 12px;
     max-width: 90vw;
@@ -42,7 +42,7 @@
     color: #f0f0f0;
     max-height: 80vh; /* Match image height */
     overflow-y: auto; /* Allow scrolling for content */
-    background-color: #222222; /* Darker background */
+    background-color: var(--color-bg-dark); /* Darker background */
     padding: 25px;
     border-radius: 8px;
     scrollbar-width: none; /* Firefox */
@@ -59,7 +59,7 @@
     font-size: 1.8rem;
     font-weight: 600;
     color: #ffffff;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 10px;
 }
 
@@ -70,13 +70,13 @@
 }
 
 .modal-metadata p strong {
-    color: #BA0C2F; /* Highlight color */
+    color: var(--color-accent); /* Highlight color */
     font-weight: 500;
 }
 
 .tags-container {
     margin-top: 20px;
-    border-top: 1px solid #444;
+    border-top: 1px solid var(--color-border);
     padding-top: 15px;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .tags-text {
-    color: #ccc;
+    color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.6;
 }
@@ -113,7 +113,7 @@
 }
 
 .modal-close-button:hover {
-    background-color: #BA0C2F;
+    background-color: var(--color-accent);
     transform: scale(1.1);
 }
 
@@ -124,9 +124,9 @@
     gap: 8px;
     padding: 8px 15px;
     width: 100%;
-    background-color: #2d2d2d;
-    color: #ccc;
-    border: 1px solid #444;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
@@ -138,13 +138,13 @@
 }
 
 .tcgplayer-button-modal:hover {
-    background-color: #3c3c3c;
-    border-color: #BA0C2F;
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-accent);
 }
 
 .modal-metadata .referral-disclaimer {
     font-size: 0.6rem;
-    color: #888;
+    color: var(--color-text-muted);
     margin-top: 5px;
     text-align: center;
 }

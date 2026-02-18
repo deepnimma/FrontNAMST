@@ -17,6 +17,7 @@ interface ImageGridProps {
     hasMore: boolean;
     loadingMore: boolean;
     isNewSearch: boolean;
+    error?: string | null;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = React.memo(({
@@ -31,6 +32,7 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
     hasMore,
     loadingMore,
     isNewSearch,
+    error,
 }) => {
     const observer = useRef<IntersectionObserver | null>(null);
     const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
@@ -69,6 +71,14 @@ const ImageGrid: React.FC<ImageGridProps> = React.memo(({
 
     if (loading && isNewSearch) {
         return <div className="loading-spinner"></div>;
+    }
+
+    if (error) {
+        return (
+            <div className="no-results">
+                <p>{error}</p>
+            </div>
+        );
     }
 
     if (images.length === 0 && query && !loading) {

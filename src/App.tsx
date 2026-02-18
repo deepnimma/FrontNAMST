@@ -19,7 +19,7 @@ import { ExternalLink } from 'lucide-react';
 function App() {
     const [query, setQuery] = useState('');
     const [lastExecutedQuery, setLastExecutedQuery] = useState('');
-    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch } = useCardSearch();
+    const { images, setImages, loading, loadingMore, hasMore, handleSearch, loadMore, isNewSearch, error } = useCardSearch();
     const {
         showScrollButton,
         placeholderIndex,
@@ -322,6 +322,7 @@ function App() {
                                 hasMore={hasMore}
                                 loadingMore={loadingMore}
                                 isNewSearch={isNewSearch}
+                                error={error}
                             />
                         </div>
                         {images.length > 0 && (

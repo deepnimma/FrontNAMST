@@ -28,9 +28,9 @@ const Modal: React.FC<ModalProps> = ({ selectedImage, closeModal }) => {
     };
 
     return (
-        <div className="modal-backdrop" onClick={closeModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close-button" onClick={closeModal}><X size={24} /></button>
+        <div className="modal-backdrop" onClick={closeModal} role="presentation">
+            <div className="modal-content" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={`Card details: ${selectedImage.cardTitle}`}>
+                <button className="modal-close-button" onClick={closeModal} aria-label="Close"><X size={24} /></button>
                 <img src={`${R2_BUCKET_URL}/${selectedImage.imageKey}`} alt={selectedImage.cardTitle} className="modal-image" />
                 <div className="modal-metadata">
                     <h2>{capitalizeWords(selectedImage.cardTitle)}</h2>
