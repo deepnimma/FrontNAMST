@@ -1,5 +1,20 @@
 [
     {
+        "version": "1.3.1",
+        "date": "2026-02-18",
+        "title": "The 'Under the Hood' Update",
+        "changes": [
+            { "category": "improvements", "description": "Refactored app state into a React Context to reduce internal complexity and improve maintainability." },
+            { "category": "improvements", "description": "Consolidated all CSS animations into a single location to reduce duplication." },
+            { "category": "fixes", "description": "Fixed tag parsing breaking for card tags that contain embedded single quotes." },
+            { "category": "improvements", "description": "Added a distinct 'Loading more...' indicator at the bottom of the grid, separate from the initial load spinner." },
+            { "category": "improvements", "description": "Improved empty state messages to be more descriptive." },
+            { "category": "improvements", "description": "Made the modal metadata panel's scrollbar visible." },
+            { "category": "improvements", "description": "Added an error boundary around the card grid so unexpected errors show a friendly message instead of crashing the page." },
+            { "category": "improvements", "description": "Improved image loading performance: first-row cards now load immediately with high priority, remaining cards pre-load 600px before entering the viewport, and image decoding is now non-blocking." }
+        ]
+    },
+    {
         "version": "1.3.0",
         "date": "2025-12-19",
         "changes": [

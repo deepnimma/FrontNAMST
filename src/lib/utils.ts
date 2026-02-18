@@ -4,16 +4,34 @@ export const capitalizeWords = (str: string) => {
     return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-// Helper to parse the tags string
+// Helper to parse the tags string (handles Python-style list strings)
 export const parseTags = (tagsString: string): string[] => {
     try {
-        const validJsonString = tagsString.replace(/'/g, '"');
-        const tags = JSON.parse(validJsonString);
-        if (Array.isArray(tags)) return tags;
-    } catch (error) {
-        console.error("Error parsing tags:", error);
+        const inner = tagsString.trim().replace(/^\[|\]$/g, '').trim();
+        if (!inner) return [];
+
+        const tags: string[] = [];
+        let inQuote = false;
+        let quoteChar = '';
+        let current = '';
+
+        for (const ch of inner) {
+            if (!inQuote && (ch === '"' || ch === "'")) {
+                inQuote = true;
+                quoteChar = ch;
+            } else if (inQuote && ch === quoteChar) {
+                inQuote = false;
+                if (current) tags.push(current);
+                current = '';
+            } else if (inQuote) {
+                current += ch;
+            }
+        }
+
+        return tags;
+    } catch {
+        return [];
     }
-    return [];
 };
 
 // Helper to generate TCGPlayer link

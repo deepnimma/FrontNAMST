@@ -12,6 +12,7 @@ const ScrollToTopButton: React.FC<ScrollToTopButtonProps> = ({ show, scrollToTop
         <button
             className={`scroll-to-top-button ${show ? 'visible' : ''}`}
             onClick={scrollToTop}
+            aria-label="Scroll to top"
         >
             <ArrowUp size={24} />
         </button>

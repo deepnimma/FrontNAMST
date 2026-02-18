@@ -1,48 +1,23 @@
 import React, { useState } from 'react';
+import { useSearchContext } from '../context/SearchContext';
 import '../styles/FilterBox.css';
 
-interface FilterBoxProps {
-    showSetNames: boolean;
-    setShowSetNames: (show: boolean) => void;
-    showReverseHolos: boolean;
-    setShowReverseHolos: (show: boolean) => void;
-    gridCols: number;
-    setGridCols: (cols: number) => void;
-    hideFirstEditions: boolean;
-    setHideFirstEditions: (hide: boolean) => void;
-    showEnergyCards: boolean;
-    setShowEnergyCards: (show: boolean) => void;
-    showItemCards: boolean;
-    setShowItemCards: (show: boolean) => void;
-    showTrainerOwned: boolean;
-    setShowTrainerOwned: (show: boolean) => void;
-}
+const FilterBox: React.FC = () => {
+    const {
+        showSetNames, setShowSetNames,
+        showReverseHolos, setShowReverseHolos,
+        gridCols, setGridCols,
+        hideFirstEditions, setHideFirstEditions,
+        showEnergyCards, setShowEnergyCards,
+        showItemCards, setShowItemCards,
+        showTrainerOwned, setShowTrainerOwned,
+    } = useSearchContext();
 
-const FilterBox: React.FC<FilterBoxProps> = ({
-    showSetNames,
-    setShowSetNames,
-    showReverseHolos,
-    setShowReverseHolos,
-    gridCols,
-    setGridCols,
-    hideFirstEditions,
-    setHideFirstEditions,
-    showEnergyCards,
-    setShowEnergyCards,
-    showItemCards,
-    setShowItemCards,
-    showTrainerOwned,
-    setShowTrainerOwned,
-}) => {
     const [copied, setCopied] = useState(false);
 
-    const toggleGridCols = () => {
-        setGridCols(gridCols === 3 ? 5 : 3);
-    };
+    const toggleGridCols = () => setGridCols(gridCols === 3 ? 5 : 3);
 
-    const handlePrint = () => {
-        window.print();
-    };
+    const handlePrint = () => window.print();
 
     const handleShare = () => {
         navigator.clipboard.writeText(window.location.href).then(() => {
@@ -56,51 +31,27 @@ const FilterBox: React.FC<FilterBoxProps> = ({
             <h3>Filters</h3>
             <div className="filter-box-checkbox-group">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={showSetNames}
-                        onChange={(e) => setShowSetNames(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={showSetNames} onChange={(e) => setShowSetNames(e.target.checked)} />
                     Show Set Names
                 </label>
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={showReverseHolos}
-                        onChange={(e) => setShowReverseHolos(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={showReverseHolos} onChange={(e) => setShowReverseHolos(e.target.checked)} />
                     Show Reverse Holos
                 </label>
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={hideFirstEditions}
-                        onChange={(e) => setHideFirstEditions(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={hideFirstEditions} onChange={(e) => setHideFirstEditions(e.target.checked)} />
                     Hide 1st Edition
                 </label>
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={showItemCards}
-                        onChange={(e) => setShowItemCards(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={showItemCards} onChange={(e) => setShowItemCards(e.target.checked)} />
                     Show Trainer Cards
                 </label>
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={showTrainerOwned}
-                        onChange={(e) => setShowTrainerOwned(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={showTrainerOwned} onChange={(e) => setShowTrainerOwned(e.target.checked)} />
                     Show Trainer's PKMN
                 </label>
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={showEnergyCards}
-                        onChange={(e) => setShowEnergyCards(e.target.checked)}
-                    />
+                    <input type="checkbox" checked={showEnergyCards} onChange={(e) => setShowEnergyCards(e.target.checked)} />
                     Show Energy Cards
                 </label>
             </div>

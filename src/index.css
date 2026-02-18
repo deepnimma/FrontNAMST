@@ -13,6 +13,36 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-bg-primary: #1e1e1e;
+  --color-bg-secondary: #2d2d2d;
+  --color-bg-hover: #3c3c3c;
+  --color-bg-dark: #222;
+  --color-border: #444;
+  --color-border-subtle: #333;
+  --color-accent: #BA0C2F;
+  --color-accent-dark: #9a0a27;
+  --color-text-secondary: #ccc;
+  --color-text-muted: #888;
+  --color-text-dim: #666;
+  --color-text-body: #e0e0e0;
+  --color-version-accent: #646cff;
+}
+
+/* --- Shared keyframe animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 *, *::before, *::after {

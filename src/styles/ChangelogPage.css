@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     position: relative;
-    background-color: #1e1e1e;
+    background-color: var(--color-bg-primary);
     min-height: 100vh;
     flex-direction: row-reverse;
     overscroll-behavior: none;
@@ -23,7 +23,7 @@
     padding: 20px;
     padding-top: 80px;
     background-color: transparent;
-    color: #e0e0e0;
+    color: var(--color-text-body);
     font-family: 'Poppins', sans-serif;
     position: relative;
     width: 100%;
@@ -33,13 +33,13 @@
 .home-link-button {
     font-size: 1.2rem;
     font-weight: 600;
-    color: #e0e0e0;
+    color: var(--color-text-body);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .home-link-button:hover {
-    color: #BA0C2F;
+    color: var(--color-accent);
 }
 
 .changelog-container {
@@ -56,8 +56,8 @@
     font-size: 2.8rem;
     font-weight: 700;
     margin-bottom: 30px;
-    color: #BA0C2F;
-    border-bottom: 3px solid #BA0C2F;
+    color: var(--color-accent);
+    border-bottom: 3px solid var(--color-accent);
     padding-bottom: 15px;
 }
 
@@ -70,16 +70,16 @@
 }
 
 .version-section.major {
-    border: 2px solid #BA0C2F;
+    border: 2px solid var(--color-accent);
     box-shadow: 0 0 15px rgba(186, 12, 47, 0.3);
 }
 
 .version-section.minor {
-    border-left: 4px solid #BA0C2F;
+    border-left: 4px solid var(--color-accent);
 }
 
 .version-section.patch {
-    border-left: 4px solid #444;
+    border-left: 4px solid var(--color-border);
 }
 
 .version-header {
@@ -91,7 +91,7 @@
 .version-title {
     font-size: 2.2rem;
     font-weight: 600;
-    color: #e0e0e0;
+    color: var(--color-text-body);
     margin: 0;
 }
 
@@ -148,10 +148,10 @@
     border-bottom: 2px solid #555;
 }
 
-.change-category.new .category-title { color: #BA0C2F; }
-.change-category.cards .category-title { color: #BA0C2F; }
-.change-category.improvements .category-title { color: #e0e0e0; }
-.change-category.fixes .category-title { color: #888; }
+.change-category.new .category-title { color: var(--color-accent); }
+.change-category.cards .category-title { color: var(--color-accent); }
+.change-category.improvements .category-title { color: var(--color-text-body); }
+.change-category.fixes .category-title { color: var(--color-text-muted); }
 
 
 .changes-list {
@@ -161,7 +161,7 @@
 
 .change-item {
     padding: 10px 0;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--color-border);
     line-height: 1.7;
     font-size: 1rem;
 }
@@ -185,7 +185,7 @@
 .tree-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #BA0C2F;
+    color: var(--color-accent);
     margin-top: 0;
     margin-bottom: 15px;
     padding-left: 10px;
@@ -196,13 +196,13 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    border-left: 3px solid #444;
+    border-left: 3px solid var(--color-border);
 }
 
 .version-tree li button {
     background: none;
     border: none;
-    color: #888;
+    color: var(--color-text-muted);
     padding: 12px 20px;
     width: 100%;
     text-align: left;
@@ -213,12 +213,12 @@
 }
 
 .version-tree li button:hover {
-    color: #e0e0e0;
+    color: var(--color-text-body);
     transform: translateX(5px);
 }
 
 .version-tree li.active button {
-    color: #BA0C2F;
+    color: var(--color-accent);
     font-weight: 600;
     transform: translateX(5px);
 }
@@ -231,7 +231,7 @@
     transform: translateY(-50%);
     width: 8px;
     height: 8px;
-    background-color: #BA0C2F;
+    background-color: var(--color-accent);
     border-radius: 50%;
 }
 
@@ -264,9 +264,9 @@
         width: 100%;
         margin: 0;
         padding: 10px 20px;
-        background-color: #1e1e1e;
+        background-color: var(--color-bg-primary);
         z-index: 900;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid var(--color-border-subtle);
         box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
@@ -290,17 +290,17 @@
     }
 
     .version-tree li button {
-        background-color: #2d2d2d;
+        background-color: var(--color-bg-secondary);
         border-radius: 20px;
         padding: 8px 16px;
         font-size: 0.9rem;
         white-space: nowrap;
-        color: #e0e0e0;
+        color: var(--color-text-body);
         transform: none !important;
     }
 
     .version-tree li.active button {
-        background-color: #BA0C2F;
+        background-color: var(--color-accent);
         color: white;
         transform: none !important;
     }

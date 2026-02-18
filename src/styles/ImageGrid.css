@@ -10,7 +10,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1.4;
-    background-color: #2d2d2d;
+    background-color: var(--color-bg-secondary);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
@@ -81,7 +81,7 @@
 }
 
 .first-edition-badge {
-    background-color: #BA0C2F;
+    background-color: var(--color-accent);
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
@@ -112,7 +112,7 @@
 
 .poke-ball-badge {
     background-color: #FFFFFF;
-    color: #BA0C2F;
+    color: var(--color-accent);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -129,7 +129,7 @@
 
 .loading-spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #646cff;
+    border-top: 4px solid var(--color-version-accent);
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -137,7 +137,22 @@
     margin: 50px auto;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.loading-more-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.loading-more-spinner {
+    border: 3px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
 }

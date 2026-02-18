@@ -1,33 +1,15 @@
 import React from 'react';
 import { ArrowDownUp } from 'lucide-react';
+import { useSearchContext } from '../context/SearchContext';
 
-interface FiltersProps {
-    isCameo: boolean;
-    isTrainer: boolean;
-    isIllustrator: boolean;
-    isSet: boolean;
-    handleCameoChange: (checked: boolean) => void;
-    handleTrainerChange: (checked: boolean) => void;
-    handleIllustratorChange: (checked: boolean) => void;
-    handleSetChange: (checked: boolean) => void;
-    toggleSortOrder: () => void;
-    sortOrder: 'asc' | 'desc';
-    query: string;
-}
+const Filters: React.FC = () => {
+    const {
+        query,
+        isCameo, isTrainer, isIllustrator, isSet,
+        handleCameoChange, handleTrainerChange, handleIllustratorChange, handleSetChange,
+        sortOrder, toggleSortOrder,
+    } = useSearchContext();
 
-const Filters: React.FC<FiltersProps> = ({
-    isCameo,
-    isTrainer,
-    isIllustrator,
-    isSet,
-    handleCameoChange,
-    handleTrainerChange,
-    handleIllustratorChange,
-    handleSetChange,
-    toggleSortOrder,
-    sortOrder,
-    query,
-}) => {
     return (
         <div className={`filters-container ${query.length > 0 ? 'visible' : ''}`}>
             <div className="checkbox-group">

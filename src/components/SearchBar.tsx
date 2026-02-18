@@ -1,26 +1,13 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 import { placeholderWords } from '../lib/constants';
+import { useSearchContext } from '../context/SearchContext';
 
-interface SearchBarProps {
-    query: string;
-    setQuery: (query: string) => void;
-    handleSearch: () => void;
-    loading: boolean;
-    handleKeyDown: (e: React.KeyboardEvent) => void;
-    handleFocus: () => void;
-    placeholderIndex: number;
-}
+const SearchBar: React.FC = () => {
+    const { query, setQuery, loading, handleKeyDown, performSearch, placeholderIndex } = useSearchContext();
 
-const SearchBar: React.FC<SearchBarProps> = ({
-    query,
-    setQuery,
-    handleSearch,
-    loading,
-    handleKeyDown,
-    handleFocus,
-    placeholderIndex,
-}) => {
+    const handleFocus = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
     return (
         <div className="search-and-controls-container">
             <div className="search-input-container">
@@ -41,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     </div>
                 )}
             </div>
-            <button className="search-button" onClick={handleSearch} disabled={loading}>
+            <button className="search-button" onClick={performSearch} disabled={loading}>
                 {loading ? 'Searching...' : <><Search size={18} /> Search</>}
             </button>
         </div>

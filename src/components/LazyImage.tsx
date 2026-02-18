@@ -1,5 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+// Single shared IntersectionObserver for all LazyImage instances
+const visibilityCallbacks = new Map<Element, () => void>();
+let sharedObserver: IntersectionObserver | null = null;
+
+function observeElement(el: Element, onVisible: () => void) {
+    if (!sharedObserver) {
+        sharedObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const cb = visibilityCallbacks.get(entry.target);
+                        if (cb) {
+                            cb();
+                            sharedObserver!.unobserve(entry.target);
+                            visibilityCallbacks.delete(entry.target);
+                        }
+                    }
+                });
+            },
+            { rootMargin: '600px' }
+        );
+    }
+    visibilityCallbacks.set(el, onVisible);
+    sharedObserver.observe(el);
+}
+
+function unobserveElement(el: Element) {
+    sharedObserver?.unobserve(el);
+    visibilityCallbacks.delete(el);
+}
+
 interface LazyImageProps {
     src: string;
     alt: string;
@@ -7,42 +38,26 @@ interface LazyImageProps {
     onClick: () => void;
     style?: React.CSSProperties;
     onImageLoad?: () => void;
+    isPriority?: boolean;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, style, onImageLoad }) => {
+const LazyImage: React.FC<LazyImageProps> = ({
+    src, alt, className, onClick, style, onImageLoad, isPriority = false,
+}) => {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [isInView, setIsInView] = useState(false);
+    const [isInView, setIsInView] = useState(isPriority);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsInView(true);
-                    observer.disconnect();
-                }
-            },
-            {
-                rootMargin: '200px',
-            }
-        );
-
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
-        }
-
-        return () => {
-            if (containerRef.current) {
-                observer.unobserve(containerRef.current);
-            }
-        };
-    }, []);
+        if (isPriority || !containerRef.current) return;
+        const el = containerRef.current;
+        observeElement(el, () => setIsInView(true));
+        return () => unobserveElement(el);
+    }, [isPriority]);
 
     const handleImageLoad = () => {
         setIsLoaded(true);
-        if (onImageLoad) {
-            onImageLoad();
-        }
+        onImageLoad?.();
     };
 
     return (
@@ -58,6 +73,9 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, alt, className, onClick, sty
                     alt={alt}
                     className={className}
                     onLoad={handleImageLoad}
+                    decoding="async"
+                    loading={isPriority ? 'eager' : 'lazy'}
+                    fetchPriority={isPriority ? 'high' : 'auto'}
                 />
             )}
         </div>
