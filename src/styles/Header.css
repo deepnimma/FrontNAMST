@@ -49,23 +49,41 @@
     color: white; /* Or any other color you want for emphasis */
 }
 
-.emphasized-header-word {
-    color: var(--color-accent); /* A different color for emphasis in the main header */
-    font-weight: bold;
+.emphasized-pokedex        { color: #3B9EFF; font-weight: bold; }
+.emphasized-trainerdex     { color: #2ECC71; font-weight: bold; }
+.emphasized-illustratordex { color: #A855F7; font-weight: bold; }
+.emphasized-masterset      { color: var(--color-accent); font-weight: bold; }
+
+.header-phrase {
+    display: inline-block;
 }
 
-/* Animation for header text change */
-.header-revolve-animation {
-    animation: headerRevolve 0.5s ease-in-out forwards;
+.header-exiting {
+    animation: fadeOut 0.3s ease-in-out forwards;
 }
 
-@keyframes headerRevolve {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.header-entering {
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+/* MasterSet special entry — spring bounce */
+@keyframes masterSetEnter {
+    0%   { opacity: 0; transform: translateY(14px) scale(0.88); }
+    65%  { opacity: 1; transform: translateY(-5px) scale(1.04); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Glow pulses on the MasterSet word after it lands */
+@keyframes masterSetGlow {
+    0%, 100% { text-shadow: none; }
+    50%       { text-shadow: 0 0 18px rgba(186, 12, 47, 0.75), 0 0 6px rgba(186, 12, 47, 0.5); }
+}
+
+.header-masterset-entering {
+    animation: masterSetEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* 3 glow pulses on the word, starting after the entry settles */
+.header-masterset-active .emphasized-masterset {
+    animation: masterSetGlow 1.4s ease-in-out 0.1s 3 forwards;
 }

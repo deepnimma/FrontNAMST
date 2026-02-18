@@ -9,6 +9,15 @@
 
 .filter-box h3 {
     margin-top: 0;
+    color: var(--color-accent);
+}
+
+.filter-box-checkbox-group input[type="checkbox"] {
+    accent-color: var(--color-accent);
+}
+
+.filter-box-checkbox-group label:has(input:checked) {
+    color: var(--color-accent);
 }
 
 .filter-box-checkbox-group {

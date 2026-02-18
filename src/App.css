@@ -63,6 +63,11 @@ html {
     padding-left: 1rem;
 }
 
+.results-count-number {
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
 .right-sidebar {
     width: 240px; /* Adjust as needed */
     flex-shrink: 0;
