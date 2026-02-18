@@ -49,23 +49,19 @@
     color: white; /* Or any other color you want for emphasis */
 }
 
-.emphasized-header-word {
-    color: var(--color-accent); /* A different color for emphasis in the main header */
-    font-weight: bold;
+.emphasized-pokedex        { color: #3B9EFF; font-weight: bold; }
+.emphasized-trainerdex     { color: #2ECC71; font-weight: bold; }
+.emphasized-illustratordex { color: #A855F7; font-weight: bold; }
+.emphasized-masterset      { color: var(--color-accent); font-weight: bold; }
+
+.header-phrase {
+    display: inline-block;
 }
 
-/* Animation for header text change */
-.header-revolve-animation {
-    animation: headerRevolve 0.5s ease-in-out forwards;
+.header-exiting {
+    animation: fadeOut 0.3s ease-in-out forwards;
 }
 
-@keyframes headerRevolve {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.header-entering {
+    animation: fadeIn 0.3s ease-in-out forwards;
 }
