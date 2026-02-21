@@ -1,5 +1,12 @@
 [
     {
+        "version": "1.3.3",
+        "date": "2026-02-20",
+        "changes": [
+            { "category": "improvements", "description": "Added a hint below the search bar indicating that multiple Pokémon can be searched at once by separating names with commas." }
+        ]
+    },
+    {
         "version": "1.3.2",
         "date": "2026-02-18",
         "title": "The 'A Splash of Color' Update",
