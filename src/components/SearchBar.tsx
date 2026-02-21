@@ -34,6 +34,7 @@ const SearchBar: React.FC = () => {
     const handleFocus = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     return (
+        <div className="search-bar-wrapper">
         <div className="search-and-controls-container">
             <div className="search-input-container">
                 <input
@@ -60,6 +61,8 @@ const SearchBar: React.FC = () => {
             <button className="search-button" onClick={performSearch} disabled={loading}>
                 {loading ? 'Searching...' : <><Search size={18} /> Search</>}
             </button>
+        </div>
+        <p className="search-hint">Tip: separate terms with commas to search for multiple — e.g. <em>Mudkip, Marshtomp, Swampert</em></p>
         </div>
     );
 };
